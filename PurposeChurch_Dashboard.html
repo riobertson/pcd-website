@@ -2771,7 +2771,7 @@ function saveEditMember() {
       .catch(function(e){ console.error('Firebase update error:', e); });
   }
 
-  renderMembers();
+  renderMembersTable();
   updateStats();
   closeEditMemberModal();
   toast('✅ Member info updated!');
