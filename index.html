@@ -393,10 +393,10 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
             .bio-card.hidden{display:none;opacity:0;}
             .bio-inner{display:flex;}
             @media(max-width:800px){.bio-inner{flex-direction:column;}}
-            .bio-photo{width:300px;flex-shrink:0;position:relative;overflow:hidden;background:linear-gradient(135deg,#0E1B2E,#4A1228);}
-            .bio-photo img{width:100%;height:480px;object-fit:cover;object-position:center 15%;display:block;}
-            @media(max-width:800px){.bio-photo{width:100%;}
-            .bio-photo img{height:300px;object-position:center 15%;}}
+            .bio-photo{width:300px;height:480px;flex-shrink:0;position:relative;overflow:hidden;background:linear-gradient(135deg,#0E1B2E,#4A1228);}
+            .bio-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block;}
+            @media(max-width:800px){.bio-photo{width:100%;height:300px;}
+            .bio-photo img{height:100%;}}
             .bio-photo-overlay{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(14,27,46,0.88),transparent);}
             .bio-photo-label{position:absolute;bottom:1.2rem;left:0;right:0;text-align:center;padding:0 1rem;}
             .bio-content{flex:1;padding:2.5rem;}
