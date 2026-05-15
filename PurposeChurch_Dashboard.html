@@ -1538,6 +1538,11 @@ function addMember() {
       zip: member.zip || '',
       roles: (member.roles||[]).join('|'),
       notif: member.notif || 'opted-in'
+    }).then(function(fbId) {
+      if (fbId) {
+        var m = DB.members.find(function(x){ return x.id === member.id; });
+        if (m) { m.firebaseId = fbId; saveDB(); }
+      }
     });
   }
 
@@ -1563,6 +1568,10 @@ function toggleMemberNotif(id) {
 
 function deleteMember(id) {
   if (!confirm('Remove this member?')) return;
+  var m = DB.members.find(function(x){ return x.id === id; });
+  if (m && m.firebaseId && window.deleteFromFirebase) {
+    window.deleteFromFirebase('members', m.firebaseId);
+  }
   DB.members = DB.members.filter(m => m.id !== id);
   saveDB();
   renderMembersTable();
@@ -2702,6 +2711,23 @@ function saveEditMember() {
   });
 
   saveDB();
+
+  // Update Firebase for cross-device sync
+  var updated = DB.members[mIdx];
+  if (updated && updated.firebaseId && window.saveToFirebase) {
+    var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+    var project = "purposechurchdenton";
+    var url = "https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/members/" + updated.firebaseId + "?key=" + apiKey;
+    var fields = {};
+    ['name','first','last','email','phone','street','city','state','zip','notif'].forEach(function(k){
+      fields[k] = {stringValue: String(updated[k]||'')};
+    });
+    fields.roles = {stringValue: (updated.roles||[]).join('|')};
+    fetch(url, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})})
+      .then(function(){ console.log('Member updated in Firebase'); })
+      .catch(function(e){ console.error('Firebase update error:', e); });
+  }
+
   renderMembers();
   updateStats();
   closeEditMemberModal();
