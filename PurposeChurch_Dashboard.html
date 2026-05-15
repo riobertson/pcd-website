@@ -234,6 +234,9 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
   console.log("Firebase REST API ready");
   </script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>emailjs.init("W9m4Fw2tQ5BzNVbNI");</script>
 </head>
 <body>
 
@@ -2984,29 +2987,59 @@ function sendMemberEmail() {
   const recipients = getEmailRecipients();
   if (!recipients.length) return toast('No recipients selected.', 'error');
 
-  const emails = recipients.filter(function(m){ return m.email; }).map(function(m){ return m.email; });
+  const emails = recipients.filter(function(m){ return m.email; });
+  if (!emails.length) return toast('No members with email addresses found.', 'error');
 
-  // Open mailto with all recipients
-  const mailtoLink = 'mailto:' + emails.join(',') +
-    '?subject=' + encodeURIComponent(subject) +
-    '&body=' + encodeURIComponent(body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com');
+  // Show sending state
+  const btn = document.querySelector('#panel-email .btn-burg');
+  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
 
-  window.open(mailtoLink);
+  let sent = 0;
+  let failed = 0;
+  const total = emails.length;
 
-  // Save to history
-  const entry = {
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-    subject: subject,
-    count: emails.length,
-    group: emailGroupSelected
-  };
-  if (!DB.emailHistory) DB.emailHistory = [];
-  DB.emailHistory.unshift(entry);
-  saveDB();
-  renderEmailHistory();
+  // Send to each recipient via EmailJS
+  emails.forEach(function(m) {
+    emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+      to_email: m.email,
+      to_name: m.name || m.email,
+      subject: subject,
+      message: body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com',
+      from_name: 'Purpose Church of Denton'
+    })
+    .then(function() {
+      sent++;
+      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+    })
+    .catch(function() {
+      failed++;
+      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+    });
+  });
+}
 
-  toast('📧 Opening email client for ' + emails.length + ' recipients!');
-  document.getElementById('email-preview-box').style.display = 'none';
+function finishSending(sent, failed, subject, total, btn) {
+  if (btn) { btn.textContent = '📧 Send Email Now'; btn.disabled = false; }
+
+  if (sent > 0) {
+    toast('✅ Email sent to ' + sent + ' of ' + total + ' members!');
+    // Save to history
+    const entry = {
+      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+      subject: subject,
+      count: sent,
+      group: emailGroupSelected
+    };
+    if (!DB.emailHistory) DB.emailHistory = [];
+    DB.emailHistory.unshift(entry);
+    saveDB();
+    renderEmailHistory();
+    document.getElementById('email-preview-box').style.display = 'none';
+    // Clear form
+    document.getElementById('email-subject').value = '';
+    document.getElementById('email-body').value = '';
+  }
+  if (failed > 0) toast('⚠️ ' + failed + ' emails failed to send.', 'error');
 }
 
 function renderEmailHistory() {
