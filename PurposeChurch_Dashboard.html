@@ -8,30 +8,30 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --b:#9B2335;--bm:#B52940;--bd:#7A1A28;
-  --g:#D4A017;--gl:#F0C84A;
-  --n:#1C2B4A;--nm:#253660;--nl:#2E4275;
-  --c:#F5F0FF;--cd:#EBE4FF;
-  --w:#fff;--td:#1A1410;--tm:#4A4036;--tl:#7A706A;
-  --green:#1A8A3A;--red:#CC2233;
-  --sidebar:#162240;--header:#9B2335;
+  --b:#C0392B;--bm:#E74C3C;--bd:#962D22;
+  --g:#F1C40F;--gl:#F9E44A;
+  --n:#1A1A2E;--nm:#16213E;--nl:#0F3460;
+  --c:#FFFFFF;--cd:#F0F0F0;
+  --w:#fff;--td:#FFFFFF;--tm:#F0F0F0;--tl:#CCCCCC;
+  --green:#27AE60;--red:#E74C3C;
+  --sidebar:#16213E;--header:#C0392B;
 }
 html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:var(--w);line-height:1.6;overflow-x:hidden;}
 
 /* ── HIDDEN — shows only correct URL hash ── */
 #app{display:none;}
-#wrong-page{display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.15);font-size:0.8rem;letter-spacing:0.2em;}
+#wrong-page{display:flex;align-items:center;justify-content:center;height:100vh;color:rgba(255,255,255,0.6);font-size:0.8rem;letter-spacing:0.2em;}
 
 /* ── LOGIN ── */
 #login-screen{display:none;min-height:100vh;background:linear-gradient(150deg,var(--n),var(--bd));align-items:center;justify-content:center;padding:2rem;}
 .login-box{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);padding:3rem;width:100%;max-width:420px;}
 .login-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--g);text-align:center;margin-bottom:0.3rem;letter-spacing:0.05em;}
-.login-sub{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:2.5rem;}
+.login-sub{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:2.5rem;}
 .form-group{margin-bottom:1.4rem;}
-.form-label{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:0.5rem;}
+.form-label{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;display:block;margin-bottom:0.5rem;}
 .form-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.8rem 1rem;font-family:'Jost',sans-serif;font-size:0.92rem;outline:none;transition:border-color 0.2s;}
 .form-input:focus{border-color:var(--g);}
-.form-input::placeholder{color:rgba(255,255,255,0.25);}
+.form-input::placeholder{color:rgba(255,255,255,0.65);}
 .login-btn{width:100%;background:var(--b);color:#fff;border:none;padding:0.95rem;font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:0.5rem;}
 .login-btn:hover{background:var(--bm);}
 .login-err{color:#ff8888;font-size:0.82rem;text-align:center;margin-top:0.8rem;display:none;}
@@ -44,17 +44,17 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .sidebar{width:240px;background:#080F1A;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(201,168,76,0.1);}
 .sidebar-logo{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.06);}
 .sidebar-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--g);letter-spacing:0.05em;}
-.sidebar-logo-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:0.1rem;}
+.sidebar-logo-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-top:0.1rem;}
 .sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
 .sidebar-user-name{font-size:0.85rem;color:rgba(255,255,255,0.8);font-weight:500;}
 .sidebar-user-role{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--g);opacity:0.7;margin-top:0.1rem;}
 .sidebar-nav{flex:1;padding:1rem 0;}
-.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1.5rem;cursor:pointer;color:rgba(255,255,255,0.5);font-size:0.82rem;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;border-left:2px solid transparent;}
+.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1.5rem;cursor:pointer;color:#FFFFFF;font-size:0.85rem;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;border-left:2px solid transparent;}
 .nav-item:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.03);}
 .nav-item.active{color:#fff;background:rgba(155,35,53,0.35);border-left-color:var(--g);}
 .nav-item-icon{width:18px;text-align:center;font-size:1rem;}
 .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);}
-.logout-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.5rem 1rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;transition:all 0.2s;}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);padding:0.5rem 1rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;transition:all 0.2s;}
 .logout-btn:hover{border-color:rgba(139,26,64,0.5);color:#ff8888;}
 
 /* MAIN CONTENT */
@@ -74,11 +74,11 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .dash-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
 .stat-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:1.2rem 1.5rem;}
 .stat-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:400;color:var(--g);line-height:1;}
-.stat-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.3rem;}
+.stat-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-top:0.3rem;}
 
 /* FORM ELEMENTS */
 .f-group{margin-bottom:1.2rem;}
-.f-label{font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:0.4rem;}
+.f-label{font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:#F1C40F;font-weight:600;display:block;margin-bottom:0.4rem;}
 .f-input,.f-select,.f-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:0.7rem 0.9rem;font-family:'Jost',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;resize:vertical;}
 .f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--g);}
 .f-input::placeholder,.f-textarea::placeholder{color:rgba(255,255,255,0.2);}
@@ -90,14 +90,14 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .btn{padding:0.7rem 1.6rem;border:none;font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .btn-burg{background:var(--b);color:#fff;box-shadow:0 2px 8px rgba(155,35,53,0.4);} .btn-burg:hover{background:var(--bm);}
 .btn-gold{background:var(--g);color:var(--n);} .btn-gold:hover{background:var(--gl);}
-.btn-ghost{background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);} .btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:#fff;}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);} .btn-ghost:hover{border-color:rgba(255,255,255,0.7);color:#fff;}
 .btn-red{background:var(--red);color:#fff;} .btn-red:hover{background:#a02020;}
 .btn-green{background:var(--green);color:#fff;} .btn-green:hover{background:#228B45;}
 .btn-sm{padding:0.4rem 0.9rem;font-size:0.68rem;}
 
 /* TABLES */
 .dash-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
-.dash-table th{text-align:left;padding:0.6rem 0.9rem;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;}
+.dash-table th{text-align:left;padding:0.6rem 0.9rem;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.75);border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;}
 .dash-table td{padding:0.75rem 0.9rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.75);vertical-align:middle;}
 .dash-table tr:hover td{background:rgba(255,255,255,0.02);}
 
@@ -105,7 +105,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .badge{display:inline-block;padding:0.2rem 0.6rem;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;border-radius:2px;}
 .badge-pastor{background:rgba(201,168,76,0.2);color:var(--g);}
 .badge-assistant{background:rgba(107,31,58,0.3);color:#e88;;}
-.badge-member{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
+.badge-member{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);}
 .badge-active{background:rgba(26,107,58,0.25);color:#6be89a;}
 .badge-optout{background:rgba(139,26,26,0.25);color:#ff8888;}
 .badge-pending{background:rgba(201,168,76,0.15);color:var(--g);}
@@ -122,11 +122,11 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
 /* EMAIL PREVIEW */
 .email-preview{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:1.5rem;}
-.email-preview-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.8rem;}
+.email-preview-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.8rem;}
 
 /* CALENDAR EMAIL CHIP */
 .cal-chip{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:0.35rem 0.8rem;font-size:0.78rem;color:rgba(255,255,255,0.7);margin:0.3rem 0.3rem 0 0;}
-.cal-chip-remove{cursor:pointer;color:rgba(255,255,255,0.3);font-size:0.85rem;transition:color 0.2s;}
+.cal-chip-remove{cursor:pointer;color:rgba(255,255,255,0.7);font-size:0.85rem;transition:color 0.2s;}
 .cal-chip-remove:hover{color:#ff8888;}
 
 
@@ -145,12 +145,12 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .rb-leader{background:rgba(26,58,107,0.35);color:#88b8ff;}
 .rb-praise{background:rgba(26,107,58,0.25);color:#6be89a;}
 .rb-sound{background:rgba(107,74,26,0.3);color:#e8c488;}
-.rb-member{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5);}
+.rb-member{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85);}
 .rb-custom{background:rgba(201,168,76,0.1);color:rgba(201,168,76,0.8);}
 
 /* OPT-OUT TAG */
 .opt-toggle{display:flex;gap:0.5rem;}
-.opt-btn{padding:0.3rem 0.8rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-family:'Jost',sans-serif;transition:all 0.15s;}
+.opt-btn{padding:0.3rem 0.8rem;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.8);font-family:'Jost',sans-serif;transition:all 0.15s;}
 .opt-btn.on{background:rgba(26,107,58,0.3);border-color:rgba(26,107,58,0.5);color:#6be89a;}
 .opt-btn.off{background:rgba(139,26,26,0.2);border-color:rgba(139,26,26,0.4);color:#ff8888;}
 
@@ -299,7 +299,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             <button class="mob-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
             <div class="dash-page-title" id="dash-title">Overview</div>
           </div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.3);" id="dash-datetime"></div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);" id="dash-datetime"></div>
         </div>
         <div class="dash-content">
 
@@ -314,7 +314,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
               <div class="dash-card">
                 <div class="dash-card-title">📅 Upcoming Events</div>
-                <div id="overview-events" style="font-size:0.85rem;color:rgba(255,255,255,0.5);">No upcoming events.</div>
+                <div id="overview-events" style="font-size:0.85rem;color:rgba(255,255,255,0.85);">No upcoming events.</div>
               </div>
             </div>
             <div class="dash-card">
@@ -338,7 +338,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
               </div>
               <div class="f-group"><label class="f-label">Sermon Title</label><input class="f-input" id="s-title" placeholder="e.g. Your Purpose Is Not an Accident"/></div>
               <div class="f-group"><label class="f-label">Scripture</label><input class="f-input" id="s-scripture" placeholder="e.g. Jeremiah 29:11 — For I know the plans..."/></div>
-              <div class="f-group"><label class="f-label">Pastor's Notes <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(one point per line)</span></label><textarea class="f-textarea" id="s-notes" rows="6" placeholder="God's plans for you were established before the foundation of the world.&#10;Purpose is not found — it is revealed through obedience and surrender.&#10;Key Point: You were made on purpose, for a purpose."></textarea></div>
+              <div class="f-group"><label class="f-label">Pastor's Notes <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(one point per line)</span></label><textarea class="f-textarea" id="s-notes" rows="6" placeholder="God's plans for you were established before the foundation of the world.&#10;Purpose is not found — it is revealed through obedience and surrender.&#10;Key Point: You were made on purpose, for a purpose."></textarea></div>
               <div class="f-row">
                 <div class="f-group"><label class="f-label">Tag / Series Label</label><input class="f-input" id="s-tag" placeholder="e.g. Purpose Series"/></div>
                 <div class="f-group"><label class="f-label">Facebook Video Link (optional)</label><input class="f-input" id="s-fb" placeholder="https://facebook.com/..."/></div>
@@ -349,7 +349,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
               <div class="dash-card-title">📋 All Sermons</div>
               <table class="dash-table">
                 <thead><tr><th>Date</th><th>Title</th><th>Series</th><th>Tag</th><th>Actions</th></tr></thead>
-                <tbody id="sermons-table-body"><tr><td colspan="5" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No sermons yet. Add your first sermon above.</td></tr></tbody>
+                <tbody id="sermons-table-body"><tr><td colspan="5" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No sermons yet. Add your first sermon above.</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -369,13 +369,13 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     </div>
     <!-- Day headers -->
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px;">
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Sun</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Mon</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Tue</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Wed</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Thu</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Fri</div>
-      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0.5rem 0;">Sat</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Sun</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Mon</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Tue</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Wed</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Thu</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Fri</div>
+      <div style="text-align:center;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:0.5rem 0;">Sat</div>
     </div>
     <!-- Calendar grid -->
     <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;"></div>
@@ -415,7 +415,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
     <!-- EVENT IMAGE UPLOAD -->
     <div class="f-group">
-      <label class="f-label">Event Image <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — drag & drop from Canva or paste URL)</span></label>
+      <label class="f-label">Event Image <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — drag & drop from Canva or paste URL)</span></label>
       <div id="e-img-dropzone" class="img-upload-zone"
         ondragover="event.preventDefault();this.classList.add('drag-over')"
         ondragleave="this.classList.remove('drag-over')"
@@ -424,8 +424,8 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <input type="file" id="e-img-file" accept="image/*" style="display:none" onchange="handleImgFileSelect(event,'e-img-url','e-img-preview-wrap','e-img-preview')"/>
         <div id="e-img-placeholder-new">
           <div style="font-size:2rem;margin-bottom:0.4rem;opacity:0.5;">🖼️</div>
-          <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">Drag & drop from Canva or click to upload</div>
-          <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;">JPG, PNG — auto uploads instantly</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.85);">Drag & drop from Canva or click to upload</div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.7);margin-top:0.3rem;">JPG, PNG — auto uploads instantly</div>
         </div>
         <div id="e-img-preview-wrap" style="display:none;">
           <img id="e-img-preview" style="max-width:100%;max-height:200px;object-fit:contain;display:block;margin:0 auto;"/>
@@ -436,37 +436,37 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         </div>
       </div>
       <div style="margin-top:0.4rem;display:flex;align-items:center;gap:0.5rem;">
-        <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">Or paste URL:</span>
+        <span style="font-size:0.72rem;color:rgba(255,255,255,0.7);">Or paste URL:</span>
         <input class="f-input" id="e-img-url" type="url" placeholder="https://..." style="flex:1;padding:0.4rem 0.7rem;font-size:0.78rem;" oninput="previewPastedUrl(this.value,'e-img-preview-wrap','e-img-preview','e-img-placeholder-new')"/>
       </div>
       <div id="e-img-uploading" style="display:none;font-size:0.78rem;color:var(--g);margin-top:0.4rem;">⏳ Uploading image...</div>
     </div>
         <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:1.2rem;margin-top:0.5rem;">
       <div class="dash-card-title" style="margin-bottom:0.8rem;">📧 Auto-Email Notifications</div>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:1rem;font-weight:300;">When this event is saved, a calendar invite (.ics) will automatically be emailed to all linked contacts.</p>
+      <p style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin-bottom:1rem;font-weight:300;">When this event is saved, a calendar invite (.ics) will automatically be emailed to all linked contacts.</p>
       <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;flex-wrap:wrap;">
         <input class="f-input" id="e-email-add" placeholder="Add email address..." style="flex:1;min-width:220px;" onkeydown="if(event.key==='Enter'){addEmailChip();event.preventDefault();}"/>
         <button class="btn btn-ghost btn-sm" onclick="addEmailChip()">+ Add</button>
       </div>
       <div id="email-chips" style="margin-bottom:0.8rem;"></div>
-      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.5);cursor:pointer;">
+      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.85);cursor:pointer;">
         <input type="checkbox" id="e-notify-members" style="accent-color:var(--b);"> Also email all opted-in members
       </label>
     </div>
 
     <div style="display:flex;gap:0.8rem;margin-top:1.2rem;flex-wrap:wrap;">
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:0.8rem;">
-        <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:0.7rem;">Post Options</div>
+        <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);font-weight:600;margin-bottom:0.7rem;">Post Options</div>
         <div style="display:flex;flex-direction:column;gap:0.5rem;">
           <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;">
             <input type="radio" name="event-post-option" value="both" checked style="accent-color:var(--b);">
             <div><strong>Post to Website + Calendar</strong>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Shows on the public Events page AND saved to your calendar</div></div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);">Shows on the public Events page AND saved to your calendar</div></div>
           </label>
           <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;">
             <input type="radio" name="event-post-option" value="calendar" style="accent-color:var(--b);">
             <div><strong>Calendar Only</strong>
-            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Saved to your dashboard calendar only - NOT shown on the public website</div></div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);">Saved to your dashboard calendar only - NOT shown on the public website</div></div>
           </label>
         </div>
       </div>
@@ -489,7 +489,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     <div class="dash-card-title">📋 All Events</div>
     <table class="dash-table">
       <thead><tr><th>Date</th><th>Title</th><th>Type</th><th>Location</th><th>Image</th><th>Emails Sent</th><th>Actions</th></tr></thead>
-      <tbody id="events-table-body"><tr><td colspan="6" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No events yet. Add your first event above.</td></tr></tbody>
+      <tbody id="events-table-body"><tr><td colspan="6" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No events yet. Add your first event above.</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -510,14 +510,14 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
     <!-- IMAGE UPLOAD -->
     <div class="f-group">
-      <label class="f-label">Header Image <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — appears at top of email)</span></label>
+      <label class="f-label">Header Image <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — appears at top of email)</span></label>
 
       <!-- Option toggle -->
       <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
-        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:rgba(255,255,255,0.6);cursor:pointer;">
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;">
           <input type="radio" name="nl-img-option" value="upload" checked onclick="toggleNLImgOption('upload')" style="accent-color:var(--b)"> Upload File
         </label>
-        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:rgba(255,255,255,0.6);cursor:pointer;">
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;">
           <input type="radio" name="nl-img-option" value="url" onclick="toggleNLImgOption('url')" style="accent-color:var(--b)"> Paste URL
         </label>
       </div>
@@ -532,8 +532,8 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           <input type="file" id="nl-img-input" accept="image/*" style="display:none;" onchange="handleImgSelect(event)"/>
           <div id="nl-img-placeholder">
             <div style="font-size:2rem;margin-bottom:0.5rem;opacity:0.4;">🖼️</div>
-            <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);">Click to upload or drag & drop an image</div>
-            <div style="font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:0.3rem;">JPG, PNG, GIF — recommended width 600px</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.8);">Click to upload or drag & drop an image</div>
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.65);margin-top:0.3rem;">JPG, PNG, GIF — recommended width 600px</div>
           </div>
           <div id="nl-img-preview-wrap" style="display:none;">
             <img id="nl-img-preview" style="max-width:100%;width:100%;object-fit:contain;display:block;margin:0 auto;"/>
@@ -552,7 +552,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           <img id="nl-img-url-img" style="max-width:100%;width:100%;object-fit:contain;display:block;"/>
           <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem;" onclick="clearNLImgUrl()">Remove Image</button>
         </div>
-        <div style="margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.3);">
+        <div style="margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.7);">
           Free hosting: <a href="https://cloudinary.com" target="_blank" style="color:var(--g)">Cloudinary</a> or <a href="https://imgur.com" target="_blank" style="color:var(--g)">Imgur</a>
         </div>
       </div>
@@ -561,14 +561,14 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <div class="f-group"><label class="f-label">Message</label><textarea class="f-textarea" id="nl-body" rows="8" placeholder="Write your newsletter or message here...&#10;&#10;You can include:&#10;• This Sunday's sermon topic&#10;• Upcoming events&#10;• Prayer requests&#10;• General announcements"></textarea></div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1.2rem;">
-      <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.6rem;font-weight:600;">Delivery Channels</div>
+      <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:0.6rem;font-weight:600;">Delivery Channels</div>
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="nl-email" checked style="accent-color:var(--b);"> 📧 Email</label>
-        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.4);cursor:not-allowed;"><input type="checkbox" disabled> 📱 Text Message <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);margin-left:0.3rem;">(Coming Soon)</span></label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="nl-email" checked style="accent-color:var(--b);"> 📧 Email</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.8);cursor:not-allowed;"><input type="checkbox" disabled> 📱 Text Message <span style="font-size:0.6rem;color:rgba(255,255,255,0.65);margin-left:0.3rem;">(Coming Soon)</span></label>
       </div>
     </div>
 
-    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:1rem;margin-bottom:1.2rem;font-size:0.8rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:1rem;margin-bottom:1.2rem;font-size:0.8rem;color:rgba(255,255,255,0.85);line-height:1.7;">
       ℹ️ All messages automatically include an <strong style="color:var(--g);">unsubscribe / opt-out link</strong> at the bottom.
     </div>
 
@@ -587,11 +587,11 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         </div>
         <div style="border-bottom:2px solid var(--b);padding-bottom:0.8rem;margin-bottom:0.8rem;">
           <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--g);">Purpose Church of Denton</div>
-          <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Empowering People for Purpose</div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.7);letter-spacing:0.1em;">Empowering People for Purpose</div>
         </div>
         <div style="font-weight:600;margin-bottom:0.5rem;" id="nl-preview-subject"></div>
         <div style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.8;white-space:pre-wrap;" id="nl-preview-body"></div>
-        <div style="margin-top:1.2rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.25);">
+        <div style="margin-top:1.2rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.65);">
           Purpose Church of Denton · 3401 E University Dr #101, Denton TX 76208<br>
           <span style="color:rgba(201,168,76,0.4);">Unsubscribe | Manage Preferences</span>
         </div>
@@ -604,7 +604,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     <div class="dash-card-title">📊 Newsletter History</div>
     <table class="dash-table">
       <thead><tr><th>Date Sent</th><th>Subject</th><th>Recipients</th><th>Image</th><th>Channel</th></tr></thead>
-      <tbody id="nl-history-body"><tr><td colspan="5" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No newsletters sent yet.</td></tr></tbody>
+      <tbody id="nl-history-body"><tr><td colspan="5" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No newsletters sent yet.</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -633,7 +633,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
     <!-- Roles — multi-select checkboxes -->
     <div class="f-group">
-      <label class="f-label">Roles <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(select all that apply)</span></label>
+      <label class="f-label">Roles <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(select all that apply)</span></label>
       <div id="roles-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.5rem;margin-top:0.4rem;">
         <label class="role-check-label"><input type="checkbox" class="m-role-cb" value="Member"> Member</label>
         <label class="role-check-label"><input type="checkbox" class="m-role-cb" value="Church Assistant"> Church Assistant</label>
@@ -703,7 +703,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <option value="Praise Team">Praise Team</option>
         <option value="Sound Team">Sound Team</option>
       </select>
-      <div id="member-count" style="font-size:0.75rem;color:rgba(255,255,255,0.4);white-space:nowrap;"></div>
+      <div id="member-count" style="font-size:0.75rem;color:rgba(255,255,255,0.8);white-space:nowrap;"></div>
     </div>
     <div style="overflow-x:auto;">
       <table class="dash-table">
@@ -719,7 +719,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           </tr>
         </thead>
         <tbody id="members-table-body">
-          <tr><td colspan="7" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No members yet. Add your first member above.</td></tr>
+          <tr><td colspan="7" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No members yet. Add your first member above.</td></tr>
         </tbody>
       </table>
     </div>
@@ -729,7 +729,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 <div class="panel" id="panel-access">
             <div class="dash-card">
               <div class="dash-card-title">🔐 Grant Dashboard Access</div>
-              <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:1.2rem;font-weight:300;">Add staff members who are approved to access this dashboard. All roles get full access. Only Pastor can add or remove dashboard users.</p>
+              <p style="font-size:0.82rem;color:rgba(255,255,255,0.85);margin-bottom:1.2rem;font-weight:300;">Add staff members who are approved to access this dashboard. All roles get full access. Only Pastor can add or remove dashboard users.</p>
               <div class="f-row-3">
                 <div class="f-group"><label class="f-label">Full Name</label><input class="f-input" id="a-name" placeholder="Staff Member Name"/></div>
                 <div class="f-group"><label class="f-label">Email</label><input class="f-input" id="a-email" type="email" placeholder="email@example.com"/></div>
@@ -753,7 +753,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             </div>
             <div class="dash-card">
               <div class="dash-card-title" style="color:rgba(255,100,100,0.7);">⚠️ Dashboard Access URL</div>
-              <p style="font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:1rem;font-weight:300;">Share this secret URL only with approved staff. Do not post publicly.</p>
+              <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);margin-bottom:1rem;font-weight:300;">Share this secret URL only with approved staff. Do not post publicly.</p>
               <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:0.8rem 1rem;font-size:0.82rem;color:var(--g);font-family:monospace;word-break:break-all;" id="secret-url-display"></div>
               <button class="btn btn-ghost btn-sm" style="margin-top:0.8rem;" onclick="copySecretUrl()">Copy URL</button>
             </div>
@@ -777,7 +777,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <div style="font-size:0.67rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.2rem;">Member Directory</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#fff;" id="send-modal-member-name">Send Member Info</div>
       </div>
-      <button onclick="closeSendInfoModal()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>
+      <button onclick="closeSendInfoModal()" style="background:none;border:none;color:rgba(255,255,255,0.8);font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>
     </div>
 
     <!-- Member Info Preview -->
@@ -788,33 +788,33 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     <!-- Send Form -->
     <div style="padding:1.5rem;">
       <div style="margin-bottom:1.2rem;">
-        <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:0.5rem;">Send To — Recipient Email</label>
+        <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;display:block;margin-bottom:0.5rem;">Send To — Recipient Email</label>
         <input class="f-input" id="send-to-email" type="email" placeholder="e.g. caller@purposechurch.com"/>
 
         <!-- Quick-select saved contacts -->
         <div style="margin-top:0.6rem;">
-          <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.4rem;">Quick Select:</div>
+          <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;">Quick Select:</div>
           <div id="quick-contacts-list" style="display:flex;flex-wrap:wrap;gap:0.4rem;">
             <!-- filled dynamically from saved contacts -->
           </div>
-          <button onclick="addQuickContact()" style="margin-top:0.5rem;background:none;border:1px dashed rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);padding:0.25rem 0.7rem;font-family:'Jost',sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--g)';this.style.color='var(--g)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.4)'">+ Save This Contact</button>
+          <button onclick="addQuickContact()" style="margin-top:0.5rem;background:none;border:1px dashed rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:0.25rem 0.7rem;font-family:'Jost',sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--g)';this.style.color='var(--g)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.4)'">+ Save This Contact</button>
         </div>
       </div>
 
       <div style="margin-bottom:1.2rem;">
-        <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:0.5rem;">Personal Note (optional)</label>
+        <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;display:block;margin-bottom:0.5rem;">Personal Note (optional)</label>
         <textarea class="f-textarea" id="send-note" rows="3" placeholder="e.g. Please give this member a call this week to check in on them..."></textarea>
       </div>
 
       <!-- What gets included checkboxes -->
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1.2rem;">
-        <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:0.7rem;">Include in Email:</div>
+        <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);font-weight:600;margin-bottom:0.7rem;">Include in Email:</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
-          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="inc-name" checked style="accent-color:var(--b);"> Full Name</label>
-          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="inc-phone" checked style="accent-color:var(--b);"> Phone Number</label>
-          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="inc-email" checked style="accent-color:var(--b);"> Email Address</label>
-          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="inc-address" style="accent-color:var(--b);"> Home Address</label>
-          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.6);cursor:pointer;"><input type="checkbox" id="inc-roles" style="accent-color:var(--b);"> Roles</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="inc-name" checked style="accent-color:var(--b);"> Full Name</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="inc-phone" checked style="accent-color:var(--b);"> Phone Number</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="inc-email" checked style="accent-color:var(--b);"> Email Address</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="inc-address" style="accent-color:var(--b);"> Home Address</label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="inc-roles" style="accent-color:var(--b);"> Roles</label>
         </div>
       </div>
 
@@ -1102,14 +1102,14 @@ function deleteSermon(id) {
 function renderSermonTable() {
   const tbody = document.getElementById('sermons-table-body');
   if (!DB.sermons.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No sermons yet. Add your first sermon above.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No sermons yet. Add your first sermon above.</td></tr>';
     return;
   }
   tbody.innerHTML = DB.sermons.map(s => `
     <tr>
       <td>${s.date}</td>
       <td>${s.title}</td>
-      <td style="color:rgba(255,255,255,0.5)">${s.series || '—'}</td>
+      <td style="color:rgba(255,255,255,0.85)">${s.series || '—'}</td>
       <td>${s.tag ? `<span class="badge badge-active">${s.tag}</span>` : '—'}</td>
       <td><button class="btn btn-red btn-sm" onclick="deleteSermon(${s.id})">Delete</button></td>
     </tr>`).join('');
@@ -1239,18 +1239,18 @@ function previewEventEmail() {
   document.getElementById('event-email-preview-content').innerHTML = `
     <div style="border-bottom:2px solid var(--b);padding-bottom:0.8rem;margin-bottom:1rem;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--g);">Purpose Church of Denton</div>
-      <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">You're invited to an upcoming event</div>
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);letter-spacing:0.1em;">You're invited to an upcoming event</div>
     </div>
     <strong style="font-size:1rem;display:block;margin-bottom:0.8rem;">${title}</strong>
     📅 <strong>Date:</strong> ${formattedDate}<br>
     ⏰ <strong>Time:</strong> ${start ? formatTime(start) : 'TBD'}${end ? ' – ' + formatTime(end) : ''}<br>
     📍 <strong>Location:</strong> ${loc || '3401 E University Dr #101, Denton TX'}<br><br>
-    ${desc ? `<em style="color:rgba(255,255,255,0.5)">${desc}</em><br><br>` : ''}
+    ${desc ? `<em style="color:rgba(255,255,255,0.85)">${desc}</em><br><br>` : ''}
     <div style="margin:1rem 0;padding:0.8rem 1.2rem;background:rgba(107,31,58,0.2);border-left:3px solid var(--b);font-size:0.82rem;">
       📎 A calendar invite (.ics) is attached to this email.<br>
       Click it to add this event to your Google Calendar, Apple Calendar, or Outlook.
     </div>
-    <div style="margin-top:1rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.25);">
+    <div style="margin-top:1rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.65);">
       Purpose Church of Denton · 3401 E University Dr #101, Denton TX 76208<br>
       <span style="color:rgba(201,168,76,0.4);">Unsubscribe | Manage Preferences</span>
     </div>`;
@@ -1304,7 +1304,7 @@ function deleteEvent(id) {
 function renderEventTable() {
   const tbody = document.getElementById('events-table-body');
   if (!DB.events.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No events yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No events yet.</td></tr>';
     return;
   }
   // Sort by date before rendering
@@ -1316,7 +1316,7 @@ function renderEventTable() {
       <td>${e.date||''}</td>
       <td>${e.title||''}</td>
       <td><span class="badge badge-pending">${e.type||''}</span></td>
-      <td style="color:rgba(255,255,255,0.5)">${e.location||'—'}</td>
+      <td style="color:rgba(255,255,255,0.85)">${e.location||'—'}</td>
       <td>${e.image ? '<span class="badge badge-active">&#128247; Yes</span>' : '—'}</td>
       <td>${(e.emails&&e.emails.length>0) ? '<span class="badge badge-active">'+e.emails.length+' sent</span>' : '—'}</td>
       <td style="display:flex;gap:0.4rem;flex-wrap:wrap;">
@@ -1533,7 +1533,7 @@ function renderMembersTable() {
   if (countEl) countEl.textContent = members.length + ' of ' + DB.members.length + ' member' + (DB.members.length !== 1 ? 's' : '');
 
   if (!members.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">${DB.members.length === 0 ? 'No members yet. Add your first member above.' : 'No members match your search.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">${DB.members.length === 0 ? 'No members yet. Add your first member above.' : 'No members match your search.'}</td></tr>`;
     return;
   }
 
@@ -1548,9 +1548,9 @@ function renderMembersTable() {
     return `
     <tr>
       <td style="font-weight:500;">${m.name}</td>
-      <td style="color:rgba(255,255,255,0.6);font-size:0.82rem;">${m.email}</td>
-      <td style="color:rgba(255,255,255,0.5);font-size:0.82rem;">${m.phone || '—'}</td>
-      <td style="color:rgba(255,255,255,0.5);font-size:0.8rem;max-width:160px;">${formatAddress(m)}</td>
+      <td style="color:rgba(255,255,255,0.9);font-size:0.82rem;">${m.email}</td>
+      <td style="color:rgba(255,255,255,0.85);font-size:0.82rem;">${m.phone || '—'}</td>
+      <td style="color:rgba(255,255,255,0.85);font-size:0.8rem;max-width:160px;">${formatAddress(m)}</td>
       <td style="max-width:180px;">${roleBadges}</td>
       <td>
         <button class="opt-btn ${m.notif !== 'none' ? 'on' : 'off'}" onclick="toggleMemberNotif(${m.id})">
@@ -1597,7 +1597,7 @@ function renderUsersTable() {
   tbody.innerHTML = DB.users.map(u => `
     <tr>
       <td>${u.name}${u.email === currentUser.email ? ' <span style="font-size:0.65rem;color:var(--g);">(you)</span>' : ''}</td>
-      <td style="color:rgba(255,255,255,0.6)">${u.email}</td>
+      <td style="color:rgba(255,255,255,0.9)">${u.email}</td>
       <td><span class="badge badge-${u.role === 'pastor' ? 'pastor' : u.role === 'assistant' ? 'assistant' : 'member'}">${u.role}</span></td>
       <td><span class="badge badge-active">Active</span></td>
       <td>${u.email !== currentUser.email ? `<button class="btn btn-red btn-sm" onclick="revokeUser('${u.email}')">Revoke</button>` : '—'}</td>
@@ -1623,7 +1623,7 @@ function updateOverviewAnnouncements() {
 
 function updateOverviewEvents() {
   const el = document.getElementById('overview-events');
-  if (!DB.events.length) { el.innerHTML = '<span style="color:rgba(255,255,255,0.3)">No upcoming events.</span>'; return; }
+  if (!DB.events.length) { el.innerHTML = '<span style="color:rgba(255,255,255,0.7)">No upcoming events.</span>'; return; }
   el.innerHTML = DB.events.slice(0, 3).map(e =>
     `<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:0.8rem;align-items:center;">
       <div style="background:var(--b);padding:0.3rem 0.6rem;font-size:0.72rem;font-weight:600;white-space:nowrap;">${e.date}</div>
@@ -1693,14 +1693,14 @@ function calSelectDay(dateStr, day) {
   detailTitle.textContent = dateObj.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 
   if (dayEvents.length === 0) {
-    detailEvents.innerHTML = '<div style="font-size:0.85rem;color:rgba(255,255,255,0.35);padding:0.5rem 0;">No events on this day. <button class="btn btn-ghost btn-sm" style="margin-left:0.5rem;" onclick="prefillEventDate(\'' + dateStr + '\')">+ Add Event</button></div>';
+    detailEvents.innerHTML = '<div style="font-size:0.85rem;color:rgba(255,255,255,0.75);padding:0.5rem 0;">No events on this day. <button class="btn btn-ghost btn-sm" style="margin-left:0.5rem;" onclick="prefillEventDate(\'' + dateStr + '\')">+ Add Event</button></div>';
   } else {
     detailEvents.innerHTML = dayEvents.map(e => `
       <div style="display:flex;align-items:flex-start;gap:1rem;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="background:var(--b);padding:0.3rem 0.6rem;font-size:0.72rem;font-weight:600;white-space:nowrap;flex-shrink:0;">${e.startTime || 'All Day'}</div>
         <div>
           <div style="font-size:0.9rem;color:#fff;font-weight:500;">${e.title}</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:0.1rem;">${e.location || ''}</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.8);margin-top:0.1rem;">${e.location || ''}</div>
         </div>
         <button class="btn btn-red btn-sm" style="margin-left:auto;flex-shrink:0;" onclick="deleteEvent(${e.id})">Delete</button>
       </div>`).join('');
@@ -1834,7 +1834,7 @@ function sendNewsletter() {
 function renderNLHistory() {
   const tbody = document.getElementById('nl-history-body');
   if (!DB.newsletter_history.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="color:rgba(255,255,255,0.3);text-align:center;padding:2rem;">No newsletters sent yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No newsletters sent yet.</td></tr>';
     return;
   }
   tbody.innerHTML = DB.newsletter_history.map(n => `
@@ -1842,7 +1842,7 @@ function renderNLHistory() {
       <td>${n.date}</td>
       <td>${n.subject}</td>
       <td>${n.recipients}</td>
-      <td>${n.hasImage ? '<span class="badge badge-active">Yes</span>' : '<span style="color:rgba(255,255,255,0.3);font-size:0.8rem;">—</span>'}</td>
+      <td>${n.hasImage ? '<span class="badge badge-active">Yes</span>' : '<span style="color:rgba(255,255,255,0.7);font-size:0.8rem;">—</span>'}</td>
       <td><span class="badge badge-active">${n.channel}</span></td>
     </tr>`).join('');
 }
@@ -2156,23 +2156,23 @@ function openSendInfoModal(memberId) {
   document.getElementById('send-modal-preview').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
       <div>
-        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.2rem;">Name</div>
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">Name</div>
         <div style="font-size:0.88rem;color:#fff;font-weight:500;">${m.name}</div>
       </div>
       <div>
-        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.2rem;">Phone</div>
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">Phone</div>
         <div style="font-size:0.88rem;color:rgba(255,255,255,0.75);">${m.phone || '—'}</div>
       </div>
       <div>
-        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.2rem;">Email</div>
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">Email</div>
         <div style="font-size:0.88rem;color:rgba(255,255,255,0.75);">${m.email || '—'}</div>
       </div>
       <div>
-        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.2rem;">Address</div>
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">Address</div>
         <div style="font-size:0.88rem;color:rgba(255,255,255,0.75);">${address || '—'}</div>
       </div>
       <div style="grid-column:1/-1;">
-        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.2rem;">Roles</div>
+        <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">Roles</div>
         <div style="font-size:0.88rem;color:rgba(255,255,255,0.75);">${roles}</div>
       </div>
     </div>
@@ -2207,7 +2207,7 @@ document.getElementById('send-info-modal').addEventListener('click', function(e)
 function renderQuickContacts() {
   const container = document.getElementById('quick-contacts-list');
   if (!savedContacts.length) {
-    container.innerHTML = '<span style="font-size:0.72rem;color:rgba(255,255,255,0.25);">No saved contacts yet. Add one below.</span>';
+    container.innerHTML = '<span style="font-size:0.72rem;color:rgba(255,255,255,0.65);">No saved contacts yet. Add one below.</span>';
     return;
   }
   container.innerHTML = savedContacts.map(c => `
@@ -2218,7 +2218,7 @@ function renderQuickContacts() {
       onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">
       <span>${c.name || c.email}</span>
       <span onclick="event.stopPropagation();removeQuickContact('${c.email}')"
-        style="color:rgba(255,255,255,0.25);margin-left:2px;font-size:0.8rem;"
+        style="color:rgba(255,255,255,0.65);margin-left:2px;font-size:0.8rem;"
         onmouseover="this.style.color='#ff8888'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">✕</span>
     </button>`).join('');
 }
@@ -2283,10 +2283,10 @@ function toggleSendPreview() {
     const body = buildEmailBody(m);
     const to = document.getElementById('send-to-email').value || '[recipient email]';
     preview.innerHTML = `
-      <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.6rem;">Email Preview</div>
-      <div style="margin-bottom:0.4rem;"><strong style="color:rgba(255,255,255,0.45);font-size:0.75rem;">To:</strong> <span style="color:var(--g)">${to}</span></div>
-      <div style="margin-bottom:0.8rem;"><strong style="color:rgba(255,255,255,0.45);font-size:0.75rem;">Subject:</strong> Member Info — ${m.name}</div>
-      <pre style="white-space:pre-wrap;font-family:'Jost',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.7;">${body}</pre>`;
+      <div style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.6rem;">Email Preview</div>
+      <div style="margin-bottom:0.4rem;"><strong style="color:rgba(255,255,255,0.85);font-size:0.75rem;">To:</strong> <span style="color:var(--g)">${to}</span></div>
+      <div style="margin-bottom:0.8rem;"><strong style="color:rgba(255,255,255,0.85);font-size:0.75rem;">Subject:</strong> Member Info — ${m.name}</div>
+      <pre style="white-space:pre-wrap;font-family:'Jost',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.9);line-height:1.7;">${body}</pre>`;
     preview.style.display = 'block';
   } else {
     preview.style.display = 'none';
@@ -2823,7 +2823,7 @@ function refreshAll() {
 <!-- ══ EDIT EVENT MODAL ══ -->
 <div id="edit-event-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;overflow-y:auto;">
   <div style="background:#1a2233;border:1px solid rgba(255,255,255,0.1);padding:2rem;width:92%;max-width:620px;margin:2rem auto;position:relative;">
-    <button onclick="closeEditModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>
+    <button onclick="closeEditModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:rgba(255,255,255,0.85);font-size:1.4rem;cursor:pointer;line-height:1;">✕</button>
     <div style="font-size:0.67rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:1.5rem;">✏️ Edit Event</div>
 
     <input type="hidden" id="edit-ev-id"/>
@@ -2848,7 +2848,7 @@ function refreshAll() {
     </div>
     <div class="f-group" style="margin-bottom:1rem;"><label class="f-label">Description</label><textarea class="f-textarea" id="edit-ev-desc" rows="3" placeholder="Describe the event..."></textarea></div>
     <div class="f-group" style="margin-bottom:1rem;">
-      <label class="f-label">Image URL <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;">(optional)</span></label>
+      <label class="f-label">Image URL <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;">(optional)</span></label>
       <input class="f-input" id="edit-ev-img" type="url" placeholder="https://res.cloudinary.com/..." oninput="previewEditImg(this.value)"/>
       <div id="edit-ev-img-preview" style="display:none;margin-top:0.5rem;">
         <img id="edit-ev-img-img" style="max-width:100%;max-height:160px;object-fit:cover;display:block;"/>
@@ -2857,7 +2857,7 @@ function refreshAll() {
 
     <!-- Post option -->
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1rem;">
-      <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:0.7rem;">Update Options</div>
+      <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);font-weight:600;margin-bottom:0.7rem;">Update Options</div>
       <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;margin-bottom:0.5rem;">
         <input type="checkbox" id="edit-ev-post-website" checked style="accent-color:var(--b);"> Update on website too
       </label>
@@ -2876,7 +2876,7 @@ function refreshAll() {
 <!-- ══ EDIT MEMBER MODAL ══ -->
 <div id="edit-member-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;overflow-y:auto;">
   <div style="background:#1a2233;border:1px solid rgba(255,255,255,0.1);padding:2rem;width:92%;max-width:640px;margin:2rem auto;position:relative;">
-    <button onclick="closeEditMemberModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;">✕</button>
+    <button onclick="closeEditMemberModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:rgba(255,255,255,0.85);font-size:1.4rem;cursor:pointer;">✕</button>
     <div style="font-size:0.67rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:1.5rem;">✏️ Edit Member</div>
 
     <input type="hidden" id="edit-member-id"/>
