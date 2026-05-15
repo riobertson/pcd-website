@@ -2939,8 +2939,8 @@ function searchEmailMember(query) {
   results.style.display = 'block';
   results.innerHTML = matches.map(function(m) {
     return '<div style="padding:0.6rem 1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;" ' +
-      'onmouseover="this.style.background='rgba(255,255,255,0.08)'" ' +
-      'onmouseout="this.style.background=''" ' +
+      'onmouseover="this.style.background=rgba(255,255,255,0.08)" ' +
+      'onmouseout="this.style.background=transparent" ' +
       'onclick="selectEmailMember(' + m.id + ')">' +
       '<strong>' + m.name + '</strong> <span style="color:rgba(255,255,255,0.5);">' + (m.email||'no email') + '</span>' +
       '</div>';
