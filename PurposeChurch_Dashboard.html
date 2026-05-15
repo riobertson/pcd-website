@@ -1012,20 +1012,54 @@ function showDashboard() {
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('sb-username').textContent = currentUser.name;
   document.getElementById('sb-userrole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
-  // Access control only for pastors
   if (currentUser.role !== 'pastor') {
     document.getElementById('nav-access').style.display = 'none';
   }
-  refreshAll();
   updateDateTime();
   setInterval(updateDateTime, 1000);
   document.getElementById('secret-url-display').textContent = window.location.href.split('#')[0] + '#' + SECRET_HASH;
-  // Load all data from Firebase for cross-device sync
+
+  // Show syncing indicator
+  showSyncBadge('Syncing…', 'syncing');
+
+  // Always pull from Firebase before rendering
   loadAllFromFirebase(function() {
     refreshAll();
     updateStats();
     updateOverviewEvents();
+    updateOverviewAnnouncements();
+    showSyncBadge('Synced ✓', 'ok');
+    setTimeout(hideSyncBadge, 2500);
+    // Auto-refresh every 30 seconds
+    if (!window._pcdSyncInterval) {
+      window._pcdSyncInterval = setInterval(function() {
+        loadAllFromFirebase(function() {
+          refreshAll();
+          updateStats();
+          showSyncBadge('Synced ✓', 'ok');
+          setTimeout(hideSyncBadge, 1500);
+        });
+      }, 30000);
+    }
   });
+}
+
+function showSyncBadge(msg, state) {
+  var b = document.getElementById('sync-badge');
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'sync-badge';
+    b.style.cssText = 'position:fixed;top:12px;right:16px;z-index:9999;padding:0.35rem 0.9rem;border-radius:20px;font-size:0.72rem;font-family:Jost,sans-serif;font-weight:600;letter-spacing:0.08em;color:#fff;pointer-events:none;transition:opacity 0.3s;';
+    document.body.appendChild(b);
+  }
+  b.textContent = msg;
+  b.style.display = 'inline-block';
+  b.style.opacity = '1';
+  b.style.background = state === 'ok' ? 'rgba(40,167,69,0.9)' : 'rgba(201,168,76,0.95)';
+}
+function hideSyncBadge() {
+  var b = document.getElementById('sync-badge');
+  if (b) b.style.opacity = '0';
 }
 
 
@@ -1433,7 +1467,7 @@ function publishAnnouncement() {
   document.getElementById('ann-expire').value = '';
   document.getElementById('ann-preview-box').style.display = 'none';
   removeAnnImg();
-  // Save to Firebase
+  // Save to Firebase and store ID back
   if (window.saveToFirebase) {
     window.saveToFirebase('announcements', {
       title: ann.title || '',
@@ -1442,12 +1476,21 @@ function publishAnnouncement() {
       expire: ann.expire || '',
       posted: ann.posted || '',
       active: 'true'
+    }).then(function(fbId) {
+      if (fbId) {
+        var a = DB.announcements.find(function(x){ return x.id === ann.id; });
+        if (a) { a.firebaseId = fbId; saveDB(); }
+      }
     });
   }
   toast('📢 Announcement published to website instantly!');
 }
 
 function removeAnnouncement(id) {
+  var a = DB.announcements.find(function(x){ return x.id === id; });
+  if (a && a.firebaseId && window.deleteFromFirebase) {
+    window.deleteFromFirebase('announcements', a.firebaseId);
+  }
   DB.announcements = DB.announcements.filter(a => a.id !== id);
   saveDB();
   renderAnnTable();
@@ -2802,6 +2845,22 @@ function loadAllFromFirebase(callback) {
           if (!obj.name && obj.first) obj.name = (obj.first||'') + ' ' + (obj.last||'');
           return obj;
         });
+      }
+      done();
+    }).catch(function(){ done(); });
+
+  // Sync announcements
+  total++;
+  fetch(base + "announcements?key=" + apiKey + "&pageSize=100")
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.documents && data.documents.length) {
+        DB.announcements = data.documents.map(function(doc) {
+          var obj = parseDoc(doc);
+          obj.active = obj.active === 'true' || obj.active === true;
+          return obj;
+        });
+        DB.announcements.sort(function(a,b){ return (b.id||0) - (a.id||0); });
       }
       done();
     }).catch(function(){ done(); });
