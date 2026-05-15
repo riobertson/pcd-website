@@ -251,6 +251,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
   .pmv-grid,.leader-grid,.visit-grid{grid-template-columns:1fr;}
   .section{padding:3.5rem 0;}
   .strip{gap:1.2rem;}
+  .give-grid{grid-template-columns:1fr!important;}
 }
 </style>
   
@@ -271,6 +272,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     <li><button onclick="showPage('sermons')" id="nav-sermons">Sermons</button></li>
     <li><button onclick="showPage('groups')" id="nav-groups">Groups</button></li>
     <li><button onclick="showPage('contact')" id="nav-contact">Contact</button></li>
+    <li><button onclick="showPage('give')" id="nav-give" style="background:var(--b);color:#fff;padding:0.32rem 0.9rem;font-family:Jost,sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--bm)'" onmouseout="this.style.background='var(--b)'">Give ♥</button></li>
     <li><a class="nav-live" href="https://www.facebook.com/PurposeChurchofDenton/" target="_blank" id="navLive">
       📺 Facebook Live
     </a></li>
@@ -289,6 +291,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
   <button onclick="showPage('visit')">Plan a Visit</button>
   <button onclick="showPage('sermons')">Sermons</button>
   <button onclick="showPage('groups')">Groups</button>
+  <button onclick="showPage('give')" style="color:var(--g)!important;font-weight:600!important;">Give ♥</button>
   <a class="mob-live" href="https://www.facebook.com/PurposeChurchofDenton/" target="_blank" style="text-decoration:none;font-family:Jost,sans-serif;font-size:0.88rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b6b;padding:0.55rem 1rem;border:1px solid rgba(220,30,30,0.3);background:rgba(220,30,30,0.1);">
     📺 Facebook Live
   </a>
@@ -304,7 +307,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     <p class="hero-verse">"You are a chosen people, a royal priesthood..." — 1 Peter 2:9</p>
     <div class="hero-ctas">
       <button class="btn-primary" onclick="showPage('visit')">Plan Your Visit</button>
-      <button class="btn-ghost" onclick="showPage('events')">Upcoming Events</button>
+      <button class="btn-ghost" onclick="showPage('give')">Give</button>
       <a class="hero-fb-btn" href="https://www.facebook.com/PurposeChurchofDenton/" target="_blank" id="heroLiveBtn">
         📺 Watch on Facebook
       </a>
@@ -349,6 +352,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
         <button class="quick-card" onclick="showPage('beliefs')"><div class="quick-icon">🙏</div><div class="quick-name">What We Believe</div><div class="quick-arrow">View →</div></button>
         <button class="quick-card" onclick="showPage('leadership')"><div class="quick-icon">👑</div><div class="quick-name">Our Leadership</div><div class="quick-arrow">View →</div></button>
         <button class="quick-card" onclick="showPage('visit')"><div class="quick-icon">📍</div><div class="quick-name">Plan Your Visit</div><div class="quick-arrow">View →</div></button>
+        <button class="quick-card" onclick="showPage('give')" style="border-top-color:var(--g);"><div class="quick-icon">🙌</div><div class="quick-name">Give</div><div class="quick-arrow" style="color:var(--g);">Give Now →</div></button>
       </div>
     </div>
   </section>
@@ -879,6 +883,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     <button onclick="showPage('sermons')">Sermons</button>
     <button onclick="showPage('groups')">Groups</button>
     <button onclick="showPage('contact')">Contact</button>
+    <button onclick="showPage('give')" style="color:var(--g)!important;">Give</button>
   </div>
   <div class="footer-copy">
     3401 E University Dr #101, Denton, TX 76208 &nbsp;|&nbsp; Sunday 10:00 AM–12:00 PM<br>
@@ -887,9 +892,66 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
   </div>
 </footer>
 
+<!-- GIVE PAGE -->
+<div class="page" id="page-give">
+  <div class="page-hero">
+    <div class="container">
+      <p class="sec-label light">Support the Ministry</p>
+      <h1 class="sec-title light">Give to <em>Purpose Church</em></h1>
+      <div class="divider gold center"></div>
+      <p style="color:rgba(255,255,255,0.65);font-weight:300;max-width:500px;margin:0 auto;font-size:1rem;">Your generosity fuels the mission of Purpose Church of Denton — transforming lives and releasing God's people into their purpose.</p>
+    </div>
+  </div>
+
+  <div class="section cream-bg">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:860px;margin:0 auto;align-items:start;" class="give-grid">
+
+        <!-- Online Giving Card -->
+        <div style="background:#fff;padding:2.5rem;box-shadow:0 2px 20px rgba(0,0,0,0.07);border-top:4px solid var(--b);text-align:center;">
+          <div style="font-size:2.2rem;margin-bottom:1rem;">💻</div>
+          <p class="sec-label" style="text-align:center;">Online</p>
+          <div style="font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:400;color:var(--n);margin-bottom:0.8rem;">Give Online</div>
+          <p style="font-size:0.9rem;color:var(--tl);font-weight:300;line-height:1.7;margin-bottom:1.5rem;">Securely give one-time or set up recurring giving through our Realm giving portal.</p>
+          <a href="https://onrealm.org/PurposeChurchDenton/-/form/give/PCDtext" target="_blank" style="display:inline-block;background:var(--b);color:#fff;padding:0.9rem 2rem;font-family:Jost,sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='var(--bm)'" onmouseout="this.style.background='var(--b)'">Give Now →</a>
+          <p style="margin-top:1rem;font-size:0.72rem;color:var(--tl);">Powered by Realm &nbsp;🔒 Secure</p>
+        </div>
+
+        <!-- Text to Give Card -->
+        <div style="background:#fff;padding:2.5rem;box-shadow:0 2px 20px rgba(0,0,0,0.07);border-top:4px solid var(--g);text-align:center;">
+          <div style="font-size:2.2rem;margin-bottom:1rem;">📱</div>
+          <p class="sec-label" style="text-align:center;color:var(--g);">Text to Give</p>
+          <div style="font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:400;color:var(--n);margin-bottom:0.8rem;">Give by Text</div>
+          <p style="font-size:0.9rem;color:var(--tl);font-weight:300;line-height:1.7;margin-bottom:1.5rem;">Simply text from your smartphone — no app needed.</p>
+          <div style="background:var(--n);padding:1.5rem;margin-bottom:1.2rem;">
+            <div style="font-family:Cormorant Garamond,serif;font-size:1.1rem;color:rgba(255,255,255,0.6);margin-bottom:0.4rem;">Text the word</div>
+            <div style="font-family:Cormorant Garamond,serif;font-size:2.8rem;font-weight:700;color:var(--g);letter-spacing:0.08em;line-height:1;">PCD</div>
+            <div style="font-family:Cormorant Garamond,serif;font-size:1.1rem;color:rgba(255,255,255,0.6);margin:0.4rem 0;">to</div>
+            <div style="font-family:Cormorant Garamond,serif;font-size:2.8rem;font-weight:700;color:#fff;letter-spacing:0.08em;line-height:1;">73256</div>
+          </div>
+          <a href="sms:73256&body=PCD" style="display:inline-block;background:var(--g);color:var(--n);padding:0.9rem 2rem;font-family:Jost,sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;">Open Texting App →</a>
+          <p style="margin-top:1rem;font-size:0.68rem;color:var(--tl);line-height:1.6;">Standard message &amp; data rates may apply. Message frequency varies.<br>Text HELP to 73256 for help. Text STOP to cancel.<br><a href="https://www.acstechnologies.com/terms-of-service" target="_blank" style="color:var(--b);">Terms</a> | <a href="https://www.acstechnologies.com/privacy-policy" target="_blank" style="color:var(--b);">Privacy Policy</a></p>
+        </div>
+
+      </div>
+
+      <!-- Scripture banner -->
+      <div style="max-width:860px;margin:3rem auto 0;padding:2rem 2.5rem;background:var(--n);display:flex;gap:1.2rem;align-items:flex-start;">
+        <div style="font-family:Cormorant Garamond,serif;font-size:2.5rem;color:var(--g);line-height:1;flex-shrink:0;margin-top:-0.2rem;">"</div>
+        <div>
+          <div style="font-family:Cormorant Garamond,serif;font-size:1.2rem;font-style:italic;color:rgba(255,255,255,0.85);line-height:1.7;">Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver.</div>
+          <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--g);font-weight:600;margin-top:0.8rem;">— 2 Corinthians 9:7</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- END GIVE PAGE -->
+
 <script>
 const FB = "https://www.facebook.com/PurposeChurchofDenton/";
-const pages = ["home","leadership","events","beliefs","visit","sermons","groups","contact"];
+const pages = ["home","leadership","events","beliefs","visit","sermons","groups","contact","give"];
 
 function showPage(id) {
   pages.forEach(p => {
