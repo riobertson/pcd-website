@@ -377,10 +377,9 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
           <!-- 3D BIO CAROUSEL -->
           <style>
             .bio-carousel{max-width:900px;margin:0 auto;perspective:1200px;position:relative;}
-            .bio-track{position:relative;height:520px;}
-            @media(max-width:800px){.bio-track{height:auto;min-height:580px;}}
+            .bio-track{position:relative;}
             .bio-card{
-              position:absolute;top:0;left:0;width:100%;
+              width:100%;
               backface-visibility:hidden;
               transform-origin:center center;
               transition:transform 0.7s cubic-bezier(.4,0,.2,1),opacity 0.7s ease;
@@ -388,15 +387,15 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
               box-shadow:0 4px 30px rgba(0,0,0,0.1);
               border-top:3px solid var(--b);
             }
-            .bio-card.active{transform:rotateY(0deg) scale(1);opacity:1;z-index:2;pointer-events:all;}
-            .bio-card.slide-out-left{transform:rotateY(-90deg) scale(0.85) translateX(-50px);opacity:0;z-index:1;pointer-events:none;}
-            .bio-card.slide-out-right{transform:rotateY(90deg) scale(0.85) translateX(50px);opacity:0;z-index:1;pointer-events:none;}
-            .bio-card.hidden{transform:rotateY(90deg) scale(0.85);opacity:0;z-index:0;pointer-events:none;}
+            .bio-card.active{transform:rotateY(0deg) scale(1);opacity:1;z-index:2;pointer-events:all;display:block;}
+            .bio-card.slide-out-left{transform:rotateY(-90deg) scale(0.85) translateX(-50px);opacity:0;z-index:1;pointer-events:none;position:absolute;top:0;left:0;}
+            .bio-card.slide-out-right{transform:rotateY(90deg) scale(0.85) translateX(50px);opacity:0;z-index:1;pointer-events:none;position:absolute;top:0;left:0;}
+            .bio-card.hidden{display:none;opacity:0;}
             .bio-inner{display:flex;}
             @media(max-width:800px){.bio-inner{flex-direction:column;}}
             .bio-photo{width:300px;flex-shrink:0;position:relative;overflow:hidden;min-height:480px;background:linear-gradient(135deg,#0E1B2E,#4A1228);}
-            .bio-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;}
-            @media(max-width:800px){.bio-photo{width:100%;min-height:280px;}}
+            .bio-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;position:absolute;inset:0;}
+            @media(max-width:800px){.bio-photo{width:100%;min-height:300px;}}
             .bio-photo-overlay{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(14,27,46,0.88),transparent);}
             .bio-photo-label{position:absolute;bottom:1.2rem;left:0;right:0;text-align:center;padding:0 1rem;}
             .bio-content{flex:1;padding:2.5rem;}
@@ -488,14 +487,6 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
           <script>
           (function(){
             var cur=0,total=2,busy=false;
-            function setH(){
-              var t=document.getElementById('bioTrack');
-              if(!t)return;
-              if(window.innerWidth<=800){
-                var c=document.getElementById('bioCard'+cur);
-                t.style.height=c.offsetHeight+'px';
-              } else { t.style.height='520px'; }
-            }
             window.bioRotate=function(d){bioGoTo((cur+d+total)%total,d);};
             window.bioGoTo=function(nxt,d){
               if(busy||nxt===cur)return;
@@ -503,6 +494,8 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
               if(d===undefined)d=nxt>cur?1:-1;
               var cCard=document.getElementById('bioCard'+cur);
               var nCard=document.getElementById('bioCard'+nxt);
+              // Show next card offscreen first
+              nCard.style.display='block';
               nCard.className='bio-card '+(d>0?'slide-out-right':'slide-out-left');
               void nCard.offsetWidth;
               cCard.className='bio-card '+(d>0?'slide-out-left':'slide-out-right');
@@ -512,79 +505,162 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
               setTimeout(function(){
                 busy=false;
                 for(var i=0;i<total;i++){if(i!==cur)document.getElementById('bioCard'+i).className='bio-card hidden';}
-                setH();
               },750);
             };
-            window.addEventListener('resize',setH);
-            setTimeout(setH,200);
           })();
           </script>
 
 
                     <div class="leader-section-title">Church Staff</div>
-      <div class="leader-grid sub">
 
-        <!-- CHURCH ADMIN -->
-        <div class="leader-card">
-          <div class="leader-portrait sq" style="background:linear-gradient(135deg,#2D1A3E,#6B1F3A);">
-            <span class="leader-cross" style="font-size:10rem;">✝</span>
-            <div style="position:relative;z-index:1;text-align:center;">
-              <div style="font-family:Cormorant Garamond,serif;font-size:3rem;font-weight:300;color:rgba(201,168,76,0.8);letter-spacing:0.1em;">LR</div>
+      <!-- STAFF 3D CAROUSEL -->
+      <style>
+        .staff-carousel{max-width:700px;margin:1.5rem auto 0;perspective:1200px;position:relative;}
+        .staff-track{position:relative;}
+        .staff-card{
+          position:absolute;top:0;left:0;width:100%;
+          backface-visibility:hidden;transform-origin:center center;
+          transition:transform 0.7s cubic-bezier(.4,0,.2,1),opacity 0.7s ease;
+          background:#fff;overflow:hidden;
+          box-shadow:0 4px 30px rgba(0,0,0,0.1);
+          border-top:3px solid var(--b);
+        }
+        .staff-card.sc-active{transform:rotateY(0deg) scale(1);opacity:1;z-index:2;pointer-events:all;position:relative;}
+        .staff-card.sc-out-left{transform:rotateY(-90deg) scale(0.85) translateX(-50px);opacity:0;z-index:1;pointer-events:none;}
+        .staff-card.sc-out-right{transform:rotateY(90deg) scale(0.85) translateX(50px);opacity:0;z-index:1;pointer-events:none;}
+        .staff-card.sc-hidden{transform:rotateY(90deg) scale(0.85);opacity:0;z-index:0;pointer-events:none;}
+        .staff-inner{display:flex;align-items:stretch;}
+        @media(max-width:700px){.staff-inner{flex-direction:column;}}
+        .staff-accent{width:180px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;position:relative;overflow:hidden;}
+        @media(max-width:700px){.staff-accent{width:100%;padding:2rem 1.5rem;flex-direction:row;gap:1.2rem;justify-content:flex-start;}}
+        .staff-initials{font-family:Cormorant Garamond,serif;font-size:3.8rem;font-weight:300;color:rgba(201,168,76,0.9);letter-spacing:0.08em;line-height:1;position:relative;z-index:1;}
+        @media(max-width:700px){.staff-initials{font-size:2.8rem;}}
+        .staff-accent-cross{position:absolute;font-family:Cormorant Garamond,serif;font-size:9rem;color:rgba(255,255,255,0.06);line-height:1;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);}
+        .staff-accent-name{font-family:Cormorant Garamond,serif;font-size:1rem;color:rgba(255,255,255,0.85);font-weight:400;text-align:center;margin-top:0.8rem;line-height:1.3;position:relative;z-index:1;}
+        @media(max-width:700px){.staff-accent-name{text-align:left;margin-top:0;font-size:1.1rem;}}
+        .staff-body{flex:1;padding:2.2rem 2rem;}
+        @media(max-width:700px){.staff-body{padding:1.4rem 1.5rem;}}
+        .staff-role-lbl{font-size:0.64rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.4rem;}
+        .staff-name-h{font-family:Cormorant Garamond,serif;font-size:1.7rem;font-weight:400;color:var(--n);margin-bottom:0.9rem;line-height:1.2;}
+        @media(max-width:700px){.staff-name-h{font-size:1.4rem;}}
+        .staff-bio-p{font-size:0.88rem;color:var(--tl);font-weight:300;line-height:1.8;}
+        .staff-controls{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1.6rem;}
+        .staff-btn{background:var(--b);color:#fff;border:none;font-family:Jost,sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:0.7rem 1.4rem;cursor:pointer;transition:background 0.2s,transform 0.1s;}
+        .staff-btn:hover{background:var(--bm);transform:translateY(-1px);}
+        .staff-counter{font-family:Cormorant Garamond,serif;font-size:1.1rem;color:var(--b);font-weight:400;min-width:50px;text-align:center;}
+        .staff-dots{display:flex;gap:0.5rem;}
+        .staff-dot{width:8px;height:8px;border-radius:50%;background:rgba(107,31,58,0.25);cursor:pointer;transition:background 0.2s,transform 0.2s;}
+        .staff-dot.active{background:var(--b);transform:scale(1.35);}
+      </style>
+
+      <div class="staff-carousel">
+        <div class="staff-track" id="staffTrack">
+
+          <!-- Staff Card 0: LaTara Roberson -->
+          <div class="staff-card sc-active" id="staffCard0">
+            <div class="staff-inner">
+              <div class="staff-accent" style="background:linear-gradient(135deg,#2D1A3E,#6B1F3A);">
+                <span class="staff-accent-cross">✝</span>
+                <div class="staff-initials">LR</div>
+                <div class="staff-accent-name">LaTara<br>Roberson</div>
+              </div>
+              <div class="staff-body">
+                <div class="staff-role-lbl">Church Staff</div>
+                <div class="staff-name-h">LaTara Roberson</div>
+                <div class="staff-role-lbl" style="color:var(--tl);letter-spacing:0.15em;margin-bottom:0.8rem;">Church Administrator</div>
+                <p class="staff-bio-p">Serves as the administrative backbone of Purpose Church of Denton, keeping operations running smoothly so the ministry can focus on what matters most — the people.</p>
+              </div>
             </div>
           </div>
-          <div class="leader-info">
-            <div class="leader-role">Church Administrator</div>
-            <div class="leader-name sm">LaTara Roberson</div>
-            <p class="leader-bio">Serves as the administrative backbone of Purpose Church of Denton, keeping operations running smoothly so the ministry can focus on what matters most — the people.</p>
-          </div>
-        </div>
 
-        <!-- PRAISE & WORSHIP LEADER -->
-        <div class="leader-card">
-          <div class="leader-portrait sq" style="background:linear-gradient(135deg,#1A2D48,#6B1F3A);">
-            <span class="leader-cross" style="font-size:10rem;">✝</span>
-            <div style="position:relative;z-index:1;text-align:center;">
-              <div style="font-family:Cormorant Garamond,serif;font-size:3rem;font-weight:300;color:rgba(201,168,76,0.8);letter-spacing:0.1em;">TW</div>
+          <!-- Staff Card 1: Tamara Wilson -->
+          <div class="staff-card sc-hidden" id="staffCard1">
+            <div class="staff-inner">
+              <div class="staff-accent" style="background:linear-gradient(135deg,#1A2D48,#6B1F3A);">
+                <span class="staff-accent-cross">✝</span>
+                <div class="staff-initials">TW</div>
+                <div class="staff-accent-name">Tamara<br>Wilson</div>
+              </div>
+              <div class="staff-body">
+                <div class="staff-role-lbl">Church Staff</div>
+                <div class="staff-name-h">Tamara Wilson</div>
+                <div class="staff-role-lbl" style="color:var(--tl);letter-spacing:0.15em;margin-bottom:0.8rem;">Praise &amp; Worship Leader</div>
+                <p class="staff-bio-p">Leads the Praise &amp; Worship Team with anointing and passion, ushering the congregation into the presence of God each Sunday service.</p>
+              </div>
             </div>
           </div>
-          <div class="leader-info">
-            <div class="leader-role">Praise &amp; Worship Leader</div>
-            <div class="leader-name sm">Tamara Wilson</div>
-            <p class="leader-bio">Leads the Praise &amp; Worship Team with anointing and passion, ushering the congregation into the presence of God each Sunday service.</p>
-          </div>
-        </div>
 
-        <!-- SOUND TEAM LEADER -->
-        <div class="leader-card">
-          <div class="leader-portrait sq" style="background:linear-gradient(135deg,#0E1B2E,#2D1A3E);">
-            <span class="leader-cross" style="font-size:10rem;">✝</span>
-            <div style="position:relative;z-index:1;text-align:center;">
-              <div style="font-family:Cormorant Garamond,serif;font-size:3rem;font-weight:300;color:rgba(201,168,76,0.8);letter-spacing:0.1em;">MR</div>
+          <!-- Staff Card 2: Michael Robertson -->
+          <div class="staff-card sc-hidden" id="staffCard2">
+            <div class="staff-inner">
+              <div class="staff-accent" style="background:linear-gradient(135deg,#0E1B2E,#2D1A3E);">
+                <span class="staff-accent-cross">✝</span>
+                <div class="staff-initials">MR</div>
+                <div class="staff-accent-name">Michael<br>Robertson</div>
+              </div>
+              <div class="staff-body">
+                <div class="staff-role-lbl">Church Staff</div>
+                <div class="staff-name-h">Michael Robertson</div>
+                <div class="staff-role-lbl" style="color:var(--tl);letter-spacing:0.15em;margin-bottom:0.8rem;">Sound Team Leader</div>
+                <p class="staff-bio-p">Leads the Sound Team at Purpose Church, ensuring every service sounds its best so the Word of God is heard clearly by all.</p>
+              </div>
             </div>
           </div>
-          <div class="leader-info">
-            <div class="leader-role">Sound Team Leader</div>
-            <div class="leader-name sm">Michael Robertson</div>
-            <p class="leader-bio">Leads the Sound Team at Purpose Church, ensuring every service sounds its best so the Word of God is heard clearly by all.</p>
-          </div>
-        </div>
 
-        <!-- MAINTENANCE DIRECTOR -->
-        <div class="leader-card">
-          <div class="leader-portrait sq" style="background:linear-gradient(135deg,#1A3A1A,#2D6B1F);">
-            <span class="leader-cross" style="font-size:10rem;">✝</span>
-            <div style="position:relative;z-index:1;text-align:center;">
-              <div style="font-family:Cormorant Garamond,serif;font-size:3rem;font-weight:300;color:rgba(201,168,76,0.8);letter-spacing:0.1em;">CE</div>
+          <!-- Staff Card 3: Chelsea Ealey -->
+          <div class="staff-card sc-hidden" id="staffCard3">
+            <div class="staff-inner">
+              <div class="staff-accent" style="background:linear-gradient(135deg,#1A3A1A,#2D6B1F);">
+                <span class="staff-accent-cross">✝</span>
+                <div class="staff-initials">CE</div>
+                <div class="staff-accent-name">Chelsea<br>Ealey</div>
+              </div>
+              <div class="staff-body">
+                <div class="staff-role-lbl">Church Staff</div>
+                <div class="staff-name-h">Chelsea Ealey</div>
+                <div class="staff-role-lbl" style="color:var(--tl);letter-spacing:0.15em;margin-bottom:0.8rem;">Maintenance Director</div>
+                <p class="staff-bio-p">Ensures the house of God is kept in excellent condition, overseeing the maintenance and upkeep of Purpose Church so every service is held in a clean and welcoming environment.</p>
+              </div>
             </div>
           </div>
-          <div class="leader-info">
-            <div class="leader-role">Maintenance Director</div>
-            <div class="leader-name sm">Chelsea Ealey</div>
-            <p class="leader-bio">Ensures the house of God is kept in excellent condition, overseeing the maintenance and upkeep of Purpose Church so every service is held in a clean and welcoming environment.</p>
-          </div>
-        </div>
 
+        </div><!-- /staff-track -->
+
+        <div class="staff-controls">
+          <button class="staff-btn" onclick="staffRotate(-1)">&#8592; Prev</button>
+          <div class="staff-dots">
+            <div class="staff-dot active" onclick="staffGoTo(0)"></div>
+            <div class="staff-dot" onclick="staffGoTo(1)"></div>
+            <div class="staff-dot" onclick="staffGoTo(2)"></div>
+            <div class="staff-dot" onclick="staffGoTo(3)"></div>
+          </div>
+          <button class="staff-btn" onclick="staffRotate(1)">Next &#8594;</button>
+        </div>
       </div>
+
+      <script>
+      (function(){
+        var cur=0,total=4,busy=false;
+        window.staffRotate=function(d){staffGoTo((cur+d+total)%total,d);};
+        window.staffGoTo=function(nxt,d){
+          if(busy||nxt===cur)return;
+          busy=true;
+          if(d===undefined)d=nxt>cur?1:-1;
+          var cCard=document.getElementById('staffCard'+cur);
+          var nCard=document.getElementById('staffCard'+nxt);
+          nCard.className='staff-card '+(d>0?'sc-out-right':'sc-out-left');
+          void nCard.offsetWidth;
+          cCard.className='staff-card '+(d>0?'sc-out-left':'sc-out-right');
+          nCard.className='staff-card sc-active';
+          document.querySelectorAll('.staff-dot').forEach(function(x,i){x.classList.toggle('active',i===nxt);});
+          cur=nxt;
+          setTimeout(function(){
+            busy=false;
+            for(var i=0;i<total;i++){if(i!==cur)document.getElementById('staffCard'+i).className='staff-card sc-hidden';}
+          },750);
+        };
+      })();
+      </script>
 
       <div class="leader-section-title">Ministry Leaders</div>
       <div class="leader-grid sub">
