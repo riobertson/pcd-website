@@ -16,7 +16,7 @@
   --green:#27AE60;--red:#E74C3C;
   --sidebar:#16213E;--header:#C0392B;
 }
-html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:var(--w);line-height:1.6;overflow-x:hidden;}
+html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:var(--w);line-height:1.7;overflow-x:hidden;font-size:16px;}
 
 /* ── HIDDEN — shows only correct URL hash ── */
 #app{display:none;}
@@ -32,9 +32,9 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .form-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.8rem 1rem;font-family:'Jost',sans-serif;font-size:0.92rem;outline:none;transition:border-color 0.2s;}
 .form-input:focus{border-color:var(--g);}
 .form-input::placeholder{color:rgba(255,255,255,0.65);}
-.login-btn{width:100%;background:var(--b);color:#fff;border:none;padding:0.95rem;font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:0.5rem;}
+.login-btn{width:100%;background:var(--b);color:#fff;border:none;padding:0.95rem;font-family:'Jost',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:0.5rem;}
 .login-btn:hover{background:var(--bm);}
-.login-err{color:#ff8888;font-size:0.82rem;text-align:center;margin-top:0.8rem;display:none;}
+.login-err{color:#ff8888;font-size:0.95rem;text-align:center;margin-top:0.8rem;display:none;}
 
 /* ── DASHBOARD LAYOUT ── */
 #dashboard{display:none;min-height:100vh;}
@@ -43,18 +43,18 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 /* SIDEBAR */
 .sidebar{width:240px;background:#080F1A;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(201,168,76,0.1);}
 .sidebar-logo{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sidebar-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--g);letter-spacing:0.05em;}
+.sidebar-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--g);letter-spacing:0.05em;}
 .sidebar-logo-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-top:0.1rem;}
 .sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sidebar-user-name{font-size:0.85rem;color:rgba(255,255,255,0.8);font-weight:500;}
+.sidebar-user-name{font-size:0.95rem;color:rgba(255,255,255,0.8);font-weight:500;}
 .sidebar-user-role{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--g);opacity:0.7;margin-top:0.1rem;}
 .sidebar-nav{flex:1;padding:1rem 0;}
-.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1.5rem;cursor:pointer;color:#FFFFFF;font-size:0.85rem;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;border-left:2px solid transparent;}
+.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1.5rem;cursor:pointer;color:#FFFFFF;font-size:0.95rem;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;border-left:2px solid transparent;}
 .nav-item:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.03);}
 .nav-item.active{color:#fff;background:rgba(155,35,53,0.35);border-left-color:var(--g);}
 .nav-item-icon{width:18px;text-align:center;font-size:1rem;}
 .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);}
-.logout-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);padding:0.5rem 1rem;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;transition:all 0.2s;}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);padding:0.5rem 1rem;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;transition:all 0.2s;}
 .logout-btn:hover{border-color:rgba(139,26,64,0.5);color:#ff8888;}
 
 /* MAIN CONTENT */
@@ -78,8 +78,8 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
 /* FORM ELEMENTS */
 .f-group{margin-bottom:1.2rem;}
-.f-label{font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:#F1C40F;font-weight:600;display:block;margin-bottom:0.4rem;}
-.f-input,.f-select,.f-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:0.7rem 0.9rem;font-family:'Jost',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;resize:vertical;}
+.f-label{font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;color:#F1C40F;font-weight:600;display:block;margin-bottom:0.4rem;}
+.f-input,.f-select,.f-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:0.7rem 0.9rem;font-family:'Jost',sans-serif;font-size:1rem;outline:none;transition:border-color 0.2s;resize:vertical;}
 .f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--g);}
 .f-input::placeholder,.f-textarea::placeholder{color:rgba(255,255,255,0.2);}
 .f-select option{background:#0E1B2E;color:#fff;}
@@ -87,7 +87,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .f-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
 
 /* BUTTONS */
-.btn{padding:0.7rem 1.6rem;border:none;font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.btn{padding:0.7rem 1.6rem;border:none;font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .btn-burg{background:var(--b);color:#fff;box-shadow:0 2px 8px rgba(155,35,53,0.4);} .btn-burg:hover{background:var(--bm);}
 .btn-gold{background:var(--g);color:var(--n);} .btn-gold:hover{background:var(--gl);}
 .btn-ghost{background:transparent;color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);} .btn-ghost:hover{border-color:rgba(255,255,255,0.7);color:#fff;}
@@ -96,7 +96,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .btn-sm{padding:0.4rem 0.9rem;font-size:0.68rem;}
 
 /* TABLES */
-.dash-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+.dash-table{width:100%;border-collapse:collapse;font-size:0.95rem;}
 .dash-table th{text-align:left;padding:0.6rem 0.9rem;font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.75);border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;}
 .dash-table td{padding:0.75rem 0.9rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.75);vertical-align:middle;}
 .dash-table tr:hover td{background:rgba(255,255,255,0.02);}
@@ -111,7 +111,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .badge-pending{background:rgba(201,168,76,0.15);color:var(--g);}
 
 /* TOAST */
-.toast{position:fixed;bottom:2rem;right:2rem;background:var(--green);color:#fff;padding:0.9rem 1.5rem;font-size:0.82rem;font-weight:500;letter-spacing:0.05em;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--green);color:#fff;padding:0.9rem 1.5rem;font-size:0.95rem;font-weight:500;letter-spacing:0.05em;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
 .toast.error{background:var(--red);}
 
 /* ANNOUNCEMENT PREVIEW */
@@ -125,13 +125,13 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 .email-preview-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.8rem;}
 
 /* CALENDAR EMAIL CHIP */
-.cal-chip{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:0.35rem 0.8rem;font-size:0.78rem;color:rgba(255,255,255,0.7);margin:0.3rem 0.3rem 0 0;}
-.cal-chip-remove{cursor:pointer;color:rgba(255,255,255,0.7);font-size:0.85rem;transition:color 0.2s;}
+.cal-chip{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:0.35rem 0.8rem;font-size:0.9rem;color:rgba(255,255,255,0.7);margin:0.3rem 0.3rem 0 0;}
+.cal-chip-remove{cursor:pointer;color:rgba(255,255,255,0.7);font-size:0.95rem;transition:color 0.2s;}
 .cal-chip-remove:hover{color:#ff8888;}
 
 
 /* Role checkboxes */
-.role-check-label{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.65);cursor:pointer;
+.role-check-label{display:flex;align-items:center;gap:0.5rem;font-size:0.95rem;color:rgba(255,255,255,0.65);cursor:pointer;
   padding:0.45rem 0.7rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);transition:all 0.15s;}
 .role-check-label:hover{background:rgba(107,31,58,0.15);border-color:rgba(107,31,58,0.3);}
 .role-check-label input[type=checkbox]{accent-color:var(--b);width:14px;height:14px;flex-shrink:0;}
@@ -609,6 +609,78 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   </div>
 </div>
 
+<!-- ══ EMAIL MEMBERS ══ -->
+<div class="panel" id="panel-email" style="display:none;">
+  <div class="panel-header"><div class="panel-title">📧 Email Members</div></div>
+
+  <div style="padding:2rem;max-width:800px;">
+
+    <!-- RECIPIENT SELECTOR -->
+    <div class="dash-section" style="margin-bottom:2rem;">
+      <div class="section-title">👥 Who to Send To</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1rem;">
+        <button class="btn btn-ghost" id="eg-all" onclick="setEmailGroup('all')">🌐 All Members</button>
+        <button class="btn btn-ghost" id="eg-optedin" onclick="setEmailGroup('optedin')">✅ Opted-In Only</button>
+        <button class="btn btn-ghost" id="eg-praise" onclick="setEmailGroup('praise')">🎵 Praise Team</button>
+        <button class="btn btn-ghost" id="eg-prayer" onclick="setEmailGroup('prayer')">🙏 Intercessory Prayer</button>
+        <button class="btn btn-ghost" id="eg-women" onclick="setEmailGroup('women')">👩 Women of Purpose</button>
+        <button class="btn btn-ghost" id="eg-leaders" onclick="setEmailGroup('leaders')">✝️ Church Leaders</button>
+        <button class="btn btn-ghost" id="eg-individual" onclick="setEmailGroup('individual')">👤 Individual</button>
+      </div>
+
+      <!-- Individual search -->
+      <div id="email-individual-wrap" style="display:none;margin-bottom:1rem;">
+        <input class="f-input" id="email-member-search" type="text" placeholder="Search member by name or email..." oninput="searchEmailMember(this.value)"/>
+        <div id="email-member-results" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);max-height:200px;overflow-y:auto;margin-top:0.3rem;display:none;"></div>
+      </div>
+
+      <div id="email-recipients-display" style="font-size:0.85rem;color:#F1C40F;padding:0.5rem 0;font-weight:500;"></div>
+    </div>
+
+    <!-- COMPOSE -->
+    <div class="dash-section" style="margin-bottom:2rem;">
+      <div class="section-title">✉️ Compose</div>
+
+      <div class="f-group"><label class="f-label">Subject *</label>
+        <input class="f-input" id="email-subject" type="text" placeholder="e.g. Sunday Service Update — Purpose Church"/>
+      </div>
+
+      <div class="f-group" style="margin-top:1rem;">
+        <label class="f-label">Message *</label>
+        <textarea class="f-textarea" id="email-body" rows="8" placeholder="Write your message here...&#10;&#10;God bless,&#10;Pastor Michael Herron&#10;Purpose Church of Denton"></textarea>
+      </div>
+
+      <div class="f-group" style="margin-top:1rem;">
+        <label class="f-label">Image URL <span style="color:rgba(255,255,255,0.5);font-size:0.7rem;text-transform:none;letter-spacing:0;">(optional — header image)</span></label>
+        <input class="f-input" id="email-img" type="url" placeholder="https://res.cloudinary.com/..."/>
+      </div>
+    </div>
+
+    <!-- PREVIEW & SEND -->
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <button class="btn btn-ghost" onclick="previewEmail()">👁️ Preview Email</button>
+      <button class="btn btn-burg" onclick="sendMemberEmail()">📧 Send Email Now</button>
+    </div>
+
+    <!-- PREVIEW BOX -->
+    <div id="email-preview-box" style="display:none;border:1px solid rgba(255,255,255,0.1);padding:2rem;background:rgba(255,255,255,0.03);margin-bottom:2rem;">
+      <div style="font-size:0.72rem;color:#F1C40F;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Preview</div>
+      <div id="email-preview-img-wrap" style="display:none;margin-bottom:1rem;">
+        <img id="email-preview-img" style="max-width:100%;height:auto;display:block;"/>
+      </div>
+      <div style="font-size:1rem;font-weight:600;color:#fff;margin-bottom:0.5rem;" id="email-preview-subject"></div>
+      <div style="font-size:0.9rem;color:rgba(255,255,255,0.85);white-space:pre-wrap;line-height:1.7;" id="email-preview-body"></div>
+    </div>
+
+    <!-- SEND HISTORY -->
+    <div class="dash-section">
+      <div class="section-title">📋 Send History</div>
+      <div id="email-history-list" style="font-size:0.85rem;color:rgba(255,255,255,0.6);">No emails sent yet.</div>
+    </div>
+
+  </div>
+</div>
+
 <div class="panel" id="panel-members">
   <div class="dash-card">
     <div class="dash-card-title">👤 Add New Member</div>
@@ -856,6 +928,7 @@ let DB = {
   announcements: JSON.parse(localStorage.getItem('pcd_announcements') || '[]'),
   members: JSON.parse(localStorage.getItem('pcd_members') || '[]'),
   newsletter_history: JSON.parse(localStorage.getItem('pcd_nl_history') || '[]'),
+  emailHistory: JSON.parse(localStorage.getItem('pcd_emailHistory') || '[]'),
 };
 
 // Load from global storage on startup
@@ -998,7 +1071,7 @@ function doLogout() {
 }
 
 // ── NAVIGATION ──
-const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',members:'Member Directory',access:'Access Control'};
+const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',members:'Member Directory',access:'Access Control'};
 
 function switchPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -2803,6 +2876,159 @@ function clearImgUpload(urlFieldId, previewWrapId, previewImgId, placeholderId) 
 function previewEventImgUrl(url) { previewPastedUrl(url,'e-img-preview-wrap','e-img-preview','e-img-placeholder-new'); }
 function clearEventImgUrl() { clearImgUpload('e-img-url','e-img-preview-wrap','e-img-preview','e-img-placeholder-new'); }
 function removeEventImg() { clearEventImgUrl(); }
+
+
+
+// ══════════════════════════════════════════
+// EMAIL MEMBERS
+// ══════════════════════════════════════════
+let emailGroupSelected = 'all';
+let emailIndividuals = [];
+
+function setEmailGroup(group) {
+  emailGroupSelected = group;
+  emailIndividuals = [];
+
+  // Highlight selected button
+  ['all','optedin','praise','prayer','women','leaders','individual'].forEach(function(g) {
+    const btn = document.getElementById('eg-' + g);
+    if (btn) btn.className = g === group ? 'btn btn-burg' : 'btn btn-ghost';
+  });
+
+  // Show/hide individual search
+  const indWrap = document.getElementById('email-individual-wrap');
+  if (indWrap) indWrap.style.display = group === 'individual' ? 'block' : 'none';
+
+  updateEmailRecipientsDisplay();
+}
+
+function updateEmailRecipientsDisplay() {
+  const el = document.getElementById('email-recipients-display');
+  if (!el) return;
+  const members = getEmailRecipients();
+  if (emailGroupSelected === 'individual') {
+    el.textContent = emailIndividuals.length > 0
+      ? '📧 Sending to: ' + emailIndividuals.map(function(m){return m.name;}).join(', ')
+      : 'Search and select a member above';
+  } else {
+    el.textContent = '📧 ' + members.length + ' recipient' + (members.length !== 1 ? 's' : '') + ' selected';
+  }
+}
+
+function getEmailRecipients() {
+  if (emailGroupSelected === 'individual') return emailIndividuals;
+  return DB.members.filter(function(m) {
+    if (!m.email) return false;
+    if (emailGroupSelected === 'optedin') return m.notif !== 'none';
+    if (emailGroupSelected === 'praise') return (m.roles||[]).includes('Praise Team');
+    if (emailGroupSelected === 'prayer') return (m.roles||[]).includes('Intercessory Prayer');
+    if (emailGroupSelected === 'women') return (m.roles||[]).includes('Women of Purpose');
+    if (emailGroupSelected === 'leaders') return (m.roles||[]).includes('Church Leader');
+    return true; // all
+  });
+}
+
+function searchEmailMember(query) {
+  const results = document.getElementById('email-member-results');
+  if (!query || query.length < 2) { results.style.display = 'none'; return; }
+  const matches = DB.members.filter(function(m) {
+    return (m.name||'').toLowerCase().includes(query.toLowerCase()) ||
+           (m.email||'').toLowerCase().includes(query.toLowerCase());
+  });
+  if (!matches.length) { results.style.display = 'none'; return; }
+  results.style.display = 'block';
+  results.innerHTML = matches.map(function(m) {
+    return '<div style="padding:0.6rem 1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;" ' +
+      'onmouseover="this.style.background='rgba(255,255,255,0.08)'" ' +
+      'onmouseout="this.style.background=''" ' +
+      'onclick="selectEmailMember(' + m.id + ')">' +
+      '<strong>' + m.name + '</strong> <span style="color:rgba(255,255,255,0.5);">' + (m.email||'no email') + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function selectEmailMember(id) {
+  const m = DB.members.find(function(m){ return m.id === id; });
+  if (!m) return;
+  if (!emailIndividuals.find(function(e){ return e.id === id; })) {
+    emailIndividuals.push(m);
+  }
+  document.getElementById('email-member-search').value = '';
+  document.getElementById('email-member-results').style.display = 'none';
+  updateEmailRecipientsDisplay();
+}
+
+function previewEmail() {
+  const subject = document.getElementById('email-subject').value.trim();
+  const body = document.getElementById('email-body').value.trim();
+  const img = document.getElementById('email-img').value.trim();
+  if (!subject || !body) return toast('Please fill in Subject and Message first.', 'error');
+
+  document.getElementById('email-preview-subject').textContent = subject;
+  document.getElementById('email-preview-body').textContent = body;
+
+  const imgWrap = document.getElementById('email-preview-img-wrap');
+  const imgEl = document.getElementById('email-preview-img');
+  if (img) { imgEl.src = img; imgWrap.style.display = 'block'; }
+  else imgWrap.style.display = 'none';
+
+  document.getElementById('email-preview-box').style.display = 'block';
+}
+
+function sendMemberEmail() {
+  const subject = document.getElementById('email-subject').value.trim();
+  const body = document.getElementById('email-body').value.trim();
+  if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
+
+  const recipients = getEmailRecipients();
+  if (!recipients.length) return toast('No recipients selected.', 'error');
+
+  const emails = recipients.filter(function(m){ return m.email; }).map(function(m){ return m.email; });
+
+  // Open mailto with all recipients
+  const mailtoLink = 'mailto:' + emails.join(',') +
+    '?subject=' + encodeURIComponent(subject) +
+    '&body=' + encodeURIComponent(body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com');
+
+  window.open(mailtoLink);
+
+  // Save to history
+  const entry = {
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    subject: subject,
+    count: emails.length,
+    group: emailGroupSelected
+  };
+  if (!DB.emailHistory) DB.emailHistory = [];
+  DB.emailHistory.unshift(entry);
+  saveDB();
+  renderEmailHistory();
+
+  toast('📧 Opening email client for ' + emails.length + ' recipients!');
+  document.getElementById('email-preview-box').style.display = 'none';
+}
+
+function renderEmailHistory() {
+  const el = document.getElementById('email-history-list');
+  if (!el) return;
+  if (!DB.emailHistory || !DB.emailHistory.length) {
+    el.innerHTML = '<span style="color:rgba(255,255,255,0.5);">No emails sent yet.</span>';
+    return;
+  }
+  el.innerHTML = DB.emailHistory.slice(0,10).map(function(e) {
+    return '<div style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">' +
+      '<div>' +
+        '<div style="font-weight:500;color:#fff;">' + e.subject + '</div>' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.5);">' + e.date + ' · ' + e.count + ' recipients · ' + e.group + '</div>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+}
+
+// Initialize email group on load
+document.addEventListener('DOMContentLoaded', function() {
+  setEmailGroup('all');
+});
 
 
 // ── REFRESH ALL ──
