@@ -161,6 +161,30 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   .mob-toggle{display:block;}
   .dash-grid-2,.dash-grid-3,.f-row,.f-row-3{grid-template-columns:1fr;}
 }
+
+/* ── IMAGE UPLOAD ZONE ── */
+.img-upload-zone {
+  border: 2px dashed rgba(255,255,255,0.15);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow: hidden;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.img-upload-zone:hover {
+  border-color: var(--g);
+  background: rgba(193,168,76,0.05);
+}
+.img-upload-zone.drag-over {
+  border-color: var(--g);
+  background: rgba(193,168,76,0.1);
+  transform: scale(1.01);
+}
 </style>
   <!-- Firebase REST API - no SDK needed -->
   <script>
@@ -388,17 +412,33 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     </div>
     <div class="f-group"><label class="f-label">Description</label><textarea class="f-textarea" id="e-desc" rows="3" placeholder="Describe the event..."></textarea></div>
 
-    <!-- EVENT IMAGE URL -->
+    <!-- EVENT IMAGE UPLOAD -->
     <div class="f-group">
-      <label class="f-label">Event Image URL <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — paste image link from imgur.com)</span></label>
-      <input class="f-input" id="e-img-url" type="url" placeholder="https://i.imgur.com/yourimage.jpg" oninput="previewEventImgUrl(this.value)"/>
-      <div id="e-img-url-preview" style="display:none;margin-top:0.6rem;">
-        <img id="e-img-url-img" style="max-width:100%;width:100%;max-height:200px;object-fit:cover;display:block;"/>
-        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem;" onclick="clearEventImgUrl()">Remove Image</button>
+      <label class="f-label">Event Image <span style="color:rgba(255,255,255,0.3);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — drag & drop from Canva or paste URL)</span></label>
+      <div id="e-img-dropzone" class="img-upload-zone"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="handleImgUpload(event,'e-img-url','e-img-preview-wrap','e-img-preview')"
+        onclick="document.getElementById('e-img-file').click()">
+        <input type="file" id="e-img-file" accept="image/*" style="display:none" onchange="handleImgFileSelect(event,'e-img-url','e-img-preview-wrap','e-img-preview')"/>
+        <div id="e-img-placeholder-new">
+          <div style="font-size:2rem;margin-bottom:0.4rem;opacity:0.5;">🖼️</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">Drag & drop from Canva or click to upload</div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;">JPG, PNG — auto uploads instantly</div>
+        </div>
+        <div id="e-img-preview-wrap" style="display:none;">
+          <img id="e-img-preview" style="max-width:100%;max-height:200px;object-fit:contain;display:block;margin:0 auto;"/>
+          <div style="margin-top:0.6rem;display:flex;gap:0.6rem;justify-content:center;" onclick="event.stopPropagation()">
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('e-img-file').click()">Change</button>
+            <button class="btn btn-red btn-sm" onclick="clearImgUpload('e-img-url','e-img-preview-wrap','e-img-preview','e-img-placeholder-new')">Remove</button>
+          </div>
+        </div>
       </div>
-      <div style="margin-top:0.5rem;font-size:0.72rem;color:rgba(255,255,255,0.3);">
-        Free upload: <a href="https://imgur.com" target="_blank" style="color:var(--g)">imgur.com</a> — upload image, right-click, Copy image address, paste above
+      <div style="margin-top:0.4rem;display:flex;align-items:center;gap:0.5rem;">
+        <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">Or paste URL:</span>
+        <input class="f-input" id="e-img-url" type="url" placeholder="https://..." style="flex:1;padding:0.4rem 0.7rem;font-size:0.78rem;" oninput="previewPastedUrl(this.value,'e-img-preview-wrap','e-img-preview','e-img-placeholder-new')"/>
       </div>
+      <div id="e-img-uploading" style="display:none;font-size:0.78rem;color:var(--g);margin-top:0.4rem;">⏳ Uploading image...</div>
     </div>
         <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:1.2rem;margin-top:0.5rem;">
       <div class="dash-card-title" style="margin-bottom:0.8rem;">📧 Auto-Email Notifications</div>
@@ -2296,21 +2336,7 @@ function showSendStatus(type, msg) {
 // ══════════════════════════════════════════
 // EVENT IMAGE URL
 // ══════════════════════════════════════════
-function previewEventImgUrl(url) {
-  const preview = document.getElementById('e-img-url-preview');
-  const img = document.getElementById('e-img-url-img');
-  if (url && url.startsWith('http')) {
-    img.src = url;
-    preview.style.display = 'block';
-  } else {
-    preview.style.display = 'none';
-  }
-}
-function clearEventImgUrl() {
-  document.getElementById('e-img-url').value = '';
-  document.getElementById('e-img-url-preview').style.display = 'none';
-}
-function removeEventImg() { clearEventImgUrl(); }
+// image functions moved to universal uploader
 
 // ══════════════════════════════════════════
 // ANNOUNCEMENT IMAGE UPLOAD
@@ -2676,6 +2702,106 @@ function loadAllFromFirebase(callback) {
       done();
     }).catch(function(){ done(); });
 }
+
+
+
+// ══════════════════════════════════════════
+// UNIVERSAL IMAGE UPLOADER (ImgBB)
+// ══════════════════════════════════════════
+const IMGBB_KEY = "2e76b9f3e5a4c8d1f0b7a3e9c6d2f4a8";
+
+function uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
+  const uploadingEl = document.getElementById(urlFieldId.replace('url','uploading')) ||
+                      document.getElementById('e-img-uploading');
+  if (uploadingEl) uploadingEl.style.display = 'block';
+
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('key', IMGBB_KEY);
+
+  fetch('https://api.imgbb.com/1/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (uploadingEl) uploadingEl.style.display = 'none';
+    if (data.success) {
+      const url = data.data.url;
+      const urlField = document.getElementById(urlFieldId);
+      if (urlField) urlField.value = url;
+      showImgPreview(url, previewWrapId, previewImgId, placeholderId);
+    } else {
+      // If ImgBB fails, use local preview (base64)
+      useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
+    }
+  })
+  .catch(function() {
+    if (uploadingEl) uploadingEl.style.display = 'none';
+    // Fallback to local base64 preview
+    useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
+  });
+}
+
+function useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const urlField = document.getElementById(urlFieldId);
+    if (urlField) urlField.value = e.target.result;
+    showImgPreview(e.target.result, previewWrapId, previewImgId, placeholderId);
+  };
+  reader.readAsDataURL(file);
+}
+
+function showImgPreview(url, previewWrapId, previewImgId, placeholderId) {
+  const preview = document.getElementById(previewImgId);
+  const wrap = document.getElementById(previewWrapId);
+  const placeholder = document.getElementById(placeholderId);
+  if (preview) preview.src = url;
+  if (wrap) wrap.style.display = 'block';
+  if (placeholder) placeholder.style.display = 'none';
+}
+
+function handleImgUpload(e, urlFieldId, previewWrapId, previewImgId) {
+  e.preventDefault();
+  const dropzone = e.currentTarget;
+  dropzone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const placeholderId = previewWrapId.replace('preview-wrap','placeholder-new').replace('wrap','placeholder-new');
+    uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId || 'e-img-placeholder-new');
+  }
+}
+
+function handleImgFileSelect(e, urlFieldId, previewWrapId, previewImgId) {
+  const file = e.target.files[0];
+  if (file) {
+    const placeholderId = previewWrapId.replace('preview-wrap','placeholder-new').replace('wrap','placeholder-new');
+    uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId || 'e-img-placeholder-new');
+  }
+}
+
+function previewPastedUrl(url, previewWrapId, previewImgId, placeholderId) {
+  if (url && url.startsWith('http')) {
+    showImgPreview(url, previewWrapId, previewImgId, placeholderId);
+  }
+}
+
+function clearImgUpload(urlFieldId, previewWrapId, previewImgId, placeholderId) {
+  const urlField = document.getElementById(urlFieldId);
+  const wrap = document.getElementById(previewWrapId);
+  const placeholder = document.getElementById(placeholderId);
+  const preview = document.getElementById(previewImgId);
+  if (urlField) urlField.value = '';
+  if (wrap) wrap.style.display = 'none';
+  if (placeholder) placeholder.style.display = 'flex';
+  if (preview) preview.src = '';
+}
+
+// Keep old function names working
+function previewEventImgUrl(url) { previewPastedUrl(url,'e-img-preview-wrap','e-img-preview','e-img-placeholder-new'); }
+function clearEventImgUrl() { clearImgUpload('e-img-url','e-img-preview-wrap','e-img-preview','e-img-placeholder-new'); }
+function removeEventImg() { clearEventImgUrl(); }
 
 
 // ── REFRESH ALL ──
