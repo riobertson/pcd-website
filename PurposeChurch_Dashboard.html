@@ -611,7 +611,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 </div>
 
 <!-- ══ EMAIL MEMBERS ══ -->
-<div class="panel" id="panel-email" style="display:none;">
+<div class="panel" id="panel-email">
   <div class="panel-header"><div class="panel-title">📧 Email Members</div></div>
 
   <div style="padding:2rem;max-width:800px;">
@@ -3040,6 +3040,7 @@ function refreshAll() {
   renderAnnTable();
   renderMembersTable();
   renderUsersTable();
+  renderEmailHistory();
   renderNLHistory();
   updateStats();
   updateOverviewAnnouncements();
