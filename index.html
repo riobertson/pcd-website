@@ -14,7 +14,7 @@
   --c:#FAF7F2;--cd:#F0EAE0;
   --w:#fff;--td:#1A1410;--tm:#4A4036;--tl:#7A706A;
 }
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;font-size:17px;}
 body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height:1.7;overflow-x:hidden;}
 
 /* NAV */
@@ -23,8 +23,8 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
   backdrop-filter:blur(8px);border-bottom:1px solid rgba(107,31,58,0.3);transition:all 0.3s;}
 .nav.slim{padding:0.4rem 2.5rem;}
 .nav-logo-btn{background:none;border:none;cursor:pointer;padding:0;}
-.nav-logo-btn img{height:54px;width:auto;filter:brightness(0) invert(1);transition:height 0.3s;}
-.nav.slim .nav-logo-btn img{height:36px;}
+.nav-logo-btn img{height:75px;width:auto;filter:brightness(0) invert(1);transition:height 0.3s;}
+.nav.slim .nav-logo-btn img{height:60px;}
 .nav-links{display:flex;align-items:center;gap:1.4rem;list-style:none;}
 .nav-links button{background:none;border:none;color:rgba(255,255,255,0.8);font-family:Jost,sans-serif;
   font-size:0.77rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;
@@ -89,9 +89,9 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(107,31,58,0.15) 0%,transparent 70%);}
 .hero-logo{display:block;width:240px;margin:0 auto 2rem;filter:brightness(0) invert(1);opacity:0.95;}
 .hero-eyebrow{font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);margin-bottom:1rem;font-weight:500;position:relative;}
-.hero h1{font-family:Cormorant Garamond,serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;color:var(--w);line-height:1.1;margin-bottom:1rem;position:relative;}
+.hero h1{font-family:Cormorant Garamond,serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:400;color:var(--w);line-height:1.1;margin-bottom:1rem;position:relative;}
 .hero h1 em{font-style:italic;color:var(--g);}
-.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 1.5rem;font-weight:300;}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:500px;margin:0 auto 1.5rem;font-weight:400;}
 .hero-verse{font-family:Cormorant Garamond,serif;font-style:italic;font-size:1rem;color:var(--gl);margin-bottom:2.5rem;}
 .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
 .hero-fb-btn{display:flex;align-items:center;gap:0.5rem;background:rgba(220,30,30,0.2);
@@ -124,7 +124,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .pmv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--b);}
 .pmv-num{font-family:Cormorant Garamond,serif;font-size:4rem;color:rgba(107,31,58,0.12);line-height:1;position:absolute;top:1rem;right:1.2rem;font-weight:700;}
 .pmv-label{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.8rem;}
-.pmv-text{font-family:Cormorant Garamond,serif;font-size:1.2rem;color:rgba(255,255,255,0.9);font-weight:300;line-height:1.5;}
+.pmv-text{font-family:Cormorant Garamond,serif;font-size:1.2rem;color:rgba(255,255,255,0.9);font-weight:400;line-height:1.5;}
 .pmv-verse{font-size:0.72rem;color:var(--g);margin-top:1.2rem;opacity:0.8;}
 
 /* LEADERSHIP */
@@ -137,15 +137,15 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .leader-portrait.sq{aspect-ratio:1/1;}
 .leader-portrait::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(14,27,46,0.85),transparent);}
 .leader-cross{position:absolute;font-family:Cormorant Garamond,serif;font-size:14rem;color:rgba(107,31,58,0.06);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
-.leader-initials{font-family:Cormorant Garamond,serif;font-size:4.5rem;font-weight:300;color:var(--bl);opacity:0.7;letter-spacing:0.1em;position:relative;z-index:1;}
+.leader-initials{font-family:Cormorant Garamond,serif;font-size:4.5rem;font-weight:400;color:var(--bl);opacity:0.7;letter-spacing:0.1em;position:relative;z-index:1;}
 .leader-initials.sm{font-size:3rem;}
 .leader-info{padding:1.8rem 1.8rem 2.2rem;}
 .leader-role{font-size:0.66rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.4rem;}
 .leader-name{font-family:Cormorant Garamond,serif;font-size:1.8rem;font-weight:400;color:var(--n);margin-bottom:0.8rem;}
 .leader-name.sm{font-size:1.4rem;}
-.leader-bio{font-size:0.9rem;color:var(--tl);font-weight:300;line-height:1.7;}
+.leader-bio{font-size:0.9rem;color:var(--tl);font-weight:400;line-height:1.7;}
 .leader-section-title{font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:400;color:var(--n);margin:3rem 0 0.5rem;border-bottom:2px solid var(--b);padding-bottom:0.5rem;}
-.info-box{padding:2rem;font-size:0.9rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.8;}
+.info-box{padding:2rem;font-size:0.9rem;color:rgba(255,255,255,0.65);font-weight:400;line-height:1.8;}
 .info-box strong{color:var(--g);display:block;margin-bottom:0.4rem;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;}
 
 /* EVENTS */
@@ -162,10 +162,10 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .event-cal-day{font-family:Cormorant Garamond,serif;font-size:1.8rem;font-weight:600;line-height:1;padding:5px 4px;}
 .event-type{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.25rem;}
 .event-title{font-family:Cormorant Garamond,serif;font-size:1.3rem;font-weight:400;color:var(--n);line-height:1.2;}
-.event-desc{font-size:0.88rem;color:var(--tm);font-weight:300;line-height:1.6;margin-top:0.7rem;}
+.event-desc{font-size:0.88rem;color:var(--tm);font-weight:400;line-height:1.6;margin-top:0.7rem;}
 .event-meta{display:flex;flex-direction:column;gap:0.3rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--cd);}
-.event-row{font-size:0.82rem;color:var(--tl);font-weight:300;}
-.events-note{margin-top:2.5rem;padding:1.8rem;background:var(--n);color:rgba(255,255,255,0.65);font-size:0.88rem;font-weight:300;line-height:1.7;display:flex;gap:1rem;align-items:flex-start;}
+.event-row{font-size:0.82rem;color:var(--tl);font-weight:400;}
+.events-note{margin-top:2.5rem;padding:1.8rem;background:var(--n);color:rgba(255,255,255,0.65);font-size:0.88rem;font-weight:400;line-height:1.7;display:flex;gap:1rem;align-items:flex-start;}
 
 /* BELIEFS */
 .beliefs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;margin-top:2.5rem;}
@@ -179,21 +179,21 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .visit-detail{display:flex;gap:1.1rem;align-items:flex-start;margin-bottom:1.8rem;}
 .visit-icon{width:42px;height:42px;background:rgba(107,31,58,0.1);border:1px solid rgba(107,31,58,0.25);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;}
 .visit-label{font-size:0.67rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.2rem;}
-.visit-value{font-size:0.98rem;color:var(--tm);font-weight:300;}
+.visit-value{font-size:0.98rem;color:var(--tm);font-weight:400;}
 .map-box{background:var(--nm);border:1px solid rgba(107,31,58,0.25);border-radius:4px;padding:2.5rem 2rem;text-align:center;}
 .map-addr{font-family:Cormorant Garamond,serif;font-size:1.25rem;color:var(--gl);margin-bottom:0.8rem;line-height:1.5;}
-.map-hrs{color:rgba(255,255,255,0.45);font-size:0.82rem;font-weight:300;}
+.map-hrs{color:rgba(255,255,255,0.45);font-size:0.82rem;font-weight:400;}
 .map-btn{display:inline-block;margin-top:1.3rem;padding:0.75rem 1.7rem;background:var(--b);color:var(--w);font-size:0.73rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;}
 .map-btn:hover{background:var(--bm);}
 .fb-box{margin-top:1.5rem;padding:1.8rem;background:var(--cd);}
 .fb-box-title{font-family:Cormorant Garamond,serif;font-size:1.2rem;color:var(--n);margin-bottom:0.5rem;}
-.fb-box p{font-size:0.88rem;color:var(--tl);font-weight:300;line-height:1.7;margin-bottom:1rem;}
+.fb-box p{font-size:1rem;color:var(--tm);font-weight:400;line-height:1.8;margin-bottom:1rem;}
 .fb-btn{display:inline-flex;align-items:center;gap:0.5rem;background:#1877F2;color:#fff;padding:0.65rem 1.3rem;font-family:Jost,sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;}
 .expect-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:1.5rem;}
 .expect-item{background:var(--w);padding:1.5rem;border-top:3px solid var(--b);}
 .expect-icon{font-size:1.5rem;margin-bottom:0.5rem;}
 .expect-title{font-family:Cormorant Garamond,serif;font-size:1.1rem;color:var(--n);margin-bottom:0.4rem;}
-.expect-text{font-size:0.85rem;color:var(--tl);font-weight:300;line-height:1.6;}
+.expect-text{font-size:0.85rem;color:var(--tl);font-weight:400;line-height:1.6;}
 
 /* SERMONS */
 .sermon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;margin-top:3rem;}
@@ -208,7 +208,7 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .sermon-body{padding:1.6rem;}
 .sermon-pastor{font-size:0.72rem;letter-spacing:0.1em;color:var(--b);font-weight:600;margin-bottom:1rem;text-transform:uppercase;}
 .sermon-notes-label{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--tl);font-weight:600;margin-bottom:0.6rem;}
-.sermon-notes p{font-size:0.9rem;color:var(--tm);font-weight:300;line-height:1.7;margin-bottom:0.4rem;}
+.sermon-notes p{font-size:0.9rem;color:var(--tm);font-weight:400;line-height:1.7;margin-bottom:0.4rem;}
 .sermon-tag{display:inline-block;background:var(--cd);color:var(--b);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.7rem;font-weight:600;margin-top:0.8rem;}
 .watch-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.8rem;color:var(--b);font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;}
 .watch-link:hover{color:var(--bm);}
@@ -229,9 +229,9 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
 .group-body{padding:1.8rem;}
 .group-type{font-size:0.63rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.3rem;}
 .group-name{font-family:Cormorant Garamond,serif;font-size:1.45rem;font-weight:400;color:var(--n);margin-bottom:0.8rem;}
-.group-desc{font-size:0.88rem;color:var(--tm);font-weight:300;line-height:1.65;margin-bottom:1rem;}
+.group-desc{font-size:0.88rem;color:var(--tm);font-weight:400;line-height:1.65;margin-bottom:1rem;}
 .group-details{display:flex;flex-direction:column;gap:0.3rem;padding-top:1rem;border-top:1px solid var(--cd);}
-.group-row{font-size:0.82rem;color:var(--tl);font-weight:300;}
+.group-row{font-size:0.82rem;color:var(--tl);font-weight:400;}
 .join-badge{display:inline-block;background:rgba(107,31,58,0.1);color:var(--b);font-size:0.63rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;font-weight:600;margin-top:0.8rem;}
 
 /* FOOTER */
@@ -273,8 +273,8 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     <li><button onclick="showPage('groups')" id="nav-groups">Groups</button></li>
     <li><button onclick="showPage('contact')" id="nav-contact">Contact</button></li>
     <li><button onclick="showPage('give')" id="nav-give" style="background:var(--b);color:#fff;padding:0.32rem 0.9rem;font-family:Jost,sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--bm)'" onmouseout="this.style.background='var(--b)'">Give ♥</button></li>
-    <li><a class="nav-live" href="https://www.facebook.com/PurposeChurchofDenton/" target="_blank" id="navLive">
-      📺 Facebook Live
+    <li><a class="nav-live" href="https://www.facebook.com/PurposeChurchofDenton/" target="_blank" id="navLive" style="display:flex!important;opacity:1!important;">
+      <span class="live-dot" id="liveDot" style="display:none;"></span>📺 Facebook Live
     </a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
