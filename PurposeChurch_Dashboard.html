@@ -408,11 +408,14 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       </div>
     </div>
     <div class="f-row">
-      <div class="f-group"><label class="f-label">Date</label><input class="f-input" id="e-date" type="date" onchange="calGoToDate(this.value)"/></div>
-      <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="e-start" type="time"/></div>
+      <div class="f-group"><label class="f-label">Start Date *</label><input class="f-input" id="e-date" type="date" onchange="calGoToDate(this.value)"/></div>
+      <div class="f-group"><label class="f-label">End Date <span style="font-weight:300;color:rgba(255,255,255,0.4);">(optional)</span></label><input class="f-input" id="e-end-date" type="date"/></div>
     </div>
     <div class="f-row">
+      <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="e-start" type="time"/></div>
       <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="e-end" type="time"/></div>
+    </div>
+    <div class="f-row">
       <div class="f-group"><label class="f-label">Location</label><input class="f-input" id="e-loc" placeholder="Purpose Church — 3401 E University Dr #101"/></div>
     </div>
     <div class="f-group"><label class="f-label">Description</label><textarea class="f-textarea" id="e-desc" rows="3" placeholder="Describe the event..."></textarea></div>
@@ -1254,9 +1257,16 @@ function addEvent() {
 
   const startTime = document.getElementById('e-start').value;
   const endTime = document.getElementById('e-end').value;
+  const endDate = document.getElementById('e-end-date').value;
   const dateParts = date.split('-');
   const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
   const formattedDate = dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  var formattedEndDate = '';
+  if (endDate) {
+    var edParts = endDate.split('-');
+    var edObj = new Date(parseInt(edParts[0]), parseInt(edParts[1])-1, parseInt(edParts[2]));
+    formattedEndDate = edObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }
 
   const event = {
     id: Date.now(),
@@ -1264,6 +1274,8 @@ function addEvent() {
     type: document.getElementById('e-type').value,
     date: formattedDate,
     rawDate: date,
+    endDate: formattedEndDate,
+    rawEndDate: endDate || '',
     startTime: startTime ? formatTime(startTime) : '',
     endTime: endTime ? formatTime(endTime) : '',
     location: document.getElementById('e-loc').value.trim(),
@@ -1291,6 +1303,8 @@ function addEvent() {
       type: event.type || '',
       date: event.date || '',
       rawDate: event.rawDate || '',
+      endDate: event.endDate || '',
+      rawEndDate: event.rawEndDate || '',
       startTime: event.startTime || '',
       endTime: event.endTime || '',
       location: event.location || '',
@@ -1326,7 +1340,7 @@ function addEvent() {
 
   emailChips = [];
   renderEmailChips();
-  ['e-title','e-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(id => { var el = document.getElementById(id); if(el) el.value = ''; }); if(document.getElementById('e-img-url')) document.getElementById('e-img-url').value = '';
+  ['e-title','e-date','e-end-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(id => { var el = document.getElementById(id); if(el) el.value = ''; }); if(document.getElementById('e-img-url')) document.getElementById('e-img-url').value = '';
   document.getElementById('e-notify-members').checked = false;
   document.getElementById('event-email-preview').style.display = 'none';
   removeEventImg();
@@ -1471,6 +1485,8 @@ function publishEventToWebsite(localId) {
     type: ev.type || '',
     date: ev.date || '',
     rawDate: ev.rawDate || '',
+    endDate: ev.endDate || '',
+    rawEndDate: ev.rawEndDate || '',
     startTime: ev.startTime || '',
     endTime: ev.endTime || '',
     location: ev.location || '',
@@ -2604,6 +2620,7 @@ function editEvent(id) {
   document.getElementById('edit-ev-title').value = ev.title || '';
   document.getElementById('edit-ev-type').value = ev.type || 'Other';
   document.getElementById('edit-ev-date').value = ev.rawDate || '';
+  document.getElementById('edit-ev-end-date').value = ev.rawEndDate || '';
   document.getElementById('edit-ev-start').value = ev.startTimeRaw || '';
   document.getElementById('edit-ev-end').value = ev.endTimeRaw || '';
   document.getElementById('edit-ev-loc').value = ev.location || '';
@@ -2640,6 +2657,13 @@ function saveEditEvent() {
   const dateParts = date.split('-');
   const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
   const formattedDate = dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const endDateVal = document.getElementById('edit-ev-end-date').value;
+  var formattedEndDate = '';
+  if (endDateVal) {
+    var edParts = endDateVal.split('-');
+    var edObj = new Date(parseInt(edParts[0]), parseInt(edParts[1])-1, parseInt(edParts[2]));
+    formattedEndDate = edObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }
   const startRaw = document.getElementById('edit-ev-start').value;
   const endRaw = document.getElementById('edit-ev-end').value;
 
@@ -2658,6 +2682,8 @@ function saveEditEvent() {
     type: document.getElementById('edit-ev-type').value,
     date: formattedDate,
     rawDate: date,
+    endDate: formattedEndDate,
+    rawEndDate: endDateVal || '',
     startTime: editFormatTime(startRaw),
     endTime: editFormatTime(endRaw),
     startTimeRaw: startRaw,
@@ -2691,6 +2717,8 @@ function saveEditEvent() {
             type: updatedEvent.type || '',
             date: updatedEvent.date || '',
             rawDate: updatedEvent.rawDate || '',
+            endDate: updatedEvent.endDate || '',
+            rawEndDate: updatedEvent.rawEndDate || '',
             startTime: updatedEvent.startTime || '',
             endTime: updatedEvent.endTime || '',
             location: updatedEvent.location || '',
@@ -3259,11 +3287,14 @@ function refreshAll() {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">Date *</label><input class="f-input" id="edit-ev-date" type="date"/></div>
-      <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="edit-ev-start" type="time"/></div>
+      <div class="f-group"><label class="f-label">Start Date *</label><input class="f-input" id="edit-ev-date" type="date"/></div>
+      <div class="f-group"><label class="f-label">End Date <span style="font-weight:300;color:rgba(255,255,255,0.4);">(optional)</span></label><input class="f-input" id="edit-ev-end-date" type="date"/></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="edit-ev-start" type="time"/></div>
       <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="edit-ev-end" type="time"/></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
       <div class="f-group"><label class="f-label">Location</label><input class="f-input" id="edit-ev-loc" type="text" placeholder="Purpose Church..."/></div>
     </div>
     <div class="f-group" style="margin-bottom:1rem;"><label class="f-label">Description</label><textarea class="f-textarea" id="edit-ev-desc" rows="3" placeholder="Describe the event..."></textarea></div>
