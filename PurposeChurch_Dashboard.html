@@ -2967,15 +2967,18 @@ function loadAllFromFirebase(callback) {
     .then(function(data){
       if (data.documents && data.documents.length) {
         var fbEvents = data.documents.map(parseDoc);
-        // Build a set of all Firebase document IDs so we can detect true local-only events
         var fbDocIds = new Set(fbEvents.map(function(e){ return e.firebaseId; }).filter(Boolean));
-        // Keep local events that have NO firebaseId at all (calendar-only, never sent to Firebase)
-        // Do NOT drop events just because they have a firebaseId — Firebase already has them
-        var localCalendarOnly = DB.events.filter(function(e){
-          return !e.firebaseId;
+
+        // Keep local events that are NOT yet in Firebase results
+        // This handles two cases:
+        // 1. Calendar-only events (no firebaseId)
+        // 2. Recently saved events that Firebase hasn't propagated yet (has firebaseId but not in query results)
+        var localNotInFB = DB.events.filter(function(e){
+          return !e.firebaseId || !fbDocIds.has(e.firebaseId);
         });
-        // Merge: Firebase events + any local calendar-only events not in Firebase
-        DB.events = fbEvents.concat(localCalendarOnly);
+
+        // Merge: Firebase events + local events not yet reflected in Firebase
+        DB.events = fbEvents.concat(localNotInFB);
         DB.events.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       }
       done();
