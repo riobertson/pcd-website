@@ -1428,13 +1428,68 @@ function renderEventTable() {
       <td>${e.title||''}</td>
       <td><span class="badge badge-pending">${e.type||''}</span></td>
       <td style="color:rgba(255,255,255,0.85)">${e.location||'—'}</td>
-      <td>${e.image ? '<span class="badge badge-active">&#128247; Yes</span>' : '—'}</td>
-      <td>${(e.emails&&e.emails.length>0) ? '<span class="badge badge-active">'+e.emails.length+' sent</span>' : '—'}</td>
+      <td>${e.firebaseId ? '<span class="badge badge-active">🌐 Live</span>' : '<span class="badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">📅 Calendar Only</span>'}</td>
       <td style="display:flex;gap:0.4rem;flex-wrap:wrap;">
         <button class="btn btn-ghost btn-sm" onclick="editEvent(${e.id})">✏️ Edit</button>
-        <button class="btn btn-red btn-sm" onclick="deleteEvent(${e.id})">Delete</button>
+        ${e.firebaseId
+          ? `<button class="btn btn-sm" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);" onclick="removeEventFromWebsite('${e.firebaseId}',${e.id})">🌐 Remove from Site</button>`
+          : `<button class="btn btn-sm" style="background:rgba(40,167,69,0.2);color:#28a745;border:1px solid rgba(40,167,69,0.4);" onclick="publishEventToWebsite(${e.id})">🌐 Publish to Site</button>`
+        }
+        <button class="btn btn-red btn-sm" onclick="deleteEvent(${e.id})">🗑 Delete All</button>
       </td>
     </tr>`).join('');
+}
+
+// ── REMOVE EVENT FROM WEBSITE (keep on calendar) ──
+function removeEventFromWebsite(firebaseId, localId) {
+  if (!confirm('Remove this event from the website? It will stay on your calendar.')) return;
+  var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+  var project = "purposechurchdenton";
+  fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events/" + firebaseId + "?key=" + apiKey, {method: "DELETE"})
+    .then(function(){
+      // Clear firebaseId from local event so it shows as calendar-only
+      var evIdx = DB.events.findIndex(function(e){ return e.firebaseId === firebaseId || e.id === localId; });
+      if (evIdx > -1) {
+        DB.events[evIdx].firebaseId = null;
+        DB.events[evIdx].postedToWebsite = false;
+        saveDB();
+        renderEventTable();
+        updateOverviewEvents();
+      }
+      toast('✅ Event removed from website. Still on calendar.');
+    })
+    .catch(function(){ toast('Error removing from website. Try again.', 'error'); });
+}
+
+// ── PUBLISH EVENT TO WEBSITE (from calendar-only event) ──
+function publishEventToWebsite(localId) {
+  var ev = DB.events.find(function(e){ return e.id === localId; });
+  if (!ev) return;
+  if (!window.saveToFirebase) return toast('Firebase not available.', 'error');
+  window.saveToFirebase('events', {
+    title: ev.title || '',
+    type: ev.type || '',
+    date: ev.date || '',
+    rawDate: ev.rawDate || '',
+    startTime: ev.startTime || '',
+    endTime: ev.endTime || '',
+    location: ev.location || '',
+    desc: ev.desc || '',
+    image: ev.image || '',
+    active: 'true'
+  }).then(function(fbId) {
+    if (fbId) {
+      var evIdx = DB.events.findIndex(function(e){ return e.id === localId; });
+      if (evIdx > -1) {
+        DB.events[evIdx].firebaseId = fbId;
+        DB.events[evIdx].postedToWebsite = true;
+        saveDB();
+        renderEventTable();
+        updateOverviewEvents();
+        toast('✅ Event published to website!');
+      }
+    }
+  });
 }
 
 // ── ANNOUNCEMENTS ──
@@ -2825,7 +2880,13 @@ function loadAllFromFirebase(callback) {
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (data.documents && data.documents.length) {
-        DB.events = data.documents.map(parseDoc);
+        var fbEvents = data.documents.map(parseDoc);
+        // Merge: keep local events that haven't made it to Firebase yet
+        var fbIds = fbEvents.map(function(e){ return e.firebaseId; }).filter(Boolean);
+        var localOnly = DB.events.filter(function(e){
+          return !e.firebaseId && !fbIds.includes(e.firebaseId);
+        });
+        DB.events = fbEvents.concat(localOnly);
         DB.events.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       }
       done();
@@ -2835,7 +2896,12 @@ function loadAllFromFirebase(callback) {
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (data.documents && data.documents.length) {
-        DB.sermons = data.documents.map(parseDoc);
+        var fbSermons = data.documents.map(parseDoc);
+        var fbIds = fbSermons.map(function(s){ return s.firebaseId; }).filter(Boolean);
+        var localOnly = DB.sermons.filter(function(s){
+          return !s.firebaseId && !fbIds.includes(s.firebaseId);
+        });
+        DB.sermons = fbSermons.concat(localOnly);
         DB.sermons.sort(function(a,b){ return new Date(b.date||0) - new Date(a.date||0); });
       }
       done();
