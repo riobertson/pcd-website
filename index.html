@@ -1232,126 +1232,35 @@ function loadEventsFromDash() {
 }
 
 function renderFirebaseEvents(events, grid) {
-  const barColors = {'Sunday Service':'','Worship Night':'n','Fellowship':'g','Prayer Service':'',
+  var barColors = {'Sunday Service':'','Worship Night':'n','Fellowship':'g','Prayer Service':'',
     'Community Outreach':'n','Annual Conference':'g','Other':''};
-  grid.innerHTML = events.map(ev => {
-    const dateObj = ev.rawDate ? new Date(ev.rawDate + 'T00:00:00') : new Date();
-    const mo = dateObj.toLocaleString('en-US',{month:'short'}).toUpperCase();
-    const day = dateObj.getDate();
-    const bar = barColors[ev.type] || '';
-    return \`
-      <div class="event-card">
-        \${ev.image ? \`<div style="width:100%;"><img src="\${ev.image}" alt="\${ev.title}" style="width:100%;height:auto;display:block;"/></div>\` : \`<div class="event-bar\${bar?' '+bar:''}"></div>\`}
-        <div class="event-body">
-          <div class="event-date-row">
-            <div class="event-cal">
-              <div class="event-cal-mo">\${mo}</div>
-              <div class="event-cal-day">\${day}</div>
-            </div>
-            <div>
-              <div class="event-type">\${ev.type||''}</div>
-              <div class="event-title">\${ev.title||''}</div>
-            </div>
-          </div>
-          \${ev.desc||ev.description ? \`<p class="event-desc">\${ev.desc||ev.description}</p>\` : ''}
-          <div class="event-meta">
-            \${(ev.startTime||ev.time) ? \`<div class="event-row">⏰ \${ev.startTime||ev.time}\${ev.endTime?' – '+ev.endTime:''}</div>\` : ''}
-            \${(ev.location||ev.loc) ? \`<div class="event-row">📍 \${ev.location||ev.loc}</div>\` : ''}
-          </div>
-        </div>
-      </div>\`;
-  }).join('');
-}
-
-function parseSheetCSV(text) {
-  const rows = [];
-  const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    const cols = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
-      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur=''; }
-      else cur += ch;
-    }
-    cols.push(cur.trim());
-    rows.push(cols);
-  }
-  return rows;
-}
-
-function renderEventsFromSheet(rows, grid) {
-  // Expected columns: Date | Type | Title | Time | Location | Description | Image URL
-  const barColors = {'Sunday Service':'','Worship Night':'n','Fellowship':'g',
-    'Prayer Service':'','Community Outreach':'n','Annual Conference':'g','Other':''};
-
-  const cards = rows.filter(r => r[2] && r[2].trim()).map(row => {
-    const [dateStr='', type='', title='', time='', loc='', desc='', imgUrl=''] = row;
-    const dateObj = dateStr ? new Date(dateStr + 'T00:00:00') : null;
-    const mo = dateObj ? dateObj.toLocaleString('en-US',{month:'short'}).toUpperCase() : '—';
-    const day = dateObj ? dateObj.getDate() : '—';
-    const bar = barColors[type] || '';
-    return `
-      <div class="event-card">
-        ${imgUrl ? `<div style="width:100%;"><img src="${imgUrl}" alt="${title}" style="width:100%;height:auto;display:block;"/></div>` : `<div class="event-bar${bar?' '+bar:''}"></div>`}
-        <div class="event-body">
-          <div class="event-date-row">
-            <div class="event-cal">
-              <div class="event-cal-mo">${mo}</div>
-              <div class="event-cal-day">${day}</div>
-            </div>
-            <div>
-              <div class="event-type">${type}</div>
-              <div class="event-title">${title}</div>
-            </div>
-          </div>
-          ${desc ? `<p class="event-desc">${desc}</p>` : ''}
-          <div class="event-meta">
-            ${time ? `<div class="event-row">⏰ ${time}</div>` : ''}
-            ${loc ? `<div class="event-row">📍 ${loc}</div>` : ''}
-          </div>
-        </div>
-      </div>`;
-  });
-
-  if (cards.length) {
-    grid.innerHTML = cards.join('');
-  }
-}
-
-function loadEventsFromLocalStorage(grid) {
-  const events = JSON.parse(localStorage.getItem('pcd_events') || '[]');
-  if (!events.length) return;
-  const barColors = {'Sunday Service':'','Worship Night':'n','Fellowship':'g','Prayer Service':'',
-    'Community Outreach':'n','Annual Conference':'g','Other':''};
-  grid.innerHTML = events.map(ev => {
-    const dateObj = ev.rawDate ? new Date(ev.rawDate + 'T00:00:00') : new Date();
-    const mo = dateObj.toLocaleString('en-US',{month:'short'}).toUpperCase();
-    const day = dateObj.getDate();
-    const bar = barColors[ev.type] || '';
-    return `
-      <div class="event-card">
-        ${ev.image ? `<div style="width:100%;"><img src="${ev.image}" alt="${ev.title}" style="width:100%;height:auto;display:block;"/></div>` : `<div class="event-bar${bar?' '+bar:''}"></div>`}
-        <div class="event-body">
-          <div class="event-date-row">
-            <div class="event-cal">
-              <div class="event-cal-mo">${mo}</div>
-              <div class="event-cal-day">${day}</div>
-            </div>
-            <div>
-              <div class="event-type">${ev.type||''}</div>
-              <div class="event-title">${ev.title||''}</div>
-            </div>
-          </div>
-          ${ev.desc||ev.description ? `<p class="event-desc">${ev.desc||ev.description}</p>` : ''}
-          <div class="event-meta">
-            ${(ev.startTime||ev.time) ? `<div class="event-row">⏰ ${ev.startTime||ev.time}${ev.endTime?' – '+ev.endTime:''}</div>` : ''}
-            ${(ev.location||ev.loc) ? `<div class="event-row">📍 ${ev.location||ev.loc}</div>` : ''}
-          </div>
-        </div>
-      </div>`;
+  grid.innerHTML = events.map(function(ev) {
+    var dateObj = ev.rawDate ? new Date(ev.rawDate + 'T00:00:00') : new Date();
+    var mo = dateObj.toLocaleString('en-US',{month:'short'}).toUpperCase();
+    var day = dateObj.getDate();
+    var bar = barColors[ev.type] || '';
+    var imgHtml = ev.image
+      ? '<div style="width:100%;"><img src="' + ev.image + '" alt="' + ev.title + '" style="width:100%;height:auto;display:block;"/></div>'
+      : '<div class="event-bar' + (bar ? ' '+bar : '') + '"></div>';
+    var descHtml = (ev.desc || ev.description)
+      ? '<p class="event-desc">' + (ev.desc || ev.description) + '</p>'
+      : '';
+    var timeHtml = (ev.startTime || ev.time)
+      ? '<div class="event-row">&#9200; ' + (ev.startTime || ev.time) + (ev.endTime ? ' – ' + ev.endTime : '') + '</div>'
+      : '';
+    var locHtml = (ev.location || ev.loc)
+      ? '<div class="event-row">&#128205; ' + (ev.location || ev.loc) + '</div>'
+      : '';
+    return '<div class="event-card">'
+      + imgHtml
+      + '<div class="event-body">'
+      + '<div class="event-date-row">'
+      + '<div class="event-cal"><div class="event-cal-mo">' + mo + '</div><div class="event-cal-day">' + day + '</div></div>'
+      + '<div><div class="event-type">' + (ev.type || '') + '</div><div class="event-title">' + (ev.title || '') + '</div></div>'
+      + '</div>'
+      + descHtml
+      + '<div class="event-meta">' + timeHtml + locHtml + '</div>'
+      + '</div></div>';
   }).join('');
 }
 
