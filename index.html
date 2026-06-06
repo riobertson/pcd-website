@@ -1202,18 +1202,65 @@ function loadEventsFromDash() {
   const grid = document.getElementById('events-grid-container');
   if (!grid) return;
 
-  // Try Google Sheets first
-  fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRdrWLPAwxdRUm2WLqfLpZGwCVPGp1Xg8hD0JWpRwpThPym71t7TNaU1latR_uaFoB5nwhgkgzIwYDC/pub?output=csv')
-    .then(r => r.text())
-    .then(csv => {
-      const rows = parseSheetCSV(csv);
-      if (rows.length > 1) {
-        renderEventsFromSheet(rows.slice(1), grid);
+  // Load directly from Firebase — source of truth for all events
+  const apiKey = 'AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w';
+  const base = 'https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/';
+
+  fetch(base + 'events?key=' + apiKey + '&pageSize=100')
+    .then(r => r.json())
+    .then(data => {
+      if (data.documents && data.documents.length) {
+        const events = data.documents.map(doc => {
+          const obj = {};
+          Object.keys(doc.fields || {}).forEach(k => {
+            const f = doc.fields[k];
+            obj[k] = f.stringValue !== undefined ? f.stringValue :
+                     f.booleanValue !== undefined ? f.booleanValue :
+                     f.integerValue !== undefined ? parseInt(f.integerValue) :
+                     f.doubleValue !== undefined ? parseFloat(f.doubleValue) : '';
+          });
+          return obj;
+        });
+        // Sort by date ascending
+        events.sort((a, b) => new Date(a.rawDate || 0) - new Date(b.rawDate || 0));
+        renderFirebaseEvents(events, grid);
       } else {
         loadEventsFromLocalStorage(grid);
       }
     })
     .catch(() => loadEventsFromLocalStorage(grid));
+}
+
+function renderFirebaseEvents(events, grid) {
+  const barColors = {'Sunday Service':'','Worship Night':'n','Fellowship':'g','Prayer Service':'',
+    'Community Outreach':'n','Annual Conference':'g','Other':''};
+  grid.innerHTML = events.map(ev => {
+    const dateObj = ev.rawDate ? new Date(ev.rawDate + 'T00:00:00') : new Date();
+    const mo = dateObj.toLocaleString('en-US',{month:'short'}).toUpperCase();
+    const day = dateObj.getDate();
+    const bar = barColors[ev.type] || '';
+    return \`
+      <div class="event-card">
+        \${ev.image ? \`<div style="width:100%;"><img src="\${ev.image}" alt="\${ev.title}" style="width:100%;height:auto;display:block;"/></div>\` : \`<div class="event-bar\${bar?' '+bar:''}"></div>\`}
+        <div class="event-body">
+          <div class="event-date-row">
+            <div class="event-cal">
+              <div class="event-cal-mo">\${mo}</div>
+              <div class="event-cal-day">\${day}</div>
+            </div>
+            <div>
+              <div class="event-type">\${ev.type||''}</div>
+              <div class="event-title">\${ev.title||''}</div>
+            </div>
+          </div>
+          \${ev.desc||ev.description ? \`<p class="event-desc">\${ev.desc||ev.description}</p>\` : ''}
+          <div class="event-meta">
+            \${(ev.startTime||ev.time) ? \`<div class="event-row">⏰ \${ev.startTime||ev.time}\${ev.endTime?' – '+ev.endTime:''}</div>\` : ''}
+            \${(ev.location||ev.loc) ? \`<div class="event-row">📍 \${ev.location||ev.loc}</div>\` : ''}
+          </div>
+        </div>
+      </div>\`;
+  }).join('');
 }
 
 function parseSheetCSV(text) {
