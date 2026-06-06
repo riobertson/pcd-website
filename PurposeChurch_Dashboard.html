@@ -1293,6 +1293,11 @@ function renderEmailChips() {
 }
 
 function addEvent() {
+  // Prevent saving while image is still compressing
+  if (window._imgCompressing) {
+    return toast('⏳ Image is still compressing — please wait a moment and try again.', 'error');
+  }
+
   const title = document.getElementById('e-title').value.trim();
   const date = document.getElementById('e-date').value;
   if (!title || !date) return toast('Please fill in Event Title and Date.', 'error');
@@ -1350,20 +1355,18 @@ function addEvent() {
     }).then(function(fbId) {
       if (fbId) {
         event.firebaseId = fbId;
+        // Add to DB with firebaseId confirmed
+        DB.events.unshift(event);
+        saveDB();
+        renderEventTable();
+        updateStats();
+        updateOverviewEvents();
+      } else {
+        // Firebase rejected the save (image too large or network error)
+        toast('⚠️ Event could not be saved to website. Try removing the image or using a smaller one.', 'error');
       }
-      // Add to DB after Firebase responds so we always have the firebaseId
-      DB.events.unshift(event);
-      saveDB();
-      renderEventTable();
-      updateStats();
-      updateOverviewEvents();
     }).catch(function() {
-      // Firebase failed — still save locally as calendar-only
-      DB.events.unshift(event);
-      saveDB();
-      renderEventTable();
-      updateStats();
-      updateOverviewEvents();
+      toast('⚠️ Network error saving event. Check your connection and try again.', 'error');
     });
   } else {
     // Calendar-only — save locally right away
@@ -3030,31 +3033,57 @@ function loadAllFromFirebase(callback) {
 // Compresses image to ~400px wide JPEG (~50KB) then stores as base64 in Firestore
 // Base64 is NEVER written to localStorage — only to Firebase
 // ══════════════════════════════════════════
+// Track if image compression is in progress
+window._imgCompressing = false;
+
 function uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
   const uploadingEl = document.getElementById(urlFieldId.replace('url','uploading')) ||
                       document.getElementById('e-img-uploading');
-  if (uploadingEl) uploadingEl.style.display = 'block';
+  if (uploadingEl) { uploadingEl.style.display = 'block'; uploadingEl.textContent = 'Compressing image...'; }
+
+  // Disable save button while compressing to prevent race condition
+  window._imgCompressing = true;
+  var saveBtn = document.querySelector('[onclick="addEvent()"]');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; }
 
   const reader = new FileReader();
   reader.onload = function(e) {
     const img = new Image();
     img.onload = function() {
-      // Compress: max 800px wide, JPEG quality 0.7 (~50-80KB)
-      const MAX_W = 800;
+      // Compress aggressively: max 600px wide, JPEG quality 0.6 (~30-60KB)
+      // Firestore string field limit is 1MB — stay well under it
+      const MAX_W = 600;
+      var quality = 0.6;
       const scale = img.width > MAX_W ? MAX_W / img.width : 1;
       const canvas = document.createElement('canvas');
       canvas.width = Math.round(img.width * scale);
       canvas.height = Math.round(img.height * scale);
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      const compressed = canvas.toDataURL('image/jpeg', 0.7);
+      var compressed = canvas.toDataURL('image/jpeg', quality);
 
-      if (uploadingEl) uploadingEl.style.display = 'none';
+      // If still too large (>700KB base64 ~= 500KB raw), compress more
+      if (compressed.length > 700000) {
+        compressed = canvas.toDataURL('image/jpeg', 0.4);
+      }
+      // Last resort — really squeeze it
+      if (compressed.length > 700000) {
+        canvas.width = Math.round(canvas.width * 0.6);
+        canvas.height = Math.round(canvas.height * 0.6);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        compressed = canvas.toDataURL('image/jpeg', 0.4);
+      }
 
-      // Set the URL field to the compressed base64 — this goes to Firestore, NOT localStorage
+      if (uploadingEl) { uploadingEl.style.display = 'none'; }
+
+      // Set the URL field to the compressed base64
       const urlField = document.getElementById(urlFieldId);
       if (urlField) urlField.value = compressed;
       showImgPreview(compressed, previewWrapId, previewImgId, placeholderId);
+
+      // Re-enable save button now that compression is done
+      window._imgCompressing = false;
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
     };
     img.src = e.target.result;
   };
