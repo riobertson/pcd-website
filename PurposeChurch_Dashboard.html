@@ -233,6 +233,31 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   };
 
   console.log("Firebase REST API ready");
+
+  // ── CLEAR BLOATED localStorage IMAGES ON STARTUP ──
+  // Base64 images in localStorage cause QuotaExceededError — purge them now
+  // Firebase is the source of truth for images anyway
+  (function cleanLocalStorageImages() {
+    try {
+      ['pcd_events','pcd_global_events','pcd_sermons','pcd_global_sermons','pcd_members','pcd_global_members'].forEach(function(key) {
+        var raw = localStorage.getItem(key);
+        if (!raw) return;
+        try {
+          var arr = JSON.parse(raw);
+          if (!Array.isArray(arr)) return;
+          var cleaned = arr.map(function(item) {
+            if (!item) return item;
+            var copy = Object.assign({}, item);
+            if (copy.image && copy.image.startsWith('data:')) delete copy.image;
+            if (copy.photo && copy.photo.startsWith('data:')) delete copy.photo;
+            return copy;
+          });
+          localStorage.setItem(key, JSON.stringify(cleaned));
+        } catch(e) {}
+      });
+      console.log('localStorage image cleanup done');
+    } catch(e) {}
+  })();
   </script>
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -945,10 +970,27 @@ let currentUser = JSON.parse(sessionStorage.getItem('pcd_current_user') || 'null
 let emailChips = [];
 
 function saveDB() {
-  // Save to both path-specific and global keys so all URLs share data
+  // Save to localStorage — strip base64 images first to stay under the 5MB quota
   Object.keys(DB).forEach(k => {
-    localStorage.setItem('pcd_' + k, JSON.stringify(DB[k]));
-    localStorage.setItem('pcd_global_' + k, JSON.stringify(DB[k]));
+    try {
+      var stripped = DB[k];
+      // For arrays (events, sermons, members), remove image fields before storing
+      if (Array.isArray(DB[k])) {
+        stripped = DB[k].map(function(item) {
+          if (!item) return item;
+          var copy = Object.assign({}, item);
+          // Remove base64 image data — it's already saved in Firebase
+          if (copy.image && copy.image.startsWith('data:')) delete copy.image;
+          if (copy.photo && copy.photo.startsWith('data:')) delete copy.photo;
+          return copy;
+        });
+      }
+      localStorage.setItem('pcd_' + k, JSON.stringify(stripped));
+      localStorage.setItem('pcd_global_' + k, JSON.stringify(stripped));
+    } catch(e) {
+      // localStorage full — that's OK, Firebase is the source of truth
+      console.warn('localStorage save skipped for ' + k + ':', e.message);
+    }
   });
 }
 
@@ -1285,18 +1327,12 @@ function addEvent() {
     image: document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : '',
   };
 
-  DB.events.unshift(event);
-  saveDB();
-  renderEventTable();
-  updateStats();
-  updateOverviewEvents();
-
   // Check post option - website or calendar only
   const postOption = document.querySelector('input[name="event-post-option"]:checked');
   const postToWebsite = !postOption || postOption.value === 'both';
   event.postedToWebsite = postToWebsite;
 
-  // Save to Firebase only if posting to website
+  // Save to Firebase FIRST (if posting to website), then store locally with the Firebase ID
   if (postToWebsite && window.saveToFirebase) {
     window.saveToFirebase('events', {
       title: event.title || '',
@@ -1313,14 +1349,29 @@ function addEvent() {
       active: 'true'
     }).then(function(fbId) {
       if (fbId) {
-        // Store Firebase ID back in localStorage for deletion later
-        const evIdx = DB.events.findIndex(e => e.id === event.id);
-        if (evIdx > -1) {
-          DB.events[evIdx].firebaseId = fbId;
-          saveDB();
-        }
+        event.firebaseId = fbId;
       }
+      // Add to DB after Firebase responds so we always have the firebaseId
+      DB.events.unshift(event);
+      saveDB();
+      renderEventTable();
+      updateStats();
+      updateOverviewEvents();
+    }).catch(function() {
+      // Firebase failed — still save locally as calendar-only
+      DB.events.unshift(event);
+      saveDB();
+      renderEventTable();
+      updateStats();
+      updateOverviewEvents();
     });
+  } else {
+    // Calendar-only — save locally right away
+    DB.events.unshift(event);
+    saveDB();
+    renderEventTable();
+    updateStats();
+    updateOverviewEvents();
   }
 
   // Simulate sending calendar emails
@@ -2909,12 +2960,15 @@ function loadAllFromFirebase(callback) {
     .then(function(data){
       if (data.documents && data.documents.length) {
         var fbEvents = data.documents.map(parseDoc);
-        // Merge: keep local events that haven't made it to Firebase yet
-        var fbIds = fbEvents.map(function(e){ return e.firebaseId; }).filter(Boolean);
-        var localOnly = DB.events.filter(function(e){
-          return !e.firebaseId && !fbIds.includes(e.firebaseId);
+        // Build a set of all Firebase document IDs so we can detect true local-only events
+        var fbDocIds = new Set(fbEvents.map(function(e){ return e.firebaseId; }).filter(Boolean));
+        // Keep local events that have NO firebaseId at all (calendar-only, never sent to Firebase)
+        // Do NOT drop events just because they have a firebaseId — Firebase already has them
+        var localCalendarOnly = DB.events.filter(function(e){
+          return !e.firebaseId;
         });
-        DB.events = fbEvents.concat(localOnly);
+        // Merge: Firebase events + any local calendar-only events not in Firebase
+        DB.events = fbEvents.concat(localCalendarOnly);
         DB.events.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       }
       done();
@@ -2971,51 +3025,45 @@ function loadAllFromFirebase(callback) {
 
 
 // ══════════════════════════════════════════
-// UNIVERSAL IMAGE UPLOADER (ImgBB)
 // ══════════════════════════════════════════
-const IMGBB_KEY = "2e76b9f3e5a4c8d1f0b7a3e9c6d2f4a8";
-
+// UNIVERSAL IMAGE UPLOADER
+// Compresses image to ~400px wide JPEG (~50KB) then stores as base64 in Firestore
+// Base64 is NEVER written to localStorage — only to Firebase
+// ══════════════════════════════════════════
 function uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
   const uploadingEl = document.getElementById(urlFieldId.replace('url','uploading')) ||
                       document.getElementById('e-img-uploading');
   if (uploadingEl) uploadingEl.style.display = 'block';
 
-  const formData = new FormData();
-  formData.append('image', file);
-  formData.append('key', IMGBB_KEY);
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Compress: max 800px wide, JPEG quality 0.7 (~50-80KB)
+      const MAX_W = 800;
+      const scale = img.width > MAX_W ? MAX_W / img.width : 1;
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const compressed = canvas.toDataURL('image/jpeg', 0.7);
 
-  fetch('https://api.imgbb.com/1/upload', {
-    method: 'POST',
-    body: formData
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    if (uploadingEl) uploadingEl.style.display = 'none';
-    if (data.success) {
-      const url = data.data.url;
+      if (uploadingEl) uploadingEl.style.display = 'none';
+
+      // Set the URL field to the compressed base64 — this goes to Firestore, NOT localStorage
       const urlField = document.getElementById(urlFieldId);
-      if (urlField) urlField.value = url;
-      showImgPreview(url, previewWrapId, previewImgId, placeholderId);
-    } else {
-      // If ImgBB fails, use local preview (base64)
-      useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
-    }
-  })
-  .catch(function() {
-    if (uploadingEl) uploadingEl.style.display = 'none';
-    // Fallback to local base64 preview
-    useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
-  });
+      if (urlField) urlField.value = compressed;
+      showImgPreview(compressed, previewWrapId, previewImgId, placeholderId);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const urlField = document.getElementById(urlFieldId);
-    if (urlField) urlField.value = e.target.result;
-    showImgPreview(e.target.result, previewWrapId, previewImgId, placeholderId);
-  };
-  reader.readAsDataURL(file);
+  // Just call the main uploader — it handles everything
+  uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
 }
 
 function showImgPreview(url, previewWrapId, previewImgId, placeholderId) {
