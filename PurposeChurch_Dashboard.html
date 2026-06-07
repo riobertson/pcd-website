@@ -529,6 +529,19 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 <div class="panel" id="panel-newsletter">
   <div class="dash-card">
     <div class="dash-card-title">✉️ Send Newsletter / Message</div>
+
+    <!-- QUICK TEMPLATES -->
+    <div class="f-group" style="margin-bottom:1.2rem;">
+      <label class="f-label">Quick Templates <span style="color:rgba(255,255,255,0.5);font-size:0.62rem;text-transform:none;">(auto-fills subject & message)</span></label>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('event')">📅 Event Update</button>
+        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('birthday')">🎂 Birthday Reminder</button>
+        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('bible')">📖 Bible Verse</button>
+        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('website')">🌐 Check the Website</button>
+        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('clear')">✕ Clear</button>
+      </div>
+    </div>
+
     <div class="f-row">
       <div class="f-group"><label class="f-label">Subject Line</label><input class="f-input" id="nl-subject" placeholder="e.g. This Sunday at Purpose Church!"/></div>
       <div class="f-group"><label class="f-label">Send To</label>
@@ -2057,6 +2070,69 @@ function previewNewsletter() {
 }
 
 // Override sendNewsletter to track image
+function useNLTemplate(type) {
+  var subject = document.getElementById('nl-subject');
+  var body = document.getElementById('nl-body');
+  var today = new Date();
+  var dayName = today.toLocaleDateString('en-US',{weekday:'long'});
+  var fullDate = today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  var templates = {
+    event: {
+      subject: "Upcoming Events at Purpose Church of Denton!",
+      body: "We have some exciting events coming up at Purpose Church of Denton and we don't want you to miss out!\n\n" +
+            "📅 [EVENT NAME]\n" +
+            "🗓️ [DATE] at [TIME]\n" +
+            "📍 [LOCATION]\n\n" +
+            "[Add a brief description of the event here]\n\n" +
+            "We'd love to see you there! For more details on this and other upcoming events, visit our website at purposechurchofdenton.com/events\n\n" +
+            "God bless you,\nPastor Michael Herron\nPurpose Church of Denton"
+    },
+    birthday: {
+      subject: "Happy Birthday from Purpose Church of Denton! 🎂",
+      body: "On behalf of Pastor Michael Herron, First Lady Mal Herron, and the entire Purpose Church of Denton family — HAPPY BIRTHDAY!\n\n" +
+            "🎉 Today is YOUR day and we celebrate you!\n\n" +
+            "May God pour out His richest blessings on you today and in the year ahead. You are loved, valued, and appreciated as a part of our church family.\n\n" +
+            "\"This is the day the Lord has made; let us rejoice and be glad in it.\" — Psalm 118:24\n\n" +
+            "With love,\nPurpose Church of Denton Family"
+    },
+    bible: {
+      subject: "Your Word for Today from Purpose Church of Denton 📖",
+      body: "Good " + (today.getHours() < 12 ? "morning" : today.getHours() < 17 ? "afternoon" : "evening") + " Purpose Church family!\n\n" +
+            "Here is your Word for today, " + fullDate + ":\n\n" +
+            "📖 \"[BIBLE VERSE TEXT HERE]\"\n" +
+            "— [Book Chapter:Verse]\n\n" +
+            "[Add a brief reflection or encouragement here — 2-3 sentences connecting the verse to daily life]\n\n" +
+            "Let this Word guide your steps today. We are praying for you!\n\n" +
+            "In His service,\nPastor Michael Herron\nPurpose Church of Denton"
+    },
+    website: {
+      subject: "Have You Checked Our Website Lately? 🌐",
+      body: "Hello Purpose Church family!\n\n" +
+            "We've been busy updating our website with the latest news, events, and resources just for you!\n\n" +
+            "Here's what's new at purposechurchofdenton.com:\n\n" +
+            "📅 New Events — Check out what's coming up\n" +
+            "🎤 Latest Sermons — Catch up on messages you may have missed\n" +
+            "📋 Announcements — Stay up to date with church news\n" +
+            "💝 Give Online — Support the ministry from anywhere\n\n" +
+            "Visit us at: purposechurchofdenton.com\n\n" +
+            "Stay connected and stay encouraged!\n\n" +
+            "Blessings,\nPurpose Church of Denton"
+    },
+    clear: {
+      subject: "",
+      body: ""
+    }
+  };
+
+  var t = templates[type];
+  if (t && subject && body) {
+    subject.value = t.subject;
+    body.value = t.body;
+    if (type !== 'clear') toast('✅ Template loaded — customize it before sending!');
+  }
+}
+
 function sendNewsletter() {
   var subject = document.getElementById('nl-subject').value.trim();
   var body = document.getElementById('nl-body').value.trim();
