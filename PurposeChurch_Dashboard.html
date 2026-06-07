@@ -1390,6 +1390,15 @@ function addEvent() {
         document.getElementById('event-email-preview').style.display = 'none';
         removeEventImg();
 
+        // Debug: log what we have before sending
+        console.log('Event email debug:', {
+          emailChips: emailChips,
+          notifyMembers: event.notifyMembers,
+          recipients: recipients,
+          totalMembers: DB.members.length,
+          optedInMembers: DB.members.filter(function(m){ return m.notif !== 'none' && m.email; }).length
+        });
+
         // Send event invite emails via EmailJS
         if (recipients.length > 0) {
           var emailRecipients = recipients.filter(function(r){ return r && r.indexOf('@') > -1; });
