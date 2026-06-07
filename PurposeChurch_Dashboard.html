@@ -2058,36 +2058,78 @@ function previewNewsletter() {
 
 // Override sendNewsletter to track image
 function sendNewsletter() {
-  const subject = document.getElementById('nl-subject').value.trim();
-  const body = document.getElementById('nl-body').value.trim();
+  var subject = document.getElementById('nl-subject').value.trim();
+  var body = document.getElementById('nl-body').value.trim();
   if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
-  const sendTo = document.getElementById('nl-send-to').value;
-  let count = 0;
+
+  var sendTo = document.getElementById('nl-send-to').value;
+  var recipients = [];
   if (sendTo === 'all' || sendTo === 'email') {
-    count = DB.members.filter(m => m.notif !== 'none').length;
+    recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
+  } else if (sendTo === 'specific') {
+    var grp = document.getElementById('nl-group-select');
+    var role = grp ? grp.value : '';
+    recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email && (m.roles||[]).includes(role); });
   }
-  // Check if using URL option
-  const urlInput = document.getElementById('nl-img-url');
-  const urlOption = document.querySelector('input[name="nl-img-option"]:checked');
+
+  if (!recipients.length) return toast('No opted-in members with email addresses found.', 'error');
+
+  // Check if using URL image option
+  var urlInput = document.getElementById('nl-img-url');
+  var urlOption = document.querySelector('input[name="nl-img-option"]:checked');
   if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) {
-    nlImageData = urlInput.value; // treat URL as image source
+    nlImageData = urlInput.value;
   }
-  const entry = {
-    id: Date.now(),
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-    subject,
-    recipients: count,
-    hasImage: !!nlImageData,
-    channel: 'Email',
-  };
-  DB.newsletter_history.unshift(entry);
-  saveDB();
-  renderNLHistory();
-  document.getElementById('nl-subject').value = '';
-  document.getElementById('nl-body').value = '';
-  document.getElementById('nl-preview').style.display = 'none';
-  removeNLImage();
-  toast(`✅ Newsletter sent to ${count} opted-in member${count !== 1 ? 's' : ''}!`);
+
+  var btn = document.querySelector('#panel-newsletter .btn-gold');
+  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+
+  var sent = 0;
+  var failed = 0;
+  var total = recipients.length;
+
+  recipients.forEach(function(m) {
+    emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+      to_email: m.email,
+      to_name: (m.name || m.firstName || m.email),
+      subject: subject,
+      message: body,
+      email: m.email
+    })
+    .then(function() {
+      sent++;
+      if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
+    })
+    .catch(function(err) {
+      console.error('Email failed for', m.email, err);
+      failed++;
+      if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
+    });
+  });
+}
+
+function finishNewsletter(sent, failed, subject, total, btn) {
+  if (btn) { btn.textContent = '✉️ Send Now'; btn.disabled = false; }
+
+  if (sent > 0) {
+    toast('✅ Newsletter sent to ' + sent + ' of ' + total + ' members!');
+    var entry = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+      subject: subject,
+      recipients: sent,
+      hasImage: !!nlImageData,
+      channel: 'Email'
+    };
+    DB.newsletter_history.unshift(entry);
+    saveDB();
+    renderNLHistory();
+    document.getElementById('nl-subject').value = '';
+    document.getElementById('nl-body').value = '';
+    document.getElementById('nl-preview').style.display = 'none';
+    removeNLImage();
+  }
+  if (failed > 0) toast('⚠️ ' + failed + ' emails failed to send.', 'error');
 }
 
 // Override renderNLHistory to show image column
@@ -3273,10 +3315,10 @@ function sendMemberEmail() {
   emails.forEach(function(m) {
     emailjs.send('service_gkq31qg', 'template_oxjkvex', {
       to_email: m.email,
-      to_name: m.name || m.email,
+      to_name: m.name || m.firstName || m.email,
       subject: subject,
-      message: body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com',
-      from_name: 'Purpose Church of Denton'
+      message: body,
+      email: m.email
     })
     .then(function() {
       sent++;
