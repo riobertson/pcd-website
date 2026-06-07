@@ -539,6 +539,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('bible')">📖 Bible Verse</button>
         <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('website')">🌐 Check the Website</button>
         <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('clear')">✕ Clear</button>
+        <button class="btn btn-gold btn-sm" onclick="useNLTemplate('combined')">⭐ Full Church Update</button>
       </div>
     </div>
 
@@ -2122,6 +2123,53 @@ function useNLTemplate(type) {
     clear: {
       subject: "",
       body: ""
+    },
+    combined: {
+      subject: "Purpose Church of Denton — Church Update for " + fullDate,
+      body: "Hello Purpose Church family!\n\n" +
+            "We pray this message finds you blessed and full of faith. Here is your full church update for " + fullDate + "!\n\n" +
+
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+            "📅 UPCOMING EVENTS\n" +
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+            "[EVENT NAME]\n" +
+            "🗓️ [DATE] at [TIME]\n" +
+            "📍 [LOCATION]\n" +
+            "[Brief event description]\n\n" +
+            "For a full list of upcoming events, visit:\n" +
+            "purposechurchofdenton.com/events\n\n" +
+
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+            "🎂 BIRTHDAY CELEBRATIONS\n" +
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+            "This week we celebrate these members of our Purpose Church family:\n\n" +
+            "🎉 [MEMBER NAME] — [Birthday Date]\n" +
+            "🎉 [MEMBER NAME] — [Birthday Date]\n\n" +
+            "If we missed your birthday, please let us know! We love celebrating YOU.\n\n" +
+
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+            "📖 WORD OF THE WEEK\n" +
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+            "\"[BIBLE VERSE TEXT HERE]\"\n" +
+            "— [Book Chapter:Verse]\n\n" +
+            "[Add a brief 2-3 sentence reflection or encouragement here]\n\n" +
+
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+            "🌐 STAY CONNECTED\n" +
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+            "Our website is always being updated with the latest news and resources:\n\n" +
+            "📅 Events — purposechurchofdenton.com/events\n" +
+            "🎤 Sermons — purposechurchofdenton.com/sermons\n" +
+            "💝 Give Online — purposechurchofdenton.com/give\n" +
+            "📺 Facebook Live — facebook.com/purposechurchdenton\n\n" +
+
+            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+            "We love you and we are praying for you always. You are a vital part of the Purpose Church family!\n\n" +
+            "With love and blessings,\n" +
+            "Pastor Michael Herron & First Lady Mal Herron\n" +
+            "Purpose Church of Denton\n" +
+            "3401 E University Dr #101, Denton TX\n" +
+            "purposechurchofdenton.com"
     }
   };
 
