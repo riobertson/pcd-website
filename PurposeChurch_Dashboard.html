@@ -2212,23 +2212,28 @@ function sendNewsletter() {
   var failed = 0;
   var total = recipients.length;
 
-  recipients.forEach(function(m) {
-    emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-      to_email: m.email,
-      to_name: (m.name || m.firstName || m.email),
-      subject: subject,
-      message: body,
-      email: m.email
-    })
-    .then(function() {
-      sent++;
-      if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
-    })
-    .catch(function(err) {
-      console.error('Email failed for', m.email, err);
-      failed++;
-      if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
-    });
+  // Stagger sends 1 second apart to avoid EmailJS 429 rate limit
+  recipients.forEach(function(m, i) {
+    setTimeout(function() {
+      emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+        to_email: m.email,
+        to_name: (m.name || m.firstName || m.email),
+        subject: subject,
+        message: body,
+        email: m.email
+      })
+      .then(function() {
+        sent++;
+        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
+        if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
+      })
+      .catch(function(err) {
+        console.error('Email failed for', m.email, err);
+        failed++;
+        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
+        if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
+      });
+    }, i * 1000); // 1 second between each email
   });
 }
 
@@ -3436,22 +3441,27 @@ function sendMemberEmail() {
   const total = emails.length;
 
   // Send to each recipient via EmailJS
-  emails.forEach(function(m) {
-    emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-      to_email: m.email,
-      to_name: m.name || m.firstName || m.email,
-      subject: subject,
-      message: body,
-      email: m.email
-    })
-    .then(function() {
-      sent++;
-      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
-    })
-    .catch(function() {
-      failed++;
-      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
-    });
+  // Stagger sends 1 second apart to avoid EmailJS 429 rate limit
+  emails.forEach(function(m, i) {
+    setTimeout(function() {
+      emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+        to_email: m.email,
+        to_name: m.name || m.firstName || m.email,
+        subject: subject,
+        message: body,
+        email: m.email
+      })
+      .then(function() {
+        sent++;
+        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
+        if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+      })
+      .catch(function() {
+        failed++;
+        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
+        if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+      });
+    }, i * 1000); // 1 second between each email
   });
 }
 
