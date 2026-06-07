@@ -1454,14 +1454,54 @@ function addEvent() {
     renderEventTable();
     updateStats();
     updateOverviewEvents();
-    toast('✅ Event saved to calendar!');
     refreshCalendar();
+
+    // Still send emails even for calendar-only events
+    var calRecipients = [...emailChips];
+    if (event.notifyMembers) {
+      var calOptedIn = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
+      calOptedIn.forEach(function(m){ if (!calRecipients.includes(m.email)) calRecipients.push(m.email); });
+    }
+
     emailChips = [];
     renderEmailChips();
     ['e-title','e-date','e-end-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
     document.getElementById('e-notify-members').checked = false;
     document.getElementById('event-email-preview').style.display = 'none';
     removeEventImg();
+
+    if (calRecipients.length > 0) {
+      var calEmailRecipients = calRecipients.filter(function(r){ return r && r.indexOf('@') > -1; });
+      var calSent = 0; var calFailed = 0; var calTotal = calEmailRecipients.length;
+      var calMsg = '📅 ' + (event.title || 'Event') + '\n' +
+        (event.date ? '🗓️ ' + event.date + '\n' : '') +
+        (event.startTime ? '⏰ ' + event.startTime + (event.endTime ? ' – ' + event.endTime : '') + '\n' : '') +
+        (event.location ? '📍 ' + event.location + '\n' : '') +
+        (event.desc ? '\n' + event.desc + '\n' : '') +
+        '\nWe hope to see you there!\n\nPurpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
+
+      calEmailRecipients.forEach(function(email, i) {
+        setTimeout(function() {
+          var member = DB.members.find(function(m){ return m.email === email; });
+          var name = member ? (member.name || member.firstName || email) : email;
+          emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+            to_email: email,
+            to_name: name,
+            subject: '📅 Invite: ' + (event.title || 'Upcoming Event') + ' - Purpose Church of Denton',
+            message: calMsg,
+            email: email
+          }).then(function() {
+            calSent++;
+            if (calSent + calFailed === calTotal) toast('✅ Event saved! Invites sent to ' + calSent + ' of ' + calTotal + ' recipient' + (calTotal > 1 ? 's' : '') + '.');
+          }).catch(function() {
+            calFailed++;
+            if (calSent + calFailed === calTotal) toast('✅ Event saved to calendar!' + (calFailed > 0 ? ' ⚠️ ' + calFailed + ' invite(s) failed.' : ''));
+          });
+        }, i * 1000);
+      });
+    } else {
+      toast('✅ Event saved to calendar!');
+    }
   }
 }
 
