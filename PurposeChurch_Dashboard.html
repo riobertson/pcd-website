@@ -1381,11 +1381,7 @@ function addEvent() {
           var optedIn = DB.members.filter(function(m){ return m.notif !== 'none'; });
           optedIn.forEach(function(m){ if (!recipients.includes(m.email)) recipients.push(m.email); });
         }
-        if (recipients.length > 0) {
-          toast('✅ Event saved! Calendar invites sent to ' + recipients.length + ' recipient' + (recipients.length > 1 ? 's' : '') + '.');
-        } else {
-          toast('✅ Event saved!');
-        }
+        // Clear form immediately
         refreshCalendar();
         emailChips = [];
         renderEmailChips();
@@ -1393,6 +1389,48 @@ function addEvent() {
         document.getElementById('e-notify-members').checked = false;
         document.getElementById('event-email-preview').style.display = 'none';
         removeEventImg();
+
+        // Send event invite emails via EmailJS
+        if (recipients.length > 0) {
+          var emailRecipients = recipients.filter(function(r){ return r && r.indexOf('@') > -1; });
+          var eventSent = 0;
+          var eventFailed = 0;
+          var eventTotal = emailRecipients.length;
+          var inviteMsg = '📅 ' + (event.title || 'Event') + '\n' +
+            (event.date ? '🗓️ ' + event.date + (event.endDate ? ' – ' + event.endDate : '') + '\n' : '') +
+            (event.startTime ? '⏰ ' + event.startTime + (event.endTime ? ' – ' + event.endTime : '') + '\n' : '') +
+            (event.location ? '📍 ' + event.location + '\n' : '') +
+            (event.desc ? '\n' + event.desc + '\n' : '') +
+            '\nWe hope to see you there!\n\n' +
+            'Purpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
+
+          emailRecipients.forEach(function(email, i) {
+            setTimeout(function() {
+              // Find member name if available
+              var member = DB.members.find(function(m){ return m.email === email; });
+              var name = member ? (member.name || member.firstName || email) : email;
+              emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+                to_email: email,
+                to_name: name,
+                subject: '📅 Invite: ' + (event.title || 'Upcoming Event') + ' - Purpose Church of Denton',
+                message: inviteMsg,
+                email: email
+              }).then(function() {
+                eventSent++;
+                if (eventSent + eventFailed === eventTotal) {
+                  toast('✅ Event saved! Invites sent to ' + eventSent + ' of ' + eventTotal + ' recipient' + (eventTotal > 1 ? 's' : '') + '.');
+                }
+              }).catch(function() {
+                eventFailed++;
+                if (eventSent + eventFailed === eventTotal) {
+                  toast('✅ Event saved!' + (eventFailed > 0 ? ' ⚠️ ' + eventFailed + ' invite(s) failed.' : ''));
+                }
+              });
+            }, i * 1000);
+          });
+        } else {
+          toast('✅ Event saved!');
+        }
       } else {
         // Firebase rejected the save (image too large or network error)
         toast('⚠️ Event could not be saved. Try removing the image or using a smaller one.', 'error');
@@ -2206,7 +2244,13 @@ function sendNewsletter() {
   }
 
   var btn = document.querySelector('#panel-newsletter .btn-gold');
-  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+  if (btn) {
+    if (btn.disabled) return; // Already sending — ignore extra clicks
+    btn.textContent = 'Sending 0 of ' + recipients.length + '...';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'not-allowed';
+  }
 
   var sent = 0;
   var failed = 0;
@@ -2238,7 +2282,7 @@ function sendNewsletter() {
 }
 
 function finishNewsletter(sent, failed, subject, total, btn) {
-  if (btn) { btn.textContent = '✉️ Send Now'; btn.disabled = false; }
+  if (btn) { btn.textContent = '✉️ Send Now'; btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
 
   if (sent > 0) {
     toast('✅ Newsletter sent to ' + sent + ' of ' + total + ' members!');
@@ -2986,19 +3030,43 @@ function saveEditEvent() {
   }
 
   // Resend email notification
-  if (resendEmail) {
-    const emails = DB.members
-      .filter(m => m.notif !== 'none' && m.email)
-      .map(m => m.email);
-    if (emails.length > 0) {
-      toast('📧 Resending notifications to ' + emails.length + ' members...');
-    } else {
-      toast('No opted-in members to notify.');
-    }
-  }
-
   closeEditModal();
   if (!updateWebsite && !resendEmail) toast('✅ Event updated!');
+
+  // Send resend emails AFTER modal closes
+  if (resendEmail) {
+    var members = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
+    if (!members.length) return toast('No opted-in members to notify.', 'error');
+
+    toast('📧 Sending notifications to ' + members.length + ' members...');
+
+    var inviteMsg = '📅 ' + (title || 'Event') + '\n' +
+      (formattedDate ? '🗓️ ' + formattedDate + (formattedEndDate ? ' – ' + formattedEndDate : '') + '\n' : '') +
+      (startTime ? '⏰ ' + startTime + (endTime ? ' – ' + endTime : '') + '\n' : '') +
+      (loc ? '📍 ' + loc + '\n' : '') +
+      (desc ? '\n' + desc + '\n' : '') +
+      '\nWe hope to see you there!\n\n' +
+      'Purpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
+
+    var rSent = 0; var rFailed = 0; var rTotal = members.length;
+    members.forEach(function(m, i) {
+      setTimeout(function() {
+        emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+          to_email: m.email,
+          to_name: m.name || m.firstName || m.email,
+          subject: '📅 Event Update: ' + (title || 'Upcoming Event') + ' - Purpose Church of Denton',
+          message: inviteMsg,
+          email: m.email
+        }).then(function() {
+          rSent++;
+          if (rSent + rFailed === rTotal) toast('✅ Notifications sent to ' + rSent + ' of ' + rTotal + ' members!');
+        }).catch(function() {
+          rFailed++;
+          if (rSent + rFailed === rTotal) toast('✅ Event updated!' + (rFailed > 0 ? ' ⚠️ ' + rFailed + ' notification(s) failed.' : ''));
+        });
+      }, i * 1000);
+    });
+  }
 }
 
 // Close modal when clicking outside
@@ -3434,7 +3502,13 @@ function sendMemberEmail() {
 
   // Show sending state
   const btn = document.querySelector('#panel-email .btn-burg');
-  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+  if (btn) {
+    if (btn.disabled) return; // Already sending — ignore extra clicks
+    btn.textContent = 'Sending 0 of ' + total + '...';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'not-allowed';
+  }
 
   let sent = 0;
   let failed = 0;
@@ -3466,7 +3540,7 @@ function sendMemberEmail() {
 }
 
 function finishSending(sent, failed, subject, total, btn) {
-  if (btn) { btn.textContent = '📧 Send Email Now'; btn.disabled = false; }
+  if (btn) { btn.textContent = '📧 Send Email Now'; btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
 
   if (sent > 0) {
     toast('✅ Email sent to ' + sent + ' of ' + total + ' members!');
