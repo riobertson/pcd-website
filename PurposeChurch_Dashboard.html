@@ -3205,11 +3205,7 @@ function sendViaGmail() {
     chunks.push(emails.slice(i, i + chunkSize));
   }
 
-  const fullBody = body + '
-
----
-Purpose Church of Denton
-purposechurchofdenton.com';
+  const fullBody = body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com';
 
   if (chunks.length === 1) {
     // Single window
