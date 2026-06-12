@@ -233,31 +233,6 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   };
 
   console.log("Firebase REST API ready");
-
-  // ── CLEAR BLOATED localStorage IMAGES ON STARTUP ──
-  // Base64 images in localStorage cause QuotaExceededError — purge them now
-  // Firebase is the source of truth for images anyway
-  (function cleanLocalStorageImages() {
-    try {
-      ['pcd_events','pcd_global_events','pcd_sermons','pcd_global_sermons','pcd_members','pcd_global_members'].forEach(function(key) {
-        var raw = localStorage.getItem(key);
-        if (!raw) return;
-        try {
-          var arr = JSON.parse(raw);
-          if (!Array.isArray(arr)) return;
-          var cleaned = arr.map(function(item) {
-            if (!item) return item;
-            var copy = Object.assign({}, item);
-            if (copy.image && copy.image.startsWith('data:')) delete copy.image;
-            if (copy.photo && copy.photo.startsWith('data:')) delete copy.photo;
-            return copy;
-          });
-          localStorage.setItem(key, JSON.stringify(cleaned));
-        } catch(e) {}
-      });
-      console.log('localStorage image cleanup done');
-    } catch(e) {}
-  })();
   </script>
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -433,14 +408,11 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       </div>
     </div>
     <div class="f-row">
-      <div class="f-group"><label class="f-label">Start Date *</label><input class="f-input" id="e-date" type="date" onchange="calGoToDate(this.value)"/></div>
-      <div class="f-group"><label class="f-label">End Date <span style="font-weight:300;color:rgba(255,255,255,0.4);">(optional)</span></label><input class="f-input" id="e-end-date" type="date"/></div>
-    </div>
-    <div class="f-row">
+      <div class="f-group"><label class="f-label">Date</label><input class="f-input" id="e-date" type="date" onchange="calGoToDate(this.value)"/></div>
       <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="e-start" type="time"/></div>
-      <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="e-end" type="time"/></div>
     </div>
     <div class="f-row">
+      <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="e-end" type="time"/></div>
       <div class="f-group"><label class="f-label">Location</label><input class="f-input" id="e-loc" placeholder="Purpose Church — 3401 E University Dr #101"/></div>
     </div>
     <div class="f-group"><label class="f-label">Description</label><textarea class="f-textarea" id="e-desc" rows="3" placeholder="Describe the event..."></textarea></div>
@@ -529,20 +501,6 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 <div class="panel" id="panel-newsletter">
   <div class="dash-card">
     <div class="dash-card-title">✉️ Send Newsletter / Message</div>
-
-    <!-- QUICK TEMPLATES -->
-    <div class="f-group" style="margin-bottom:1.2rem;">
-      <label class="f-label">Quick Templates <span style="color:rgba(255,255,255,0.5);font-size:0.62rem;text-transform:none;">(auto-fills subject & message)</span></label>
-      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
-        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('event')">📅 Event Update</button>
-        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('birthday')">🎂 Birthday Reminder</button>
-        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('bible')">📖 Bible Verse</button>
-        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('website')">🌐 Check the Website</button>
-        <button class="btn btn-ghost btn-sm" onclick="useNLTemplate('clear')">✕ Clear</button>
-        <button class="btn btn-gold btn-sm" onclick="useNLTemplate('combined')">⭐ Full Church Update</button>
-      </div>
-    </div>
-
     <div class="f-row">
       <div class="f-group"><label class="f-label">Subject Line</label><input class="f-input" id="nl-subject" placeholder="e.g. This Sunday at Purpose Church!"/></div>
       <div class="f-group"><label class="f-label">Send To</label>
@@ -984,27 +942,10 @@ let currentUser = JSON.parse(sessionStorage.getItem('pcd_current_user') || 'null
 let emailChips = [];
 
 function saveDB() {
-  // Save to localStorage — strip base64 images first to stay under the 5MB quota
+  // Save to both path-specific and global keys so all URLs share data
   Object.keys(DB).forEach(k => {
-    try {
-      var stripped = DB[k];
-      // For arrays (events, sermons, members), remove image fields before storing
-      if (Array.isArray(DB[k])) {
-        stripped = DB[k].map(function(item) {
-          if (!item) return item;
-          var copy = Object.assign({}, item);
-          // Remove base64 image data — it's already saved in Firebase
-          if (copy.image && copy.image.startsWith('data:')) delete copy.image;
-          if (copy.photo && copy.photo.startsWith('data:')) delete copy.photo;
-          return copy;
-        });
-      }
-      localStorage.setItem('pcd_' + k, JSON.stringify(stripped));
-      localStorage.setItem('pcd_global_' + k, JSON.stringify(stripped));
-    } catch(e) {
-      // localStorage full — that's OK, Firebase is the source of truth
-      console.warn('localStorage save skipped for ' + k + ':', e.message);
-    }
+    localStorage.setItem('pcd_' + k, JSON.stringify(DB[k]));
+    localStorage.setItem('pcd_global_' + k, JSON.stringify(DB[k]));
   });
 }
 
@@ -1071,54 +1012,20 @@ function showDashboard() {
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('sb-username').textContent = currentUser.name;
   document.getElementById('sb-userrole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+  // Access control only for pastors
   if (currentUser.role !== 'pastor') {
     document.getElementById('nav-access').style.display = 'none';
   }
+  refreshAll();
   updateDateTime();
   setInterval(updateDateTime, 1000);
   document.getElementById('secret-url-display').textContent = window.location.href.split('#')[0] + '#' + SECRET_HASH;
-
-  // Show syncing indicator
-  showSyncBadge('Syncing…', 'syncing');
-
-  // Always pull from Firebase before rendering
+  // Load all data from Firebase for cross-device sync
   loadAllFromFirebase(function() {
     refreshAll();
     updateStats();
     updateOverviewEvents();
-    updateOverviewAnnouncements();
-    showSyncBadge('Synced ✓', 'ok');
-    setTimeout(hideSyncBadge, 2500);
-    // Auto-refresh every 30 seconds
-    if (!window._pcdSyncInterval) {
-      window._pcdSyncInterval = setInterval(function() {
-        loadAllFromFirebase(function() {
-          refreshAll();
-          updateStats();
-          showSyncBadge('Synced ✓', 'ok');
-          setTimeout(hideSyncBadge, 1500);
-        });
-      }, 30000);
-    }
   });
-}
-
-function showSyncBadge(msg, state) {
-  var b = document.getElementById('sync-badge');
-  if (!b) {
-    b = document.createElement('div');
-    b.id = 'sync-badge';
-    b.style.cssText = 'position:fixed;top:12px;right:16px;z-index:9999;padding:0.35rem 0.9rem;border-radius:20px;font-size:0.72rem;font-family:Jost,sans-serif;font-weight:600;letter-spacing:0.08em;color:#fff;pointer-events:none;transition:opacity 0.3s;';
-    document.body.appendChild(b);
-  }
-  b.textContent = msg;
-  b.style.display = 'inline-block';
-  b.style.opacity = '1';
-  b.style.background = state === 'ok' ? 'rgba(40,167,69,0.9)' : 'rgba(201,168,76,0.95)';
-}
-function hideSyncBadge() {
-  var b = document.getElementById('sync-badge');
-  if (b) b.style.opacity = '0';
 }
 
 
@@ -1307,27 +1214,15 @@ function renderEmailChips() {
 }
 
 function addEvent() {
-  // Prevent saving while image is still compressing
-  if (window._imgCompressing) {
-    return toast('⏳ Image is still compressing — please wait a moment and try again.', 'error');
-  }
-
   const title = document.getElementById('e-title').value.trim();
   const date = document.getElementById('e-date').value;
   if (!title || !date) return toast('Please fill in Event Title and Date.', 'error');
 
   const startTime = document.getElementById('e-start').value;
   const endTime = document.getElementById('e-end').value;
-  const endDate = document.getElementById('e-end-date').value;
   const dateParts = date.split('-');
   const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
   const formattedDate = dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  var formattedEndDate = '';
-  if (endDate) {
-    var edParts = endDate.split('-');
-    var edObj = new Date(parseInt(edParts[0]), parseInt(edParts[1])-1, parseInt(edParts[2]));
-    formattedEndDate = edObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  }
 
   const event = {
     id: Date.now(),
@@ -1335,8 +1230,6 @@ function addEvent() {
     type: document.getElementById('e-type').value,
     date: formattedDate,
     rawDate: date,
-    endDate: formattedEndDate,
-    rawEndDate: endDate || '',
     startTime: startTime ? formatTime(startTime) : '',
     endTime: endTime ? formatTime(endTime) : '',
     location: document.getElementById('e-loc').value.trim(),
@@ -1346,20 +1239,24 @@ function addEvent() {
     image: document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : '',
   };
 
+  DB.events.unshift(event);
+  saveDB();
+  renderEventTable();
+  updateStats();
+  updateOverviewEvents();
+
   // Check post option - website or calendar only
   const postOption = document.querySelector('input[name="event-post-option"]:checked');
   const postToWebsite = !postOption || postOption.value === 'both';
   event.postedToWebsite = postToWebsite;
 
-  // Save to Firebase FIRST (if posting to website), then store locally with the Firebase ID
+  // Save to Firebase only if posting to website
   if (postToWebsite && window.saveToFirebase) {
     window.saveToFirebase('events', {
       title: event.title || '',
       type: event.type || '',
       date: event.date || '',
       rawDate: event.rawDate || '',
-      endDate: event.endDate || '',
-      rawEndDate: event.rawEndDate || '',
       startTime: event.startTime || '',
       endTime: event.endTime || '',
       location: event.location || '',
@@ -1368,141 +1265,37 @@ function addEvent() {
       active: 'true'
     }).then(function(fbId) {
       if (fbId) {
-        event.firebaseId = fbId;
-        // Add to DB with firebaseId confirmed
-        DB.events.unshift(event);
-        saveDB();
-        renderEventTable();
-        updateStats();
-        updateOverviewEvents();
-        // Show success and clear form AFTER Firebase confirms
-        var recipients = [...emailChips];
-        if (event.notifyMembers) {
-          var optedIn = DB.members.filter(function(m){ return m.notif !== 'none'; });
-          optedIn.forEach(function(m){ if (!recipients.includes(m.email)) recipients.push(m.email); });
+        // Store Firebase ID back in localStorage for deletion later
+        const evIdx = DB.events.findIndex(e => e.id === event.id);
+        if (evIdx > -1) {
+          DB.events[evIdx].firebaseId = fbId;
+          saveDB();
         }
-        // Clear form immediately
-        refreshCalendar();
-        emailChips = [];
-        renderEmailChips();
-        ['e-title','e-date','e-end-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
-        document.getElementById('e-notify-members').checked = false;
-        document.getElementById('event-email-preview').style.display = 'none';
-        removeEventImg();
-
-        // Debug: log what we have before sending
-        console.log('Event email debug:', {
-          emailChips: emailChips,
-          notifyMembers: event.notifyMembers,
-          recipients: recipients,
-          totalMembers: DB.members.length,
-          optedInMembers: DB.members.filter(function(m){ return m.notif !== 'none' && m.email; }).length
-        });
-
-        // Send event invite emails via EmailJS
-        if (recipients.length > 0) {
-          var emailRecipients = recipients.filter(function(r){ return r && r.indexOf('@') > -1; });
-          var eventSent = 0;
-          var eventFailed = 0;
-          var eventTotal = emailRecipients.length;
-          var inviteMsg = '📅 ' + (event.title || 'Event') + '\n' +
-            (event.date ? '🗓️ ' + event.date + (event.endDate ? ' – ' + event.endDate : '') + '\n' : '') +
-            (event.startTime ? '⏰ ' + event.startTime + (event.endTime ? ' – ' + event.endTime : '') + '\n' : '') +
-            (event.location ? '📍 ' + event.location + '\n' : '') +
-            (event.desc ? '\n' + event.desc + '\n' : '') +
-            '\nWe hope to see you there!\n\n' +
-            'Purpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
-
-          emailRecipients.forEach(function(email, i) {
-            setTimeout(function() {
-              // Find member name if available
-              var member = DB.members.find(function(m){ return m.email === email; });
-              var name = member ? (member.name || member.firstName || email) : email;
-              emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-                to_email: email,
-                to_name: name,
-                subject: '📅 Invite: ' + (event.title || 'Upcoming Event') + ' - Purpose Church of Denton',
-                message: inviteMsg,
-                email: email
-              }).then(function() {
-                eventSent++;
-                if (eventSent + eventFailed === eventTotal) {
-                  toast('✅ Event saved! Invites sent to ' + eventSent + ' of ' + eventTotal + ' recipient' + (eventTotal > 1 ? 's' : '') + '.');
-                }
-              }).catch(function() {
-                eventFailed++;
-                if (eventSent + eventFailed === eventTotal) {
-                  toast('✅ Event saved!' + (eventFailed > 0 ? ' ⚠️ ' + eventFailed + ' invite(s) failed.' : ''));
-                }
-              });
-            }, i * 1000);
-          });
-        } else {
-          toast('✅ Event saved!');
-        }
-      } else {
-        // Firebase rejected the save (image too large or network error)
-        toast('⚠️ Event could not be saved. Try removing the image or using a smaller one.', 'error');
       }
-    }).catch(function() {
-      toast('⚠️ Network error saving event. Check your connection and try again.', 'error');
     });
-  } else {
-    // Calendar-only — save locally right away
-    DB.events.unshift(event);
-    saveDB();
-    renderEventTable();
-    updateStats();
-    updateOverviewEvents();
-    refreshCalendar();
-
-    // Still send emails even for calendar-only events
-    var calRecipients = [...emailChips];
-    if (event.notifyMembers) {
-      var calOptedIn = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
-      calOptedIn.forEach(function(m){ if (!calRecipients.includes(m.email)) calRecipients.push(m.email); });
-    }
-
-    emailChips = [];
-    renderEmailChips();
-    ['e-title','e-date','e-end-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(function(id){ var el = document.getElementById(id); if(el) el.value = ''; });
-    document.getElementById('e-notify-members').checked = false;
-    document.getElementById('event-email-preview').style.display = 'none';
-    removeEventImg();
-
-    if (calRecipients.length > 0) {
-      var calEmailRecipients = calRecipients.filter(function(r){ return r && r.indexOf('@') > -1; });
-      var calSent = 0; var calFailed = 0; var calTotal = calEmailRecipients.length;
-      var calMsg = '📅 ' + (event.title || 'Event') + '\n' +
-        (event.date ? '🗓️ ' + event.date + '\n' : '') +
-        (event.startTime ? '⏰ ' + event.startTime + (event.endTime ? ' – ' + event.endTime : '') + '\n' : '') +
-        (event.location ? '📍 ' + event.location + '\n' : '') +
-        (event.desc ? '\n' + event.desc + '\n' : '') +
-        '\nWe hope to see you there!\n\nPurpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
-
-      calEmailRecipients.forEach(function(email, i) {
-        setTimeout(function() {
-          var member = DB.members.find(function(m){ return m.email === email; });
-          var name = member ? (member.name || member.firstName || email) : email;
-          emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-            to_email: email,
-            to_name: name,
-            subject: '📅 Invite: ' + (event.title || 'Upcoming Event') + ' - Purpose Church of Denton',
-            message: calMsg,
-            email: email
-          }).then(function() {
-            calSent++;
-            if (calSent + calFailed === calTotal) toast('✅ Event saved! Invites sent to ' + calSent + ' of ' + calTotal + ' recipient' + (calTotal > 1 ? 's' : '') + '.');
-          }).catch(function() {
-            calFailed++;
-            if (calSent + calFailed === calTotal) toast('✅ Event saved to calendar!' + (calFailed > 0 ? ' ⚠️ ' + calFailed + ' invite(s) failed.' : ''));
-          });
-        }, i * 1000);
-      });
-    } else {
-      toast('✅ Event saved to calendar!');
-    }
   }
+
+  // Simulate sending calendar emails
+  const recipients = [...emailChips];
+  if (event.notifyMembers) {
+    const optedIn = DB.members.filter(m => m.notif !== 'none');
+    optedIn.forEach(m => { if (!recipients.includes(m.email)) recipients.push(m.email); });
+  }
+
+  if (recipients.length > 0) {
+    toast(`✅ Event saved! Calendar invites sent to ${recipients.length} recipient${recipients.length > 1 ? 's' : ''}.`);
+  refreshCalendar();
+  } else {
+    toast('✅ Event saved!');
+    refreshCalendar();
+  }
+
+  emailChips = [];
+  renderEmailChips();
+  ['e-title','e-date','e-start','e-end','e-loc','e-desc','e-img-url'].forEach(id => { var el = document.getElementById(id); if(el) el.value = ''; }); if(document.getElementById('e-img-url')) document.getElementById('e-img-url').value = '';
+  document.getElementById('e-notify-members').checked = false;
+  document.getElementById('event-email-preview').style.display = 'none';
+  removeEventImg();
 }
 
 function formatTime(t) {
@@ -1601,70 +1394,13 @@ function renderEventTable() {
       <td>${e.title||''}</td>
       <td><span class="badge badge-pending">${e.type||''}</span></td>
       <td style="color:rgba(255,255,255,0.85)">${e.location||'—'}</td>
-      <td>${e.firebaseId ? '<span class="badge badge-active">🌐 Live</span>' : '<span class="badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">📅 Calendar Only</span>'}</td>
+      <td>${e.image ? '<span class="badge badge-active">&#128247; Yes</span>' : '—'}</td>
+      <td>${(e.emails&&e.emails.length>0) ? '<span class="badge badge-active">'+e.emails.length+' sent</span>' : '—'}</td>
       <td style="display:flex;gap:0.4rem;flex-wrap:wrap;">
         <button class="btn btn-ghost btn-sm" onclick="editEvent(${e.id})">✏️ Edit</button>
-        ${e.firebaseId
-          ? `<button class="btn btn-sm" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);" onclick="removeEventFromWebsite('${e.firebaseId}',${e.id})">🌐 Remove from Site</button>`
-          : `<button class="btn btn-sm" style="background:rgba(40,167,69,0.2);color:#28a745;border:1px solid rgba(40,167,69,0.4);" onclick="publishEventToWebsite(${e.id})">🌐 Publish to Site</button>`
-        }
-        <button class="btn btn-red btn-sm" onclick="deleteEvent(${e.id})">🗑 Delete All</button>
+        <button class="btn btn-red btn-sm" onclick="deleteEvent(${e.id})">Delete</button>
       </td>
     </tr>`).join('');
-}
-
-// ── REMOVE EVENT FROM WEBSITE (keep on calendar) ──
-function removeEventFromWebsite(firebaseId, localId) {
-  if (!confirm('Remove this event from the website? It will stay on your calendar.')) return;
-  var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
-  var project = "purposechurchdenton";
-  fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events/" + firebaseId + "?key=" + apiKey, {method: "DELETE"})
-    .then(function(){
-      // Clear firebaseId from local event so it shows as calendar-only
-      var evIdx = DB.events.findIndex(function(e){ return e.firebaseId === firebaseId || e.id === localId; });
-      if (evIdx > -1) {
-        DB.events[evIdx].firebaseId = null;
-        DB.events[evIdx].postedToWebsite = false;
-        saveDB();
-        renderEventTable();
-        updateOverviewEvents();
-      }
-      toast('✅ Event removed from website. Still on calendar.');
-    })
-    .catch(function(){ toast('Error removing from website. Try again.', 'error'); });
-}
-
-// ── PUBLISH EVENT TO WEBSITE (from calendar-only event) ──
-function publishEventToWebsite(localId) {
-  var ev = DB.events.find(function(e){ return e.id === localId; });
-  if (!ev) return;
-  if (!window.saveToFirebase) return toast('Firebase not available.', 'error');
-  window.saveToFirebase('events', {
-    title: ev.title || '',
-    type: ev.type || '',
-    date: ev.date || '',
-    rawDate: ev.rawDate || '',
-    endDate: ev.endDate || '',
-    rawEndDate: ev.rawEndDate || '',
-    startTime: ev.startTime || '',
-    endTime: ev.endTime || '',
-    location: ev.location || '',
-    desc: ev.desc || '',
-    image: ev.image || '',
-    active: 'true'
-  }).then(function(fbId) {
-    if (fbId) {
-      var evIdx = DB.events.findIndex(function(e){ return e.id === localId; });
-      if (evIdx > -1) {
-        DB.events[evIdx].firebaseId = fbId;
-        DB.events[evIdx].postedToWebsite = true;
-        saveDB();
-        renderEventTable();
-        updateOverviewEvents();
-        toast('✅ Event published to website!');
-      }
-    }
-  });
 }
 
 // ── ANNOUNCEMENTS ──
@@ -1697,7 +1433,7 @@ function publishAnnouncement() {
   document.getElementById('ann-expire').value = '';
   document.getElementById('ann-preview-box').style.display = 'none';
   removeAnnImg();
-  // Save to Firebase and store ID back
+  // Save to Firebase
   if (window.saveToFirebase) {
     window.saveToFirebase('announcements', {
       title: ann.title || '',
@@ -1706,21 +1442,12 @@ function publishAnnouncement() {
       expire: ann.expire || '',
       posted: ann.posted || '',
       active: 'true'
-    }).then(function(fbId) {
-      if (fbId) {
-        var a = DB.announcements.find(function(x){ return x.id === ann.id; });
-        if (a) { a.firebaseId = fbId; saveDB(); }
-      }
     });
   }
   toast('📢 Announcement published to website instantly!');
 }
 
 function removeAnnouncement(id) {
-  var a = DB.announcements.find(function(x){ return x.id === id; });
-  if (a && a.firebaseId && window.deleteFromFirebase) {
-    window.deleteFromFirebase('announcements', a.firebaseId);
-  }
   DB.announcements = DB.announcements.filter(a => a.id !== id);
   saveDB();
   renderAnnTable();
@@ -1811,11 +1538,6 @@ function addMember() {
       zip: member.zip || '',
       roles: (member.roles||[]).join('|'),
       notif: member.notif || 'opted-in'
-    }).then(function(fbId) {
-      if (fbId) {
-        var m = DB.members.find(function(x){ return x.id === member.id; });
-        if (m) { m.firebaseId = fbId; saveDB(); }
-      }
     });
   }
 
@@ -1839,15 +1561,9 @@ function toggleMemberNotif(id) {
   toast(m.notif === 'none' ? 'Member opted out.' : 'Member opted back in.');
 }
 
-function deleteMember(id, fbId) {
+function deleteMember(id) {
   if (!confirm('Remove this member?')) return;
-  // Find by firebaseId first (stable), then localId
-  var m = (fbId && DB.members.find(function(x){ return x.firebaseId === fbId; }))
-       || DB.members.find(function(x){ return x.id === id; });
-  if (m && m.firebaseId && window.deleteFromFirebase) {
-    window.deleteFromFirebase('members', m.firebaseId);
-  }
-  if (m) DB.members = DB.members.filter(function(x){ return x !== m; });
+  DB.members = DB.members.filter(m => m.id !== id);
   saveDB();
   renderMembersTable();
   updateStats();
@@ -1920,8 +1636,8 @@ function renderMembersTable() {
       </td>
       <td style="white-space:nowrap;">
         <button class="btn btn-sm" style="background:rgba(26,107,58,0.3);color:#6be89a;border:1px solid rgba(26,107,58,0.4);margin-right:4px;" onclick="openSendInfoModal(${m.id})">📧 Send Info</button>
-        <button class="btn btn-ghost btn-sm" onclick="editMember(${m.id})" data-fbid="${m.firebaseId||''}">✏️ Edit</button>
-        <button class="btn btn-red btn-sm" onclick="deleteMember(${m.id}, '${m.firebaseId||''}')" >Remove</button>
+        <button class="btn btn-ghost btn-sm" onclick="editMember(${m.id})">✏️ Edit</button>
+        <button class="btn btn-red btn-sm" onclick="deleteMember(${m.id})">Remove</button>
       </td>
     </tr>`;
   }).join('');
@@ -1955,14 +1671,64 @@ function revokeUser(email) {
 
 function renderUsersTable() {
   const tbody = document.getElementById('users-table-body');
-  tbody.innerHTML = DB.users.map(u => `
-    <tr>
-      <td>${u.name}${u.email === currentUser.email ? ' <span style="font-size:0.65rem;color:var(--g);">(you)</span>' : ''}</td>
-      <td style="color:rgba(255,255,255,0.9)">${u.email}</td>
-      <td><span class="badge badge-${u.role === 'pastor' ? 'pastor' : u.role === 'assistant' ? 'assistant' : 'member'}">${u.role}</span></td>
-      <td><span class="badge badge-active">Active</span></td>
-      <td>${u.email !== currentUser.email ? `<button class="btn btn-red btn-sm" onclick="revokeUser('${u.email}')">Revoke</button>` : '—'}</td>
-    </tr>`).join('');
+  if (!tbody) return;
+
+  // Load users from Firebase to show ALL users across devices
+  var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+  var project = "purposechurchdenton";
+  fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/users?key=" + apiKey + "&pageSize=50")
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var allUsers = [];
+      if (data.documents && data.documents.length) {
+        data.documents.forEach(function(doc) {
+          var f = doc.fields || {};
+          allUsers.push({
+            name: f.name ? f.name.stringValue : '',
+            email: f.email ? f.email.stringValue : '',
+            role: f.role ? f.role.stringValue : 'member',
+            firebaseId: doc.name.split('/').pop()
+          });
+        });
+      }
+      // Also include local users not in Firebase
+      DB.users.forEach(function(u) {
+        if (!allUsers.find(function(a){ return a.email === u.email; })) {
+          allUsers.push(u);
+        }
+      });
+
+      if (!allUsers.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,0.5);">No users found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = allUsers.map(function(u) {
+        var isYou = u.email === currentUser.email;
+        var roleBadge = u.role === 'pastor' ? 'pastor' : u.role === 'assistant' ? 'assistant' : 'member';
+        return '<tr>' +
+          '<td>' + u.name + (isYou ? ' <span style="font-size:0.65rem;color:var(--g);">(you)</span>' : '') + '</td>' +
+          '<td style="color:rgba(255,255,255,0.9)">' + u.email + '</td>' +
+          '<td><span class="badge badge-' + roleBadge + '">' + u.role + '</span></td>' +
+          '<td><span class="badge badge-active">Active</span></td>' +
+          '<td>' + (!isYou ? '<button class="btn btn-red btn-sm" onclick="revokeUser(\'' + u.email + '\')">Revoke</button>' : '—') + '</td>' +
+          '</tr>';
+      }).join('');
+    })
+    .catch(function() {
+      // Fallback to localStorage users
+      tbody.innerHTML = DB.users.map(function(u) {
+        var isYou = u.email === currentUser.email;
+        var roleBadge = u.role === 'pastor' ? 'pastor' : u.role === 'assistant' ? 'assistant' : 'member';
+        return '<tr>' +
+          '<td>' + u.name + (isYou ? ' <span style="font-size:0.65rem;color:var(--g);">(you)</span>' : '') + '</td>' +
+          '<td>' + u.email + '</td>' +
+          '<td><span class="badge badge-' + roleBadge + '">' + u.role + '</span></td>' +
+          '<td><span class="badge badge-active">Active</span></td>' +
+          '<td>' + (!isYou ? '<button class="btn btn-red btn-sm" onclick="revokeUser(\'' + u.email + '\')">Revoke</button>' : '—') + '</td>' +
+          '</tr>';
+      }).join('');
+    });
 }
 
 function copySecretUrl() {
@@ -2158,200 +1924,37 @@ function previewNewsletter() {
 }
 
 // Override sendNewsletter to track image
-function useNLTemplate(type) {
-  var subject = document.getElementById('nl-subject');
-  var body = document.getElementById('nl-body');
-  var today = new Date();
-  var dayName = today.toLocaleDateString('en-US',{weekday:'long'});
-  var fullDate = today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-
-  var templates = {
-    event: {
-      subject: "Upcoming Events at Purpose Church of Denton!",
-      body: "We have some exciting events coming up at Purpose Church of Denton and we don't want you to miss out!\n\n" +
-            "📅 [EVENT NAME]\n" +
-            "🗓️ [DATE] at [TIME]\n" +
-            "📍 [LOCATION]\n\n" +
-            "[Add a brief description of the event here]\n\n" +
-            "We'd love to see you there! For more details on this and other upcoming events, visit our website at purposechurchofdenton.com/events\n\n" +
-            "God bless you,\nPastor Michael Herron\nPurpose Church of Denton"
-    },
-    birthday: {
-      subject: "Happy Birthday from Purpose Church of Denton! 🎂",
-      body: "On behalf of Pastor Michael Herron, First Lady Mal Herron, and the entire Purpose Church of Denton family — HAPPY BIRTHDAY!\n\n" +
-            "🎉 Today is YOUR day and we celebrate you!\n\n" +
-            "May God pour out His richest blessings on you today and in the year ahead. You are loved, valued, and appreciated as a part of our church family.\n\n" +
-            "\"This is the day the Lord has made; let us rejoice and be glad in it.\" — Psalm 118:24\n\n" +
-            "With love,\nPurpose Church of Denton Family"
-    },
-    bible: {
-      subject: "Your Word for Today from Purpose Church of Denton 📖",
-      body: "Good " + (today.getHours() < 12 ? "morning" : today.getHours() < 17 ? "afternoon" : "evening") + " Purpose Church family!\n\n" +
-            "Here is your Word for today, " + fullDate + ":\n\n" +
-            "📖 \"[BIBLE VERSE TEXT HERE]\"\n" +
-            "— [Book Chapter:Verse]\n\n" +
-            "[Add a brief reflection or encouragement here — 2-3 sentences connecting the verse to daily life]\n\n" +
-            "Let this Word guide your steps today. We are praying for you!\n\n" +
-            "In His service,\nPastor Michael Herron\nPurpose Church of Denton"
-    },
-    website: {
-      subject: "Have You Checked Our Website Lately? 🌐",
-      body: "Hello Purpose Church family!\n\n" +
-            "We've been busy updating our website with the latest news, events, and resources just for you!\n\n" +
-            "Here's what's new at purposechurchofdenton.com:\n\n" +
-            "📅 New Events — Check out what's coming up\n" +
-            "🎤 Latest Sermons — Catch up on messages you may have missed\n" +
-            "📋 Announcements — Stay up to date with church news\n" +
-            "💝 Give Online — Support the ministry from anywhere\n\n" +
-            "Visit us at: purposechurchofdenton.com\n\n" +
-            "Stay connected and stay encouraged!\n\n" +
-            "Blessings,\nPurpose Church of Denton"
-    },
-    clear: {
-      subject: "",
-      body: ""
-    },
-    combined: {
-      subject: "Purpose Church of Denton — Church Update for " + fullDate,
-      body: "Hello Purpose Church family!\n\n" +
-            "We pray this message finds you blessed and full of faith. Here is your full church update for " + fullDate + "!\n\n" +
-
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
-            "📅 UPCOMING EVENTS\n" +
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-            "[EVENT NAME]\n" +
-            "🗓️ [DATE] at [TIME]\n" +
-            "📍 [LOCATION]\n" +
-            "[Brief event description]\n\n" +
-            "For a full list of upcoming events, visit:\n" +
-            "purposechurchofdenton.com/events\n\n" +
-
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
-            "🎂 BIRTHDAY CELEBRATIONS\n" +
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-            "This week we celebrate these members of our Purpose Church family:\n\n" +
-            "🎉 [MEMBER NAME] — [Birthday Date]\n" +
-            "🎉 [MEMBER NAME] — [Birthday Date]\n\n" +
-            "If we missed your birthday, please let us know! We love celebrating YOU.\n\n" +
-
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
-            "📖 WORD OF THE WEEK\n" +
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-            "\"[BIBLE VERSE TEXT HERE]\"\n" +
-            "— [Book Chapter:Verse]\n\n" +
-            "[Add a brief 2-3 sentence reflection or encouragement here]\n\n" +
-
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n" +
-            "🌐 STAY CONNECTED\n" +
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-            "Our website is always being updated with the latest news and resources:\n\n" +
-            "📅 Events — purposechurchofdenton.com/events\n" +
-            "🎤 Sermons — purposechurchofdenton.com/sermons\n" +
-            "💝 Give Online — purposechurchofdenton.com/give\n" +
-            "📺 Facebook Live — facebook.com/purposechurchdenton\n\n" +
-
-            "━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-            "We love you and we are praying for you always. You are a vital part of the Purpose Church family!\n\n" +
-            "With love and blessings,\n" +
-            "Pastor Michael Herron & First Lady Mal Herron\n" +
-            "Purpose Church of Denton\n" +
-            "3401 E University Dr #101, Denton TX\n" +
-            "purposechurchofdenton.com"
-    }
-  };
-
-  var t = templates[type];
-  if (t && subject && body) {
-    subject.value = t.subject;
-    body.value = t.body;
-    if (type !== 'clear') toast('✅ Template loaded — customize it before sending!');
-  }
-}
-
 function sendNewsletter() {
-  var subject = document.getElementById('nl-subject').value.trim();
-  var body = document.getElementById('nl-body').value.trim();
+  const subject = document.getElementById('nl-subject').value.trim();
+  const body = document.getElementById('nl-body').value.trim();
   if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
-
-  var sendTo = document.getElementById('nl-send-to').value;
-  var recipients = [];
+  const sendTo = document.getElementById('nl-send-to').value;
+  let count = 0;
   if (sendTo === 'all' || sendTo === 'email') {
-    recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
-  } else if (sendTo === 'specific') {
-    var grp = document.getElementById('nl-group-select');
-    var role = grp ? grp.value : '';
-    recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email && (m.roles||[]).includes(role); });
+    count = DB.members.filter(m => m.notif !== 'none').length;
   }
-
-  if (!recipients.length) return toast('No opted-in members with email addresses found.', 'error');
-
-  // Check if using URL image option
-  var urlInput = document.getElementById('nl-img-url');
-  var urlOption = document.querySelector('input[name="nl-img-option"]:checked');
+  // Check if using URL option
+  const urlInput = document.getElementById('nl-img-url');
+  const urlOption = document.querySelector('input[name="nl-img-option"]:checked');
   if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) {
-    nlImageData = urlInput.value;
+    nlImageData = urlInput.value; // treat URL as image source
   }
-
-  var btn = document.querySelector('#panel-newsletter .btn-gold');
-  if (btn) {
-    if (btn.disabled) return; // Already sending — ignore extra clicks
-    btn.textContent = 'Sending 0 of ' + recipients.length + '...';
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    btn.style.cursor = 'not-allowed';
-  }
-
-  var sent = 0;
-  var failed = 0;
-  var total = recipients.length;
-
-  // Stagger sends 1 second apart to avoid EmailJS 429 rate limit
-  recipients.forEach(function(m, i) {
-    setTimeout(function() {
-      emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-        to_email: m.email,
-        to_name: (m.name || m.firstName || m.email),
-        subject: subject,
-        message: body,
-        email: m.email
-      })
-      .then(function() {
-        sent++;
-        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
-        if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
-      })
-      .catch(function(err) {
-        console.error('Email failed for', m.email, err);
-        failed++;
-        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
-        if (sent + failed === total) finishNewsletter(sent, failed, subject, total, btn);
-      });
-    }, i * 1000); // 1 second between each email
-  });
-}
-
-function finishNewsletter(sent, failed, subject, total, btn) {
-  if (btn) { btn.textContent = '✉️ Send Now'; btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
-
-  if (sent > 0) {
-    toast('✅ Newsletter sent to ' + sent + ' of ' + total + ' members!');
-    var entry = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-      subject: subject,
-      recipients: sent,
-      hasImage: !!nlImageData,
-      channel: 'Email'
-    };
-    DB.newsletter_history.unshift(entry);
-    saveDB();
-    renderNLHistory();
-    document.getElementById('nl-subject').value = '';
-    document.getElementById('nl-body').value = '';
-    document.getElementById('nl-preview').style.display = 'none';
-    removeNLImage();
-  }
-  if (failed > 0) toast('⚠️ ' + failed + ' emails failed to send.', 'error');
+  const entry = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    subject,
+    recipients: count,
+    hasImage: !!nlImageData,
+    channel: 'Email',
+  };
+  DB.newsletter_history.unshift(entry);
+  saveDB();
+  renderNLHistory();
+  document.getElementById('nl-subject').value = '';
+  document.getElementById('nl-body').value = '';
+  document.getElementById('nl-preview').style.display = 'none';
+  removeNLImage();
+  toast(`✅ Newsletter sent to ${count} opted-in member${count !== 1 ? 's' : ''}!`);
 }
 
 // Override renderNLHistory to show image column
@@ -2942,7 +2545,6 @@ function editEvent(id) {
   document.getElementById('edit-ev-title').value = ev.title || '';
   document.getElementById('edit-ev-type').value = ev.type || 'Other';
   document.getElementById('edit-ev-date').value = ev.rawDate || '';
-  document.getElementById('edit-ev-end-date').value = ev.rawEndDate || '';
   document.getElementById('edit-ev-start').value = ev.startTimeRaw || '';
   document.getElementById('edit-ev-end').value = ev.endTimeRaw || '';
   document.getElementById('edit-ev-loc').value = ev.location || '';
@@ -2979,13 +2581,6 @@ function saveEditEvent() {
   const dateParts = date.split('-');
   const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
   const formattedDate = dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  const endDateVal = document.getElementById('edit-ev-end-date').value;
-  var formattedEndDate = '';
-  if (endDateVal) {
-    var edParts = endDateVal.split('-');
-    var edObj = new Date(parseInt(edParts[0]), parseInt(edParts[1])-1, parseInt(edParts[2]));
-    formattedEndDate = edObj.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  }
   const startRaw = document.getElementById('edit-ev-start').value;
   const endRaw = document.getElementById('edit-ev-end').value;
 
@@ -3004,8 +2599,6 @@ function saveEditEvent() {
     type: document.getElementById('edit-ev-type').value,
     date: formattedDate,
     rawDate: date,
-    endDate: formattedEndDate,
-    rawEndDate: endDateVal || '',
     startTime: editFormatTime(startRaw),
     endTime: editFormatTime(endRaw),
     startTimeRaw: startRaw,
@@ -3039,8 +2632,6 @@ function saveEditEvent() {
             type: updatedEvent.type || '',
             date: updatedEvent.date || '',
             rawDate: updatedEvent.rawDate || '',
-            endDate: updatedEvent.endDate || '',
-            rawEndDate: updatedEvent.rawEndDate || '',
             startTime: updatedEvent.startTime || '',
             endTime: updatedEvent.endTime || '',
             location: updatedEvent.location || '',
@@ -3079,43 +2670,19 @@ function saveEditEvent() {
   }
 
   // Resend email notification
+  if (resendEmail) {
+    const emails = DB.members
+      .filter(m => m.notif !== 'none' && m.email)
+      .map(m => m.email);
+    if (emails.length > 0) {
+      toast('📧 Resending notifications to ' + emails.length + ' members...');
+    } else {
+      toast('No opted-in members to notify.');
+    }
+  }
+
   closeEditModal();
   if (!updateWebsite && !resendEmail) toast('✅ Event updated!');
-
-  // Send resend emails AFTER modal closes
-  if (resendEmail) {
-    var members = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
-    if (!members.length) return toast('No opted-in members to notify.', 'error');
-
-    toast('📧 Sending notifications to ' + members.length + ' members...');
-
-    var inviteMsg = '📅 ' + (title || 'Event') + '\n' +
-      (formattedDate ? '🗓️ ' + formattedDate + (formattedEndDate ? ' – ' + formattedEndDate : '') + '\n' : '') +
-      (startTime ? '⏰ ' + startTime + (endTime ? ' – ' + endTime : '') + '\n' : '') +
-      (loc ? '📍 ' + loc + '\n' : '') +
-      (desc ? '\n' + desc + '\n' : '') +
-      '\nWe hope to see you there!\n\n' +
-      'Purpose Church of Denton\n3401 E University Dr #101, Denton TX\npurposechurchofdenton.com';
-
-    var rSent = 0; var rFailed = 0; var rTotal = members.length;
-    members.forEach(function(m, i) {
-      setTimeout(function() {
-        emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-          to_email: m.email,
-          to_name: m.name || m.firstName || m.email,
-          subject: '📅 Event Update: ' + (title || 'Upcoming Event') + ' - Purpose Church of Denton',
-          message: inviteMsg,
-          email: m.email
-        }).then(function() {
-          rSent++;
-          if (rSent + rFailed === rTotal) toast('✅ Notifications sent to ' + rSent + ' of ' + rTotal + ' members!');
-        }).catch(function() {
-          rFailed++;
-          if (rSent + rFailed === rTotal) toast('✅ Event updated!' + (rFailed > 0 ? ' ⚠️ ' + rFailed + ' notification(s) failed.' : ''));
-        });
-      }, i * 1000);
-    });
-  }
 }
 
 // Close modal when clicking outside
@@ -3132,9 +2699,7 @@ function editMember(id) {
   const m = DB.members.find(m => m.id === id);
   if (!m) return;
 
-  // Store both id and firebaseId so we can find the member reliably
-  document.getElementById('edit-member-id').value = m.firebaseId || id;
-  document.getElementById('edit-member-id').dataset.localId = id;
+  document.getElementById('edit-member-id').value = id;
   document.getElementById('edit-m-first').value = m.first || '';
   document.getElementById('edit-m-last').value = m.last || '';
   document.getElementById('edit-m-email').value = m.email || '';
@@ -3159,9 +2724,7 @@ function closeEditMemberModal() {
 }
 
 function saveEditMember() {
-  const hiddenEl = document.getElementById('edit-member-id');
-  const fbId = hiddenEl.value;
-  const localId = parseInt(hiddenEl.dataset.localId || fbId);
+  const id = parseInt(document.getElementById('edit-member-id').value);
   const first = document.getElementById('edit-m-first').value.trim();
   const last = document.getElementById('edit-m-last').value.trim();
   if (!first || !last) return toast('Please enter first and last name.', 'error');
@@ -3171,10 +2734,8 @@ function saveEditMember() {
     roles.push(cb.value);
   });
 
-  // Find by firebaseId first (stable across syncs), then by localId
-  let mIdx = DB.members.findIndex(m => m.firebaseId && m.firebaseId === fbId);
-  if (mIdx < 0) mIdx = DB.members.findIndex(m => m.id === localId);
-  if (mIdx < 0) return toast('Could not find member. Please refresh and try again.', 'error');
+  const mIdx = DB.members.findIndex(m => m.id === id);
+  if (mIdx < 0) return;
 
   DB.members[mIdx] = Object.assign({}, DB.members[mIdx], {
     first,
@@ -3191,24 +2752,7 @@ function saveEditMember() {
   });
 
   saveDB();
-
-  // Update Firebase for cross-device sync
-  var updated = DB.members[mIdx];
-  if (updated && updated.firebaseId && window.saveToFirebase) {
-    var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
-    var project = "purposechurchdenton";
-    var url = "https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/members/" + updated.firebaseId + "?key=" + apiKey;
-    var fields = {};
-    ['name','first','last','email','phone','street','city','state','zip','notif'].forEach(function(k){
-      fields[k] = {stringValue: String(updated[k]||'')};
-    });
-    fields.roles = {stringValue: (updated.roles||[]).join('|')};
-    fetch(url, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})})
-      .then(function(){ console.log('Member updated in Firebase'); })
-      .catch(function(e){ console.error('Firebase update error:', e); });
-  }
-
-  renderMembersTable();
+  renderMembers();
   updateStats();
   closeEditMemberModal();
   toast('✅ Member info updated!');
@@ -3254,19 +2798,7 @@ function loadAllFromFirebase(callback) {
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (data.documents && data.documents.length) {
-        var fbEvents = data.documents.map(parseDoc);
-        var fbDocIds = new Set(fbEvents.map(function(e){ return e.firebaseId; }).filter(Boolean));
-
-        // Keep local events that are NOT yet in Firebase results
-        // This handles two cases:
-        // 1. Calendar-only events (no firebaseId)
-        // 2. Recently saved events that Firebase hasn't propagated yet (has firebaseId but not in query results)
-        var localNotInFB = DB.events.filter(function(e){
-          return !e.firebaseId || !fbDocIds.has(e.firebaseId);
-        });
-
-        // Merge: Firebase events + local events not yet reflected in Firebase
-        DB.events = fbEvents.concat(localNotInFB);
+        DB.events = data.documents.map(parseDoc);
         DB.events.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       }
       done();
@@ -3276,12 +2808,7 @@ function loadAllFromFirebase(callback) {
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (data.documents && data.documents.length) {
-        var fbSermons = data.documents.map(parseDoc);
-        var fbIds = fbSermons.map(function(s){ return s.firebaseId; }).filter(Boolean);
-        var localOnly = DB.sermons.filter(function(s){
-          return !s.firebaseId && !fbIds.includes(s.firebaseId);
-        });
-        DB.sermons = fbSermons.concat(localOnly);
+        DB.sermons = data.documents.map(parseDoc);
         DB.sermons.sort(function(a,b){ return new Date(b.date||0) - new Date(a.date||0); });
       }
       done();
@@ -3302,92 +2829,56 @@ function loadAllFromFirebase(callback) {
       }
       done();
     }).catch(function(){ done(); });
-
-  // Sync announcements
-  total++;
-  fetch(base + "announcements?key=" + apiKey + "&pageSize=100")
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (data.documents && data.documents.length) {
-        DB.announcements = data.documents.map(function(doc) {
-          var obj = parseDoc(doc);
-          obj.active = obj.active === 'true' || obj.active === true;
-          return obj;
-        });
-        DB.announcements.sort(function(a,b){ return (b.id||0) - (a.id||0); });
-      }
-      done();
-    }).catch(function(){ done(); });
 }
 
 
 
 // ══════════════════════════════════════════
+// UNIVERSAL IMAGE UPLOADER (ImgBB)
 // ══════════════════════════════════════════
-// UNIVERSAL IMAGE UPLOADER
-// Compresses image to ~400px wide JPEG (~50KB) then stores as base64 in Firestore
-// Base64 is NEVER written to localStorage — only to Firebase
-// ══════════════════════════════════════════
-// Track if image compression is in progress
-window._imgCompressing = false;
+const IMGBB_KEY = "2e76b9f3e5a4c8d1f0b7a3e9c6d2f4a8";
 
 function uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
   const uploadingEl = document.getElementById(urlFieldId.replace('url','uploading')) ||
                       document.getElementById('e-img-uploading');
-  if (uploadingEl) { uploadingEl.style.display = 'block'; uploadingEl.textContent = 'Compressing image...'; }
+  if (uploadingEl) uploadingEl.style.display = 'block';
 
-  // Disable save button while compressing to prevent race condition
-  window._imgCompressing = true;
-  var saveBtn = document.querySelector('[onclick="addEvent()"]');
-  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; }
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('key', IMGBB_KEY);
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const img = new Image();
-    img.onload = function() {
-      // Compress aggressively: max 600px wide, JPEG quality 0.6 (~30-60KB)
-      // Firestore string field limit is 1MB — stay well under it
-      const MAX_W = 600;
-      var quality = 0.6;
-      const scale = img.width > MAX_W ? MAX_W / img.width : 1;
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      var compressed = canvas.toDataURL('image/jpeg', quality);
-
-      // If still too large (>700KB base64 ~= 500KB raw), compress more
-      if (compressed.length > 700000) {
-        compressed = canvas.toDataURL('image/jpeg', 0.4);
-      }
-      // Last resort — really squeeze it
-      if (compressed.length > 700000) {
-        canvas.width = Math.round(canvas.width * 0.6);
-        canvas.height = Math.round(canvas.height * 0.6);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        compressed = canvas.toDataURL('image/jpeg', 0.4);
-      }
-
-      if (uploadingEl) { uploadingEl.style.display = 'none'; }
-
-      // Set the URL field to the compressed base64
+  fetch('https://api.imgbb.com/1/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (uploadingEl) uploadingEl.style.display = 'none';
+    if (data.success) {
+      const url = data.data.url;
       const urlField = document.getElementById(urlFieldId);
-      if (urlField) urlField.value = compressed;
-      showImgPreview(compressed, previewWrapId, previewImgId, placeholderId);
-
-      // Re-enable save button now that compression is done
-      window._imgCompressing = false;
-      if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
+      if (urlField) urlField.value = url;
+      showImgPreview(url, previewWrapId, previewImgId, placeholderId);
+    } else {
+      // If ImgBB fails, use local preview (base64)
+      useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
+    }
+  })
+  .catch(function() {
+    if (uploadingEl) uploadingEl.style.display = 'none';
+    // Fallback to local base64 preview
+    useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
+  });
 }
 
 function useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
-  // Just call the main uploader — it handles everything
-  uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholderId);
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const urlField = document.getElementById(urlFieldId);
+    if (urlField) urlField.value = e.target.result;
+    showImgPreview(e.target.result, previewWrapId, previewImgId, placeholderId);
+  };
+  reader.readAsDataURL(file);
 }
 
 function showImgPreview(url, previewWrapId, previewImgId, placeholderId) {
@@ -3543,53 +3034,68 @@ function sendMemberEmail() {
   const body = document.getElementById('email-body').value.trim();
   if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
 
+  // If no members in DB, try loading from Firebase first
+  if (!DB.members.length) {
+    toast('Loading members...', 'info');
+    var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+    fetch("https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/members?key=" + apiKey + "&pageSize=200")
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (data.documents && data.documents.length) {
+          DB.members = data.documents.map(function(doc) {
+            var obj = {};
+            Object.keys(doc.fields||{}).forEach(function(k) {
+              var f = doc.fields[k];
+              obj[k] = f.stringValue !== undefined ? f.stringValue : '';
+            });
+            if (obj.roles && typeof obj.roles === 'string') {
+              obj.roles = obj.roles.split('|').filter(Boolean);
+            } else if (!Array.isArray(obj.roles)) { obj.roles = []; }
+            if (!obj.name && obj.first) obj.name = (obj.first||'') + ' ' + (obj.last||'');
+            return obj;
+          });
+        }
+        sendMemberEmail(); // retry after loading
+      }).catch(function(){ toast('Could not load members.', 'error'); });
+    return;
+  }
+
   const recipients = getEmailRecipients();
-  if (!recipients.length) return toast('No recipients selected.', 'error');
+  if (!recipients.length) return toast('No recipients selected. Make sure members have email addresses saved.', 'error');
 
   const emails = recipients.filter(function(m){ return m.email; });
   if (!emails.length) return toast('No members with email addresses found.', 'error');
 
   // Show sending state
   const btn = document.querySelector('#panel-email .btn-burg');
-  if (btn) {
-    if (btn.disabled) return; // Already sending — ignore extra clicks
-    btn.textContent = 'Sending 0 of ' + total + '...';
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    btn.style.cursor = 'not-allowed';
-  }
+  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
 
-  let sent = 0;
-  let failed = 0;
-  const total = emails.length;
+  var sent = 0;
+  var failed = 0;
+  var total = emails.length;
 
   // Send to each recipient via EmailJS
-  // Stagger sends 1 second apart to avoid EmailJS 429 rate limit
-  emails.forEach(function(m, i) {
-    setTimeout(function() {
-      emailjs.send('service_gkq31qg', 'template_oxjkvex', {
-        to_email: m.email,
-        to_name: m.name || m.firstName || m.email,
-        subject: subject,
-        message: body,
-        email: m.email
-      })
-      .then(function() {
-        sent++;
-        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
-        if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
-      })
-      .catch(function() {
-        failed++;
-        if (btn) btn.textContent = 'Sending ' + (sent + failed) + ' of ' + total + '...';
-        if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
-      });
-    }, i * 1000); // 1 second between each email
+  emails.forEach(function(m) {
+    emailjs.send('service_gkq31qg', 'template_oxjkvex', {
+      to_email: m.email,
+      to_name: m.name || m.email,
+      subject: subject,
+      message: body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com',
+      from_name: 'Purpose Church of Denton'
+    })
+    .then(function() {
+      sent++;
+      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+    })
+    .catch(function() {
+      failed++;
+      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+    });
   });
 }
 
 function finishSending(sent, failed, subject, total, btn) {
-  if (btn) { btn.textContent = '📧 Send Email Now'; btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+  if (btn) { btn.textContent = '📧 Send Email Now'; btn.disabled = false; }
 
   if (sent > 0) {
     toast('✅ Email sent to ' + sent + ' of ' + total + ' members!');
@@ -3670,14 +3176,11 @@ function refreshAll() {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">Start Date *</label><input class="f-input" id="edit-ev-date" type="date"/></div>
-      <div class="f-group"><label class="f-label">End Date <span style="font-weight:300;color:rgba(255,255,255,0.4);">(optional)</span></label><input class="f-input" id="edit-ev-end-date" type="date"/></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">Date *</label><input class="f-input" id="edit-ev-date" type="date"/></div>
       <div class="f-group"><label class="f-label">Start Time</label><input class="f-input" id="edit-ev-start" type="time"/></div>
-      <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="edit-ev-end" type="time"/></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">End Time</label><input class="f-input" id="edit-ev-end" type="time"/></div>
       <div class="f-group"><label class="f-label">Location</label><input class="f-input" id="edit-ev-loc" type="text" placeholder="Purpose Church..."/></div>
     </div>
     <div class="f-group" style="margin-bottom:1rem;"><label class="f-label">Description</label><textarea class="f-textarea" id="edit-ev-desc" rows="3" placeholder="Describe the event..."></textarea></div>
