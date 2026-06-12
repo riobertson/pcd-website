@@ -664,7 +664,8 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     <!-- PREVIEW & SEND -->
     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
       <button class="btn btn-ghost" onclick="previewEmail()">👁️ Preview Email</button>
-      <button class="btn btn-burg" onclick="sendMemberEmail()">📧 Send Email Now</button>
+      <button class="btn btn-burg" onclick="sendViaGmail()" title="Opens Gmail - unlimited sends">📬 Send via Gmail</button>
+      <button class="btn btn-ghost" onclick="sendMemberEmail()" title="Uses EmailJS - 200/month limit" style="border-color:var(--g);color:var(--g);">⚡ Send via EmailJS</button>
     </div>
 
     <!-- PREVIEW BOX -->
@@ -3147,7 +3148,7 @@ function renderEmailHistory() {
     return '<div style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">' +
       '<div>' +
         '<div style="font-weight:500;color:#fff;">' + e.subject + '</div>' +
-        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.5);">' + e.date + ' · ' + e.count + ' recipients · ' + e.group + '</div>' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.5);">' + e.date + ' · ' + e.count + ' recipients · ' + e.group + (e.method ? ' · via ' + e.method : '') + '</div>' +
       '</div>' +
       '</div>';
   }).join('');
@@ -3158,6 +3159,90 @@ document.addEventListener('DOMContentLoaded', function() {
   setEmailGroup('all');
 });
 
+
+
+// ── GMAIL BULK SEND ──
+function sendViaGmail() {
+  const subject = document.getElementById('email-subject').value.trim();
+  const body = document.getElementById('email-body').value.trim();
+  if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
+
+  // Load members from Firebase if empty
+  if (!DB.members.length) {
+    toast('Loading members...', 'info');
+    fetch("https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/members?key=AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w&pageSize=200")
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (data.documents && data.documents.length) {
+          DB.members = data.documents.map(function(doc) {
+            var obj = {};
+            Object.keys(doc.fields||{}).forEach(function(k) {
+              var f = doc.fields[k];
+              obj[k] = f.stringValue !== undefined ? f.stringValue : '';
+            });
+            if (obj.roles && typeof obj.roles === 'string') {
+              obj.roles = obj.roles.split('|').filter(Boolean);
+            } else if (!Array.isArray(obj.roles)) { obj.roles = []; }
+            if (!obj.name && obj.first) obj.name = (obj.first||'') + ' ' + (obj.last||'');
+            return obj;
+          });
+        }
+        sendViaGmail();
+      }).catch(function(){ toast('Could not load members.', 'error'); });
+    return;
+  }
+
+  const recipients = getEmailRecipients();
+  if (!recipients.length) return toast('No recipients selected.', 'error');
+
+  const emails = recipients.filter(function(m){ return m.email; }).map(function(m){ return m.email; });
+  if (!emails.length) return toast('No email addresses found.', 'error');
+
+  // Gmail has a limit on mailto URL length - split into groups of 50
+  const chunkSize = 50;
+  const chunks = [];
+  for (var i = 0; i < emails.length; i += chunkSize) {
+    chunks.push(emails.slice(i, i + chunkSize));
+  }
+
+  const fullBody = body + '
+
+---
+Purpose Church of Denton
+purposechurchofdenton.com';
+
+  if (chunks.length === 1) {
+    // Single window
+    var mailto = 'mailto:' + chunks[0].join(',') +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(fullBody);
+    window.open(mailto);
+    toast('📬 Gmail opened with ' + emails.length + ' recipients!');
+  } else {
+    // Multiple windows for large lists
+    toast('📬 Opening Gmail in ' + chunks.length + ' windows (' + emails.length + ' total recipients)...');
+    chunks.forEach(function(chunk, idx) {
+      setTimeout(function() {
+        var mailto = 'mailto:' + chunk.join(',') +
+          '?subject=' + encodeURIComponent(subject + ' (' + (idx+1) + '/' + chunks.length + ')') +
+          '&body=' + encodeURIComponent(fullBody);
+        window.open(mailto);
+      }, idx * 1000);
+    });
+  }
+
+  // Save to history
+  if (!DB.emailHistory) DB.emailHistory = [];
+  DB.emailHistory.unshift({
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    subject: subject,
+    count: emails.length,
+    group: emailGroupSelected,
+    method: 'Gmail'
+  });
+  saveDB();
+  renderEmailHistory();
+}
 
 // ── REFRESH ALL ──
 function refreshAll() {
