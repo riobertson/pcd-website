@@ -1665,10 +1665,29 @@ function revokeUser(email) {
   if (currentUser.role !== 'pastor') return toast('Only the Pastor can revoke access.', 'error');
   if (email === currentUser.email) return toast("You can't remove yourself.", 'error');
   if (!confirm('Revoke dashboard access for this user?')) return;
+
+  // Find Firebase ID for this user
+  var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+  var project = "purposechurchdenton";
+
+  // Remove from local DB
   DB.users = DB.users.filter(u => u.email !== email);
   saveDB();
   renderUsersTable();
   toast('Access revoked.');
+
+  // Remove from Firebase
+  fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/users?key=" + apiKey + "&pageSize=50")
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.documents) return;
+      var doc = data.documents.find(function(d) {
+        return d.fields && d.fields.email && d.fields.email.stringValue === email;
+      });
+      if (doc) {
+        fetch("https://firestore.googleapis.com/v1/" + doc.name + "?key=" + apiKey, { method: 'DELETE' });
+      }
+    });
 }
 
 function renderUsersTable() {
@@ -2995,8 +3014,8 @@ function searchEmailMember(query) {
   results.style.display = 'block';
   results.innerHTML = matches.map(function(m) {
     return '<div style="padding:0.6rem 1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;" ' +
-      'onmouseover="this.style.background=rgba(255,255,255,0.08)" ' +
-      'onmouseout="this.style.background=transparent" ' +
+      'onmouseover="this.style.background=\'rgba(255,255,255,0.08)\'" ' +
+      'onmouseout="this.style.background=\'transparent\'" ' +
       'onclick="selectEmailMember(' + m.id + ')">' +
       '<strong>' + m.name + '</strong> <span style="color:rgba(255,255,255,0.5);">' + (m.email||'no email') + '</span>' +
       '</div>';
