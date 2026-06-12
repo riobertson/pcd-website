@@ -3103,8 +3103,8 @@ function sendMemberEmail() {
       to_email: m.email,
       to_name: m.name || m.email,
       subject: subject,
-      message: body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com',
-      from_name: 'Purpose Church of Denton'
+      message: body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com\n\nThis is a no-reply email. Please do not reply to this message.\nFor questions contact us at: purposechurch77@gmail.com',
+      from_name: 'Purpose Church of Denton - No Reply'
     })
     .then(function() {
       sent++;
@@ -3224,7 +3224,7 @@ function sendViaGmail() {
     chunks.push(emails.slice(i, i + chunkSize));
   }
 
-  const fullBody = body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com';
+  const fullBody = body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com\n\nThis is a no-reply email. Please do not reply to this message.\nFor questions contact us at: purposechurch77@gmail.com';
 
   function openGmailWindow(toEmails, subj, bodyText) {
     // Use Gmail compose URL directly
