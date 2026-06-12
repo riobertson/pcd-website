@@ -3207,23 +3207,24 @@ function sendViaGmail() {
 
   const fullBody = body + '\n\n---\nPurpose Church of Denton\npurposechurchofdenton.com';
 
+  function openGmailWindow(toEmails, subj, bodyText) {
+    // Use Gmail compose URL directly
+    var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent(toEmails.join(',')) +
+      '&su=' + encodeURIComponent(subj) +
+      '&body=' + encodeURIComponent(bodyText);
+    window.open(gmailUrl, '_blank');
+  }
+
   if (chunks.length === 1) {
-    // Single window
-    var mailto = 'mailto:' + chunks[0].join(',') +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(fullBody);
-    window.open(mailto);
+    openGmailWindow(chunks[0], subject, fullBody);
     toast('📬 Gmail opened with ' + emails.length + ' recipients!');
   } else {
-    // Multiple windows for large lists
-    toast('📬 Opening Gmail in ' + chunks.length + ' windows (' + emails.length + ' total recipients)...');
+    toast('📬 Opening Gmail in ' + chunks.length + ' windows (' + emails.length + ' total)...');
     chunks.forEach(function(chunk, idx) {
       setTimeout(function() {
-        var mailto = 'mailto:' + chunk.join(',') +
-          '?subject=' + encodeURIComponent(subject + ' (' + (idx+1) + '/' + chunks.length + ')') +
-          '&body=' + encodeURIComponent(fullBody);
-        window.open(mailto);
-      }, idx * 1000);
+        openGmailWindow(chunk, subject + ' (' + (idx+1) + '/' + chunks.length + ')', fullBody);
+      }, idx * 1500);
     });
   }
 
