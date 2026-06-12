@@ -237,6 +237,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>emailjs.init("W9m4Fw2tQ5BzNVbNI");</script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✝</text></svg>"/>
 </head>
 <body>
 
@@ -3074,8 +3075,10 @@ function sendMemberEmail() {
   var failed = 0;
   var total = emails.length;
 
-  // Send to each recipient via EmailJS
-  emails.forEach(function(m) {
+  // Send to each recipient via EmailJS with delay to avoid rate limiting
+  function sendNext(index) {
+    if (index >= emails.length) return;
+    var m = emails[index];
     emailjs.send('service_gkq31qg', 'template_oxjkvex', {
       to_email: m.email,
       to_name: m.name || m.email,
@@ -3085,13 +3088,28 @@ function sendMemberEmail() {
     })
     .then(function() {
       sent++;
-      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+      if (btn) btn.textContent = 'Sending ' + sent + '/' + total + '...';
+      if (sent + failed === total) {
+        finishSending(sent, failed, subject, total, btn);
+      } else {
+        setTimeout(function() { sendNext(index + 1); }, 500);
+      }
     })
-    .catch(function() {
+    .catch(function(err) {
+      if (err && err.status === 429) {
+        // Rate limited - wait 2 seconds before retry
+        setTimeout(function() { sendNext(index); }, 2000);
+        return;
+      }
       failed++;
-      if (sent + failed === total) finishSending(sent, failed, subject, total, btn);
+      if (sent + failed === total) {
+        finishSending(sent, failed, subject, total, btn);
+      } else {
+        setTimeout(function() { sendNext(index + 1); }, 500);
+      }
     });
-  });
+  }
+  sendNext(0);
 }
 
 function finishSending(sent, failed, subject, total, btn) {
