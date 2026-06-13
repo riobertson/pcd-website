@@ -746,9 +746,9 @@ let importData = null;
 let currentBillFilter = 'all';
 
 // ==================== PERSISTENCE ====================
-function save() { localStorage.setItem('financeOS', JSON.stringify(state)); }
+function save() { localStorage.setItem('financeOS_blank', JSON.stringify(state)); }
 function load() {
-  const d = localStorage.getItem('financeOS');
+  const d = localStorage.getItem('financeOS_blank');
   if (d) state = JSON.parse(d);
 }
 
@@ -1751,11 +1751,11 @@ function saveReminderSettings() {
   const email = document.getElementById('reminder-email').value;
   const days = document.getElementById('reminder-days').value;
   const type = document.getElementById('reminder-type').value;
-  localStorage.setItem('financeOS_reminders', JSON.stringify({ email, days: parseInt(days), type }));
+  localStorage.setItem('financeOS_blank_reminders', JSON.stringify({ email, days: parseInt(days), type }));
   renderReminderPreviewList();
 }
 function loadReminderSettings() {
-  const raw = localStorage.getItem('financeOS_reminders');
+  const raw = localStorage.getItem('financeOS_blank_reminders');
   if (!raw) return;
   const s = JSON.parse(raw);
   const emailEl = document.getElementById('reminder-email');
@@ -1766,7 +1766,7 @@ function loadReminderSettings() {
   if (typeEl && s.type) typeEl.value = s.type;
 }
 function getReminderSettings() {
-  const raw = localStorage.getItem('financeOS_reminders');
+  const raw = localStorage.getItem('financeOS_blank_reminders');
   return raw ? JSON.parse(raw) : { email: '', days: 3, type: 'digest' };
 }
 function getBillsDueSoon(withinDays) {
