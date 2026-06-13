@@ -204,6 +204,7 @@
     <div class="nav-section">Data</div>
     <div class="nav-item" onclick="showPage('import')"><span class="icon">📥</span> Import Excel</div>
     <div class="nav-item" onclick="exportData()"><span class="icon">📤</span> Export</div>
+    <div class="nav-item" onclick="showPage('reminders')"><span class="icon">📧</span> Email Reminders</div>
   </nav>
 </aside>
 
@@ -552,6 +553,65 @@
 </main>
 </div>
 
+  <!-- EMAIL REMINDERS -->
+  <div id="page-reminders" class="page">
+    <div class="page-title">Email Reminders</div>
+    <div class="page-sub">Get bill reminders sent straight to your Gmail inbox.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>📧 Your Email</h2></div>
+        <div class="form-group">
+          <label>Send Reminders To</label>
+          <input id="reminder-email" type="email" placeholder="you@gmail.com" oninput="saveReminderSettings()">
+        </div>
+        <div class="form-group">
+          <label>Remind Me When Bill Is Due In</label>
+          <select id="reminder-days" onchange="saveReminderSettings()">
+            <option value="1">1 day before</option>
+            <option value="3" selected>3 days before</option>
+            <option value="5">5 days before</option>
+            <option value="7">7 days before</option>
+            <option value="14">14 days before</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reminder Type</label>
+          <select id="reminder-type" onchange="saveReminderSettings()">
+            <option value="individual">One email per bill</option>
+            <option value="digest" selected>Daily digest (all bills together)</option>
+          </select>
+        </div>
+        <hr class="divider">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Click below to open a pre-filled Gmail compose window with your bill reminders. Review and send from Gmail.</p>
+        <button class="btn btn-primary w-full" onclick="sendGmailReminder()">📬 Open in Gmail &amp; Send</button>
+        <button class="btn btn-ghost w-full mt-2" onclick="previewReminder()">👁 Preview Email</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>⚙️ Upcoming Reminders</h2></div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Bills that would trigger a reminder right now:</p>
+        <div id="reminder-preview-list"></div>
+      </div>
+    </div>
+
+    <div class="card mt-4" id="email-preview-card" style="display:none">
+      <div class="section-header"><h2>📄 Email Preview</h2><button class="btn btn-ghost btn-sm" onclick="document.getElementById('email-preview-card').style.display='none'">Close</button></div>
+      <div id="email-preview-content" style="background:var(--surface2);border-radius:9px;padding:20px;font-family:monospace;font-size:13px;white-space:pre-wrap;line-height:1.6;max-height:500px;overflow-y:auto;color:var(--text)"></div>
+      <button class="btn btn-primary mt-4" onclick="sendGmailReminder()">📬 Open in Gmail &amp; Send</button>
+    </div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>💡 How It Works</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;font-size:13px">
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:20px;margin-bottom:8px">1️⃣</div><div style="font-weight:600;margin-bottom:4px">Enter your email</div><div style="color:var(--muted)">Type your Gmail address above.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:20px;margin-bottom:8px">2️⃣</div><div style="font-weight:600;margin-bottom:4px">Choose timing</div><div style="color:var(--muted)">Pick how many days before due you want to be reminded.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:20px;margin-bottom:8px">3️⃣</div><div style="font-weight:600;margin-bottom:4px">Click Send</div><div style="color:var(--muted)">Gmail opens pre-filled. Review and hit Send.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:20px;margin-bottom:8px">📅</div><div style="font-weight:600;margin-bottom:4px">Weekly habit</div><div style="color:var(--muted)">Open FinanceOS weekly and send reminders to stay on track.</div></div>
+      </div>
+    </div>
+  </div>
+
 <!-- MODALS -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" id="modal-content">
@@ -594,6 +654,7 @@ function showPage(id) {
   if (id === 'allocation') renderAllocation();
   if (id === 'splits') { populateSplitSelect(); renderSplits(); }
   if (id === 'alerts') renderAlerts();
+  if (id === 'reminders') { loadReminderSettings(); renderReminderPreviewList(); }
 }
 
 // ==================== HELPERS ====================
@@ -1276,6 +1337,130 @@ function closeModal(e) {
   if (!e || e.target === document.getElementById('modal-overlay')) {
     document.getElementById('modal-overlay').classList.remove('open');
   }
+}
+
+// ==================== EMAIL REMINDERS ====================
+function saveReminderSettings() {
+  const email = document.getElementById('reminder-email').value;
+  const days = document.getElementById('reminder-days').value;
+  const type = document.getElementById('reminder-type').value;
+  localStorage.setItem('financeOS_reminders', JSON.stringify({ email, days: parseInt(days), type }));
+  renderReminderPreviewList();
+}
+function loadReminderSettings() {
+  const raw = localStorage.getItem('financeOS_reminders');
+  if (!raw) return;
+  const s = JSON.parse(raw);
+  const emailEl = document.getElementById('reminder-email');
+  const daysEl = document.getElementById('reminder-days');
+  const typeEl = document.getElementById('reminder-type');
+  if (emailEl && s.email) emailEl.value = s.email;
+  if (daysEl && s.days) daysEl.value = s.days;
+  if (typeEl && s.type) typeEl.value = s.type;
+}
+function getReminderSettings() {
+  const raw = localStorage.getItem('financeOS_reminders');
+  return raw ? JSON.parse(raw) : { email: '', days: 3, type: 'digest' };
+}
+function getBillsDueSoon(withinDays) {
+  return state.bills
+    .filter(b => !b.paid)
+    .map(b => ({ ...b, daysLeft: daysUntilDue(b.dueDay) }))
+    .filter(b => b.daysLeft <= withinDays)
+    .sort((a, b) => a.daysLeft - b.daysLeft);
+}
+function buildEmailBody(bills, settings) {
+  const now = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  const totalDue = bills.reduce((s, b) => s + b.amount, 0);
+  let body = `FinanceOS Bill Reminder\n`;
+  body += `${'='.repeat(40)}\n`;
+  body += `Date: ${now}\n\n`;
+
+  if (!bills.length) {
+    body += `Great news — no bills due within your reminder window! Keep it up.\n`;
+    return body;
+  }
+
+  body += `You have ${bills.length} bill${bills.length !== 1 ? 's' : ''} coming up totaling ${fmt(totalDue)}:\n\n`;
+
+  bills.forEach(b => {
+    const urgency = b.daysLeft === 0 ? 'DUE TODAY' : b.daysLeft === 1 ? 'DUE TOMORROW' : `Due in ${b.daysLeft} days`;
+    body += `  ${catIcon(b.category)} ${b.name}\n`;
+    body += `     Amount  : ${fmt(b.amount)}\n`;
+    body += `     Due     : Day ${b.dueDay} of the month (${urgency})\n`;
+    body += `     Pay On  : ${b.cardId ? cardName(b.cardId) : 'No card assigned'}\n`;
+    if (b.notes) body += `     Notes   : ${b.notes}\n`;
+    body += `\n`;
+  });
+
+  body += `${'='.repeat(40)}\n`;
+  body += `Total Due: ${fmt(totalDue)}\n\n`;
+
+  // Card funding summary
+  const cardGroups = {};
+  bills.forEach(b => {
+    if (b.cardId) {
+      if (!cardGroups[b.cardId]) cardGroups[b.cardId] = { name: cardName(b.cardId), total: 0, bills: [] };
+      cardGroups[b.cardId].total += b.amount;
+      cardGroups[b.cardId].bills.push(b.name);
+    }
+  });
+  if (Object.keys(cardGroups).length) {
+    body += `ACTION ITEMS — Load these cards:\n`;
+    Object.values(cardGroups).forEach(g => {
+      body += `  • ${g.name}: ${fmt(g.total)} (for: ${g.bills.join(', ')})\n`;
+    });
+    body += `\n`;
+  }
+
+  body += `Stay on top of your finances with FinanceOS!\n`;
+  return body;
+}
+function renderReminderPreviewList() {
+  const settings = getReminderSettings();
+  const bills = getBillsDueSoon(settings.days || 7);
+  const el = document.getElementById('reminder-preview-list');
+  if (!el) return;
+  if (!bills.length) {
+    el.innerHTML = `<div class="alert alert-success">✅ No bills due within ${settings.days || 3} days. Nothing to remind!</div>`;
+    return;
+  }
+  el.innerHTML = bills.map(b => {
+    const urgency = b.daysLeft <= 1 ? 'badge-red' : b.daysLeft <= 3 ? 'badge-yellow' : 'badge-blue';
+    const label = b.daysLeft === 0 ? 'TODAY' : b.daysLeft === 1 ? 'Tomorrow' : `${b.daysLeft} days`;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-weight:600;font-size:14px">${catIcon(b.category)} ${b.name}</div>
+        <div class="text-muted" style="font-size:12px">Day ${b.dueDay}${b.cardId?' · '+cardName(b.cardId):''}</div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span style="font-weight:700">${fmt(b.amount)}</span>
+        <span class="badge ${urgency}">${label}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function previewReminder() {
+  const settings = getReminderSettings();
+  const bills = getBillsDueSoon(settings.days || 7);
+  const body = buildEmailBody(bills, settings);
+  document.getElementById('email-preview-content').textContent = body;
+  document.getElementById('email-preview-card').style.display = 'block';
+  document.getElementById('email-preview-card').scrollIntoView({ behavior: 'smooth' });
+}
+function sendGmailReminder() {
+  const settings = getReminderSettings();
+  const email = settings.email || '';
+  if (!email) { alert('Please enter your email address first.'); document.getElementById('reminder-email').focus(); return; }
+  const bills = getBillsDueSoon(settings.days || 7);
+  const body = buildEmailBody(bills, settings);
+  const totalDue = bills.reduce((s, b) => s + b.amount, 0);
+  const subject = bills.length
+    ? `FinanceOS: ${bills.length} bill${bills.length!==1?'s':''} due soon — ${fmt(totalDue)} total`
+    : 'FinanceOS: Your weekly finance check-in';
+  // Open Gmail compose via mailto
+  const mailto = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(mailto, '_blank');
 }
 
 // ==================== INIT ====================
