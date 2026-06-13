@@ -787,10 +787,65 @@ function renderBills() {
         <td><span class="badge ${b.paid?'badge-green':urgency}">${b.paid?'✓ Paid':urgencyLabel}</span>${b.splittable?'<br><span style="font-size:10px;color:var(--muted)">✂ splittable</span>':''}</td>
         <td style="white-space:nowrap">
           <button class="btn btn-ghost btn-sm" onclick="togglePaid('${b.id}')">${b.paid?'Unpay':'✓ Pay'}</button>
+          <button class="btn btn-ghost btn-sm" onclick="openEditBill('${b.id}')">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteBill('${b.id}')">🗑</button>
         </td>
       </tr>`;
     }).join('')}</tbody></table>`;
+}
+
+function openEditBill(id) {
+  const b = state.bills.find(b => b.id === id);
+  if (!b) return;
+  const cardOptions = state.cards.map(c => `<option value="${c.id}" ${c.id===b.cardId?'selected':''}>${c.name}</option>`).join('');
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-title">✏️ Edit Bill</div>
+    <div class="form-group"><label>Bill Name</label><input id="eb-name" value="${b.name}"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Amount ($)</label><input id="eb-amount" type="number" value="${b.amount}"></div>
+      <div class="form-group"><label>Due Day (1–31)</label><input id="eb-due" type="number" min="1" max="31" value="${b.dueDay}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label>
+        <select id="eb-category">
+          ${['housing','utilities','groceries','transport','insurance','subscriptions','healthcare','debt','entertainment','education','personal','savings','other'].map(c=>`<option value="${c}" ${c===b.category?'selected':''}>${catIcon(c)} ${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Pay With Card</label>
+        <select id="eb-card"><option value="" ${!b.cardId?'selected':''}>— No specific card —</option>${cardOptions}</select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Frequency</label>
+        <select id="eb-freq">
+          ${['monthly','weekly','biweekly','quarterly','annual','onetime'].map(f=>`<option value="${f}" ${f===b.freq?'selected':''}>${freqLabel(f)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Allow Split?</label>
+        <select id="eb-split"><option value="no" ${!b.splittable?'selected':''}>No — Pay in full</option><option value="yes" ${b.splittable?'selected':''}>Yes — Can split</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Notes</label><input id="eb-notes" value="${b.notes||''}"></div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button class="btn btn-primary w-full" onclick="saveEditBill('${id}')">💾 Save Changes</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function saveEditBill(id) {
+  const b = state.bills.find(b => b.id === id);
+  if (!b) return;
+  b.name      = document.getElementById('eb-name').value.trim()     || b.name;
+  b.amount    = parseFloat(document.getElementById('eb-amount').value) || b.amount;
+  b.dueDay    = parseInt(document.getElementById('eb-due').value)    || b.dueDay;
+  b.category  = document.getElementById('eb-category').value;
+  b.cardId    = document.getElementById('eb-card').value;
+  b.freq      = document.getElementById('eb-freq').value;
+  b.splittable= document.getElementById('eb-split').value === 'yes';
+  b.notes     = document.getElementById('eb-notes').value.trim();
+  save();
+  closeModal();
+  renderBills();
 }
 
 // ==================== CARDS ====================
