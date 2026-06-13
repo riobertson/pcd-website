@@ -599,15 +599,27 @@
       <div class="card">
         <div class="section-header"><h2>How the Advisor Works</h2></div>
         <div style="font-size:13px;color:var(--muted);line-height:1.8">
-          <p>The AI scores every bill on <strong style="color:var(--text)">4 factors</strong>:</p>
-          <br>
-          <p>🔴 <strong style="color:var(--text)">Essentials first</strong> — Housing, utilities, transport, insurance are always top priority. Missing these has real consequences.</p>
-          <br>
-          <p>⏰ <strong style="color:var(--text)">Urgency</strong> — Bills due within 3 days jump to critical. Due within 7 days get elevated priority.</p>
-          <br>
-          <p>💸 <strong style="color:var(--text)">Cash vs. cost</strong> — If your available cash can't cover everything, the advisor protects essentials first and flags what to defer or split.</p>
-          <br>
-          <p>✂️ <strong style="color:var(--text)">Split candidates</strong> — Large bills that won't penalize you for partial payment are recommended for splitting when cash is tight.</p>
+          <p style="font-weight:700;color:var(--text);margin-bottom:6px">Priority Tiers (locked order):</p>
+          <div style="background:rgba(255,92,92,.1);border-left:3px solid var(--danger);padding:8px 12px;border-radius:0 7px 7px 0;margin-bottom:8px">
+            <strong style="color:var(--danger)">Tier 1 — Always First</strong><br>
+            🏠 Housing · ⚡ Utilities<br>
+            <span style="font-size:12px">No other bill can rank above these. Losing shelter or power is the worst financial outcome.</span>
+          </div>
+          <div style="background:rgba(255,179,71,.1);border-left:3px solid var(--warning);padding:8px 12px;border-radius:0 7px 7px 0;margin-bottom:8px">
+            <strong style="color:var(--warning)">Tier 2 — Pay Next</strong><br>
+            🚗 Transport · 🛡️ Insurance · 🏥 Healthcare<br>
+            <span style="font-size:12px">Essential for income and protection. Pay right after Tier 1.</span>
+          </div>
+          <div style="background:rgba(108,99,255,.1);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 7px 7px 0;margin-bottom:8px">
+            <strong style="color:var(--accent)">Tier 3 — Important</strong><br>
+            💳 Debt · 🛒 Groceries · 📚 Education<br>
+            <span style="font-size:12px">Late fees and credit impact. Pay when Tier 1 & 2 are covered.</span>
+          </div>
+          <div style="background:rgba(140,148,168,.1);border-left:3px solid var(--muted);padding:8px 12px;border-radius:0 7px 7px 0">
+            <strong style="color:var(--muted)">Tier 4 — Lowest Priority</strong><br>
+            📱 Subscriptions · 🎬 Entertainment · 🏦 Savings<br>
+            <span style="font-size:12px">Defer or cancel these if cash is tight.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1842,10 +1854,24 @@ function seedFromExcel() {
 
 // ==================== AI BILL ADVISOR ====================
 
+// Tier 1 (200+): Housing & Utilities — always #1 and #2, no exception
+// Tier 2 (100-199): Transport, Insurance, Healthcare — essential but below shelter/power
+// Tier 3 (50-99): Debt, Groceries — important, not life-threatening to miss briefly
+// Tier 4 (<50): Subscriptions, Entertainment, Savings — lowest priority
 const CAT_PRIORITY = {
-  housing: 100, utilities: 88, transport: 75, insurance: 70,
-  healthcare: 65, debt: 55, groceries: 48, education: 38,
-  personal: 28, subscriptions: 20, entertainment: 15, savings: 10, other: 30
+  housing:       200,  // ALWAYS first — shelter/mortgage/rent
+  utilities:     185,  // ALWAYS second — electricity, water, internet (keeps home running)
+  transport:     110,  // Need car to get to work
+  insurance:     105,  // Coverage lapse is expensive
+  healthcare:     95,
+  debt:           70,  // Late fees & credit impact
+  groceries:      60,  // Essential but flexible timing
+  education:      45,
+  other:          35,
+  personal:       25,
+  subscriptions:  18,  // Auto-charges but lowest consequence if missed
+  entertainment:  12,
+  savings:         8,  // Important long-term, but defer when cash is tight
 };
 
 const CAT_SPLIT_OK = {
@@ -1863,12 +1889,18 @@ const URGENCY_LABELS = {
 
 function scoreBill(bill) {
   const days = daysUntilDue(bill.dueDay);
-  let score = CAT_PRIORITY[bill.category] || 30;
-  if (days <= 1) score += 60;
-  else if (days <= 3) score += 45;
-  else if (days <= 7) score += 28;
-  else if (days <= 14) score += 12;
-  return score;
+  const base = CAT_PRIORITY[bill.category] || 30;
+
+  // Urgency bonus — capped so non-essential bills NEVER outrank housing or utilities
+  const isEssential = bill.category === 'housing' || bill.category === 'utilities';
+  const maxBonus = isEssential ? 60 : 40; // essentials get full bonus, others capped at 40
+  let urgencyBonus = 0;
+  if (days <= 1) urgencyBonus = Math.min(60, maxBonus);
+  else if (days <= 3) urgencyBonus = Math.min(45, maxBonus);
+  else if (days <= 7) urgencyBonus = Math.min(28, maxBonus);
+  else if (days <= 14) urgencyBonus = Math.min(12, maxBonus);
+
+  return base + urgencyBonus;
 }
 
 function urgencyLevel(score, days) {
@@ -1879,21 +1911,33 @@ function urgencyLevel(score, days) {
   return 'low';
 }
 
-function buildPayReason(bill, score, days, canAfford, availableAfter) {
+function buildPayReason(bill, score, days, canAfford) {
   const reasons = [];
-  if (days <= 1) reasons.push('due today — pay immediately');
+
+  // Essential tier — always explain WHY it's #1 or #2
+  if (bill.category === 'housing') {
+    reasons.push('🏠 ALWAYS #1 — losing shelter affects everything else');
+    reasons.push('pay this before any other bill, no exceptions');
+  } else if (bill.category === 'utilities') {
+    reasons.push('⚡ ALWAYS #2 — electricity, water & internet keep your home functional');
+    reasons.push('utility shutoffs cost more to restore than the bill itself');
+  } else if (bill.category === 'transport') {
+    reasons.push('🚗 need transportation to earn income');
+  } else if (bill.category === 'insurance') {
+    reasons.push('🛡️ coverage lapse is very costly to reinstate');
+  } else if (bill.category === 'debt') {
+    reasons.push('💳 late fees & credit score impact');
+  } else if (bill.category === 'subscriptions') {
+    reasons.push('📱 auto-charges — card must have balance ready');
+  }
+
+  // Due date context
+  if (days <= 1) reasons.push('due TODAY — pay immediately');
   else if (days <= 3) reasons.push(`due in ${days} day${days!==1?'s':''} — urgent`);
   else if (days <= 7) reasons.push(`due in ${days} days — coming up soon`);
   else reasons.push(`due day ${bill.dueDay}`);
 
-  if (bill.category === 'housing') reasons.push('shelter is always #1 priority');
-  else if (bill.category === 'utilities') reasons.push('keeping utilities on is essential');
-  else if (bill.category === 'transport') reasons.push('need transportation to earn income');
-  else if (bill.category === 'insurance') reasons.push('lapse in coverage can be costly');
-  else if (bill.category === 'debt') reasons.push('late fees & credit impact');
-  else if (bill.category === 'subscriptions') reasons.push('auto-charges — must have balance ready');
-
-  if (!canAfford) reasons.push('⚠️ may need to split or defer');
+  if (!canAfford) reasons.push('⚠️ short on cash — consider splitting');
   return reasons.join(' · ');
 }
 
