@@ -1324,127 +1324,177 @@ function exportData() {
 function downloadTemplate() {
   const wb = XLSX.utils.book_new();
 
-  // --- Sheet 1: Budget (matches your 4-week layout) ---
-  const budgetData = [
-    // Row 1 — Income
-    ['Mike - UPS', '', 0, 'Mike - UPS', '', 0, 'Mike - UPS', '', 0, 'Mike - UPS', '', 0],
-    // Row 2 — Other income
-    ['Other', '', 0, 'Other', '', 0, 'Other', '', 0, 'Other', '', 0],
-    // Row 3 — Total Check
-    ['Total Check Amount', '', '{=C1+C2}', 'Total Check Amount', '', '{=F1+F2}', 'Total Check Amount', '', '{=I1+I2}', 'Total Check Amount', '', '{=L1+L2}'],
-    // Row 4 — Total Monthly Remaining
-    ['Total Monthly Remaining', '', '{=C27}', 'Total Monthly Remaining', '', '{=F27}', 'Total Monthly Remaining', '', '{=I27}', 'Total Monthly Remaining', '', '{=L27}'],
-    // Row 5 — Section headers
-    ['Bills - First Week', '', '', 'Bills - Second Week', '', '', 'Bills - Third Week', '', '', 'Bills - Fourth Week', '', ''],
-    // Rows 6–25 — Bills (name | due date | amount for each week column)
-    ['Mortgage / Rent',           '1st',  0, 'Mortgage',              '7th',  0, 'Mortgage',                    '14th', 0, 'Mortgage',                  '21st', 0],
-    ['Crunchy Roll',              '6th',  0, '',                      '',     '', '',                            '',     '', '',                          '',     ''],
-    ['Gas - Car',                 '1st',  0, 'Gas - Car',             '7th',  0, 'Gas - Car',                   '15th', 0, 'Gas - Car',                 '15th', 0],
-    ['',                          '',     '', 'Walmart',               '7th',  0, 'Xbox Live',                   '15th', 0, '',                          '',     ''],
-    ['',                          '',     '', 'Capitol One',           '8th',  0, 'Amazon',                      '15th', 0, '',                          '',     ''],
-    ['',                          '',     '', '',                      '',     '', '',                            '18th', '', 'Cell Phone/Tmobile/Netflix','18th', 0],
-    ['Microsoft',                 '',     0,  '',                      '',     '', '',                            '18th', '', 'HOA',                       '18th', 0],
-    ['Google',                    '5th',  0,  '',                      '',     '', '',                            '',     '', '',                          '',     ''],
-    ['Nintendo',                  '1st',  0,  'Youtube Music',         '14th', 0,  'Youtube TV',                  '15th', 0, '',                          '',     ''],
-    ['',                          '',     '', 'Disney/Hulu',           '8th',  0,  'Norton',                      '15th', 0, '',                          '',     ''],
-    ['Hair Cuts',                 '',     0,  '',                      '',     '', 'HairCuts',                    '',     0, 'Adobe',                     '30th', 0],
-    ['',                          '',     '', 'Showtime',              '7th',  0,  'Water',                       '15th', 0, '',                          '',     ''],
-    ['Tolls/NTTA',                '1st',  0,  '',                      '',     '', 'Tolls/NTTA',                  '15th', 0, '',                          '',     ''],
-    ['',                          '',     '', 'Coserv/Electricity',    '10th', 0,  '',                            '',     '', 'Car Insurance/Progressive',  '21st', 0],
-    ['Church Offering',           '1st',  0,  'Church Offering',       '7th',  0,  'Church Offering',             '15th', 0, 'Church Offering',           '15th', 0],
-    ['HP Print',                  '5th',  0,  '',                      '',     '', '',                            '',     '', '',                          '',     ''],
-    ['Car Note',                  '14th', 0,  '',                      '',     '', '',                            '',     '', '',                          '',     ''],
-    ['',                          '',     '', '',                      '',     '', '',                            '',     '', '',                          '',     ''],
-    ['Cinemark',                  '1st',  0,  '',                      '',     '', 'Time 4 Learning',             '25th', 0, '',                          '',     ''],
-    // Row 26 — Total Bills
-    ['Total Bills', '', '{=SUM(C6:C25)}', 'Total Bills', '', '{=SUM(F6:F25)}', 'Total Bills', '', '{=SUM(I6:I25)}', 'Total Bills', '', '{=SUM(L6:L25)}'],
-    // Row 27 — Remaining
-    ['Remaining', '', '{=C3-C26}', 'Remaining', '', '{=F3-F26}', 'Remaining', '', '{=I3-I26}', 'Remaining', '', '{=L3-L26}'],
-    // Row 28-29 blank
-    ['', '', '', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', 'Total Savings', '', '{=C27+F27+I27+L27}'],
-    // Row 31 — Allocation
-    ['Groceries',      '1st', 0, 'Groceries',      '', 0, 'Groceries',      '15th', 0, 'Groceries',      '15th', 0],
-    ['LaTara Account', '1st', 0, 'LaTara Account', '7th', 0, 'LaTara Account', '14th', 0, 'LaTara Account', '21st', 0],
-    ['Dining Out',     '1st', 0, 'Dining Out',     '7th', 0, 'Dining Out',     '15th', 0, 'Dining Out',     '15th', 0],
-    ['Savings',        '1st', 0, 'Savings',        '7th', 0, 'Savings',        '15th', 0, 'Savings',        '15th', 0],
-    ['MISC/Sports/ETC','',    0, 'MISC/Sports/ETC','',    0, 'MISC/Sports/ETC','',     0, 'MISC/Sports/ETC','',     0],
+  // ===== SHEET 1: Budget Overview =====
+  const overview = [
+    ['HOUSEHOLD BUDGET PLANNER - BLANK TEMPLATE', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['MONTHLY HOUSEHOLD INCOME', '', '', '', ''],
+    ['Person 1 - Take Home',                    '', '', '', ''],
+    ['Person 2 - Take Home',                    '', '', '', ''],
+    ['Person 3 - Take Home (if applicable)',     '', '', '', ''],
+    ['TOTAL HOUSEHOLD INCOME',                  '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['CATEGORY ALLOCATION TARGET',              '', '', '', ''],
+    ['Category', 'Target Amount', '% of Budget', 'Actual Spending', 'Variance'],
+    ['HOUSE UTILITIES',                         '', '', '', ''],
+    ['  Mortgage/Rent',                         '', '', '', ''],
+    ['  Property Tax/Insurance',                '', '', '', ''],
+    ['  Utilities (Electric, Gas, Water)',       '', '', '', ''],
+    ['  Internet/Cable/Phone',                  '', '', '', ''],
+    ['', '', '', '', ''],
+    ['STREAMING SERVICES',                      '', '', '', ''],
+    ['  Subscriptions (Netflix, Spotify, etc.)',  '', '', '', ''],
+    ['', '', '', '', ''],
+    ['EXTRA ACTIVITIES & SUBSCRIPTIONS',        '', '', '', ''],
+    ['  Dining Out, Entertainment, Fitness',     '', '', '', ''],
+    ['  Hobbies & Misc Subscriptions',          '', '', '', ''],
+    ['', '', '', '', ''],
+    ['GROCERIES & HOUSEHOLD',                   '', '', '', ''],
+    ['  Groceries & Essentials',                '', '', '', ''],
+    ['', '', '', '', ''],
+    ['TRANSPORTATION',                          '', '', '', ''],
+    ['  Car Payment',                           '', '', '', ''],
+    ['  Car Insurance',                         '', '', '', ''],
+    ['  Gas',                                   '', '', '', ''],
+    ['  Maintenance & Repairs',                 '', '', '', ''],
+    ['', '', '', '', ''],
+    ['DEBT & FINANCIAL',                        '', '', '', ''],
+    ["  Student Loans & Credit Cards",          '', '', '', ''],
+    ['  Buy Now Pay Later (Afterpay, etc.)',     '', '', '', ''],
+    ['', '', '', '', ''],
+    ['SAVINGS',                                 '', '', '', ''],
+    ['  Emergency Fund',                        '', '', '', ''],
+    ['  Long-term Savings',                     '', '', '', ''],
+    ['', '', '', '', ''],
+    ['PERSONAL ALLOWANCES',                     '', '', '', ''],
+    ["  Person 1's Personal Allowance",         '', '', '', ''],
+    ["  Person 2's Personal Allowance",         '', '', '', ''],
+    ['', '', '', '', ''],
+    ['GIVING/CHARITY',                          '', '', '', ''],
+    ['  Church/Charity Offerings',              '', '', '', ''],
+    ['TOTAL ALLOCATED',                         '', '', '', ''],
+    ['REMAINING / (OVERSPENT)',                 '', '', '', ''],
   ];
+  const ovWs = XLSX.utils.aoa_to_sheet(overview);
+  ovWs['!cols'] = [{wch:38},{wch:16},{wch:14},{wch:16},{wch:14}];
+  XLSX.utils.book_append_sheet(wb, ovWs, 'Budget Overview');
 
-  const ws = XLSX.utils.aoa_to_sheet(budgetData);
-
-  // Column widths
-  ws['!cols'] = [
-    {wch:22},{wch:6},{wch:12},  // Week 1
-    {wch:22},{wch:6},{wch:12},  // Week 2
-    {wch:22},{wch:6},{wch:12},  // Week 3
-    {wch:22},{wch:6},{wch:12},  // Week 4
+  // ===== SHEET 2: Bill Tracker =====
+  const billTracker = [
+    ['DETAILED BILL TRACKER', '', '', ''],
+    ['Add your bills below. Enter the amount in Column C. System will auto-calculate totals.', '', '', ''],
+    ['', '', '', ''],
+    ['PERSON 1 BILLS', '', '', ''],
+    ['Bill Item', 'Due Date', 'Amount', 'Category'],
+    // Person 1 bills (rows 6–25) — pre-filled with your bills
+    ['Mortgage / Rent',              '1st',  '', 'House Utilities'],
+    ['HOA',                          '18th', '', 'House Utilities'],
+    ['Coserv / Electricity',         '10th', '', 'House Utilities'],
+    ['Water',                        '15th', '', 'House Utilities'],
+    ['Internet - ATT / HBO',         '11th', '', 'House Utilities'],
+    ['Car Note',                     '14th', '', 'Transportation'],
+    ['Car Insurance / Progressive',  '21st', '', 'Transportation'],
+    ['Gas - Car',                    '1st',  '', 'Transportation'],
+    ['Tolls / NTTA',                 '1st',  '', 'Transportation'],
+    ['Cell Phone / T-Mobile / Netflix','18th','', 'Streaming Services'],
+    ['Youtube TV',                   '15th', '', 'Streaming Services'],
+    ['Youtube Music',                '14th', '', 'Streaming Services'],
+    ['Disney / Hulu',                '8th',  '', 'Streaming Services'],
+    ['Xbox Live',                    '15th', '', 'Streaming Services'],
+    ['Amazon Prime',                 '15th', '', 'Streaming Services'],
+    ['Crunchy Roll',                 '6th',  '', 'Streaming Services'],
+    ['Nintendo',                     '1st',  '', 'Streaming Services'],
+    ['Microsoft',                    '5th',  '', 'Streaming Services'],
+    ['Google',                       '5th',  '', 'Streaming Services'],
+    ['Showtime',                     '7th',  '', 'Streaming Services'],
+    ['PERSON 1 TOTAL MONTHLY BILLS', '', '', ''],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['PERSON 2 BILLS', '', '', ''],
+    ['Bill Item', 'Due Date', 'Amount', 'Category'],
+    // Person 2 bills (rows 31–50)
+    ['HP Print',                     '5th',  '', 'Streaming Services'],
+    ['Norton',                       '15th', '', 'Streaming Services'],
+    ['Adobe',                        '30th', '', 'Streaming Services'],
+    ['Cinemark',                     '1st',  '', 'Extra Activities'],
+    ['Capitol One / Mike',           '8th',  '', 'Debt & Financial'],
+    ['Hair Cuts',                    '1st',  '', 'Personal Allowances'],
+    ['Time 4 Learning',              '25th', '', 'Extra Activities'],
+    ['Walmart',                      '7th',  '', 'Groceries & Household'],
+    ['Church Offering (Tithe)',      '1st',  '', 'Giving/Charity'],
+    ['Groceries Budget',             '1st',  '', 'Groceries & Household'],
+    ['LaTara Account',               '1st',  '', 'Savings'],
+    ['Dining Out',                   '1st',  '', 'Extra Activities'],
+    ['Savings',                      '1st',  '', 'Savings'],
+    ['MISC / Sports / ETC',          '',     '', 'Extra Activities'],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['', '', '', ''],
+    ['PERSON 2 TOTAL MONTHLY BILLS', '', '', ''],
   ];
+  const btWs = XLSX.utils.aoa_to_sheet(billTracker);
+  btWs['!cols'] = [{wch:36},{wch:10},{wch:12},{wch:26}];
+  XLSX.utils.book_append_sheet(wb, btWs, 'Bill Tracker');
 
-  XLSX.utils.book_append_sheet(wb, ws, 'Budget');
+  // ===== SHEET 3: How to Use =====
+  const howTo = [
+    ['HOW TO USE THIS BUDGET PLANNER', ''],
+    ['', ''],
+    ['WHAT IS THIS?', ''],
+    ['This is a BLANK template for you to create your own household budget.', ''],
+    ['It helps you organize your income and bills into categories so you can see where your money goes.', ''],
+    ['No personal data is included - YOU fill everything in.', ''],
+    ['', ''],
+    ['STEP 1: FILL IN YOUR INCOME', ''],
+    ["Go to the 'Budget Overview' sheet", ''],
+    ["Enter your monthly take-home pay for each person (blue cells in section 'MONTHLY HOUSEHOLD INCOME')", ''],
+    ['The total will auto-calculate', ''],
+    ['', ''],
+    ['STEP 2: ENTER YOUR BILLS', ''],
+    ["Go to the 'Bill Tracker' sheet", ''],
+    ["List all your monthly bills under 'PERSON 1 BILLS' and 'PERSON 2 BILLS'", ''],
+    ['Include: Mortgage, car payment, utilities, subscriptions, groceries, etc.', ''],
+    ['Assign each bill to a CATEGORY (House Utilities, Transportation, Debt, etc.)', ''],
+    ['', ''],
+    ['STEP 3: SET YOUR BUDGET TARGETS', ''],
+    ["Go back to 'Budget Overview' sheet", ''],
+    ['In the blue cells (Target Amount column), enter how much you WANT to spend in each category', ''],
+    ['For example: House Utilities = $2,500, Streaming = $100, Transportation = $800', ''],
+    ['', ''],
+    ['STEP 4: COMPARE', ''],
+    ['The sheet will automatically show:', ''],
+    ['  • % of Budget - What percentage each category uses', ''],
+    ["  • Actual Spending - What you're really spending (from bills)", ''],
+    ["  • Variance - If you're over/under budget", ''],
+    ['  • Remaining - Money left over', ''],
+    ['', ''],
+    ['CATEGORY SUGGESTIONS', ''],
+    ['House Utilities',  'Mortgage, rent, electric, gas, water, internet, phone, insurance'],
+    ['Streaming Services','Netflix, Spotify, Hulu, Disney+, Xbox, etc.'],
+    ['Extra Activities', 'Dining out, entertainment, hobbies, gym membership'],
+    ['Groceries',        'Food, household essentials, Walmart'],
+    ['Transportation',   'Car payment, gas, insurance, tolls, maintenance'],
+    ['Debt & Financial', 'Student loans, credit cards, buy-now-pay-later'],
+    ['Savings',          'Emergency fund, retirement, long-term goals'],
+    ['Personal Allowances','Individual spending money for each person'],
+    ['Giving/Charity',   'Church, charity, donations'],
+    ['', ''],
+    ['', ''],
+    ['TIPS', ''],
+    ['• Update this monthly to track your spending', ''],
+    ['• Adjust target amounts if needed', ''],
+    ['• Negative variance = spending too much. Positive = under budget (good!)', ''],
+    ["• Keep your personal data private - don't share the file with anyone unless you want them to see your info", ''],
+  ];
+  const htWs = XLSX.utils.aoa_to_sheet(howTo);
+  htWs['!cols'] = [{wch:70},{wch:55}];
+  XLSX.utils.book_append_sheet(wb, htWs, 'How to Use');
 
-  // --- Sheet 2: Income (for FinanceOS import) ---
-  const incomeWs = XLSX.utils.json_to_sheet([
-    {Name:'Mike - UPS (Week 1)', Amount:0, Frequency:'monthly', PayDay:'1',  Type:'salary'},
-    {Name:'Mike - UPS (Week 2)', Amount:0, Frequency:'monthly', PayDay:'7',  Type:'salary'},
-    {Name:'Mike - UPS (Week 3)', Amount:0, Frequency:'monthly', PayDay:'15', Type:'salary'},
-    {Name:'Mike - UPS (Week 4)', Amount:0, Frequency:'monthly', PayDay:'21', Type:'salary'},
-  ]);
-  XLSX.utils.book_append_sheet(wb, incomeWs, 'Income');
-
-  // --- Sheet 3: Bills (for FinanceOS import) ---
-  const billsWs = XLSX.utils.json_to_sheet([
-    {Name:'Mortgage / Rent',            Amount:0, DueDay:1,  Category:'housing',       Card:'Housing Card',       Frequency:'monthly'},
-    {Name:'HOA',                        Amount:0, DueDay:18, Category:'housing',       Card:'Housing Card',       Frequency:'monthly'},
-    {Name:'Gas - Car',                  Amount:0, DueDay:1,  Category:'transport',     Card:'Transport Card',     Frequency:'monthly'},
-    {Name:'Tolls / NTTA',               Amount:0, DueDay:1,  Category:'transport',     Card:'Transport Card',     Frequency:'monthly'},
-    {Name:'Car Note',                   Amount:0, DueDay:14, Category:'debt',          Card:'Debt Card',          Frequency:'monthly'},
-    {Name:'Car Insurance / Progressive',Amount:0, DueDay:21, Category:'insurance',     Card:'Insurance Card',     Frequency:'monthly'},
-    {Name:'Coserv / Electricity',       Amount:0, DueDay:10, Category:'utilities',     Card:'Utilities Card',     Frequency:'monthly'},
-    {Name:'Water',                      Amount:0, DueDay:15, Category:'utilities',     Card:'Utilities Card',     Frequency:'monthly'},
-    {Name:'Internet - ATT / HBO',       Amount:0, DueDay:11, Category:'utilities',     Card:'Utilities Card',     Frequency:'monthly'},
-    {Name:'Cell Phone / T-Mobile / Netflix', Amount:0, DueDay:18, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Youtube TV',                 Amount:0, DueDay:15, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Youtube Music',              Amount:0, DueDay:14, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Disney / Hulu',              Amount:0, DueDay:8,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Xbox Live',                  Amount:0, DueDay:15, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Amazon Prime',               Amount:0, DueDay:15, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Crunchy Roll',               Amount:0, DueDay:6,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Nintendo',                   Amount:0, DueDay:1,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Microsoft',                  Amount:0, DueDay:5,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Google',                     Amount:0, DueDay:5,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Showtime',                   Amount:0, DueDay:7,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'HP Print',                   Amount:0, DueDay:5,  Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Norton',                     Amount:0, DueDay:15, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Adobe',                      Amount:0, DueDay:30, Category:'subscriptions', Card:'Subscriptions Card', Frequency:'monthly'},
-    {Name:'Cinemark',                   Amount:0, DueDay:1,  Category:'entertainment', Card:'Entertainment Card', Frequency:'monthly'},
-    {Name:'Capitol One / Mike',         Amount:0, DueDay:8,  Category:'debt',          Card:'Debt Card',          Frequency:'monthly'},
-    {Name:'Hair Cuts',                  Amount:0, DueDay:1,  Category:'personal',      Card:'General Card',       Frequency:'monthly'},
-    {Name:'Time 4 Learning',            Amount:0, DueDay:25, Category:'education',     Card:'General Card',       Frequency:'monthly'},
-    {Name:'Walmart',                    Amount:0, DueDay:7,  Category:'groceries',     Card:'General Card',       Frequency:'monthly'},
-    {Name:'Church Offering (Tithe)',    Amount:0, DueDay:1,  Category:'other',         Card:'General Card',       Frequency:'monthly'},
-    {Name:'Groceries Budget',           Amount:0, DueDay:1,  Category:'groceries',     Card:'General Card',       Frequency:'monthly'},
-    {Name:'LaTara Account',             Amount:0, DueDay:1,  Category:'savings',       Card:'Savings Card',       Frequency:'monthly'},
-    {Name:'Dining Out',                 Amount:0, DueDay:1,  Category:'entertainment', Card:'Entertainment Card', Frequency:'monthly'},
-    {Name:'Savings',                    Amount:0, DueDay:1,  Category:'savings',       Card:'Savings Card',       Frequency:'monthly'},
-  ]);
-  XLSX.utils.book_append_sheet(wb, billsWs, 'Bills');
-
-  // --- Sheet 4: Cards ---
-  const cardsWs = XLSX.utils.json_to_sheet([
-    {Name:'Housing Card',       Last4:'', Type:'debit',    Category:'housing',       Balance:0},
-    {Name:'Transport Card',     Last4:'', Type:'debit',    Category:'transport',     Balance:0},
-    {Name:'Subscriptions Card', Last4:'', Type:'debit',    Category:'subscriptions', Balance:0},
-    {Name:'Utilities Card',     Last4:'', Type:'debit',    Category:'utilities',     Balance:0},
-    {Name:'Insurance Card',     Last4:'', Type:'debit',    Category:'insurance',     Balance:0},
-    {Name:'Debt Card',          Last4:'', Type:'debit',    Category:'debt',          Balance:0},
-    {Name:'Entertainment Card', Last4:'', Type:'debit',    Category:'entertainment', Balance:0},
-    {Name:'Savings Card',       Last4:'', Type:'savings',  Category:'savings',       Balance:0},
-    {Name:'General Card',       Last4:'', Type:'checking', Category:'general',       Balance:0},
-  ]);
-  XLSX.utils.book_append_sheet(wb, cardsWs, 'Cards');
-
-  XLSX.writeFile(wb, 'FinanceOS_MyBudget_Template.xlsx');
+  XLSX.writeFile(wb, 'Budget_Planner_Template.xlsx');
 }
 
 // ==================== MODAL ====================
