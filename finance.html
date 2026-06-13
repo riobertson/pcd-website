@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Management System</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3248;
+    --accent: #6c63ff;
+    --accent2: #00d4aa;
+    --danger: #ff5c5c;
+    --warning: #ffb347;
+    --success: #4cde80;
+    --text: #e8eaf0;
+    --muted: #8890a8;
+    --card-radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+  /* LAYOUT */
+  .app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .main { padding: 28px; overflow-y: auto; }
+
+  /* SIDEBAR */
+  .logo { padding: 0 20px 24px; font-size: 18px; font-weight: 700; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .logo span { font-size: 22px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 20px; cursor: pointer; color: var(--muted); font-size: 14px; transition: all .2s; border-left: 3px solid transparent; }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); background: rgba(108,99,255,.1); border-left-color: var(--accent); }
+  .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+  .nav-section { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 16px 20px 6px; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+  .page-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+  /* CARDS */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--card-radius); padding: 20px; }
+  .card-title { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+  .card-value { font-size: 28px; font-weight: 700; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  @media(max-width:900px) { .app { grid-template-columns: 1fr; } .sidebar { height: auto; position: static; } .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+
+  /* FORMS */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  input, select, textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 9px 12px; font-size: 14px; outline: none; transition: border-color .2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface2); }
+  textarea { resize: vertical; min-height: 72px; }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all .2s; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5a52e0; }
+  .btn-success { background: var(--success); color: #0f1117; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text); }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 12px; border-bottom: 1px solid rgba(46,50,72,.5); font-size: 14px; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* BADGES */
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .badge-green { background: rgba(76,222,128,.15); color: var(--success); }
+  .badge-red { background: rgba(255,92,92,.15); color: var(--danger); }
+  .badge-yellow { background: rgba(255,179,71,.15); color: var(--warning); }
+  .badge-blue { background: rgba(108,99,255,.15); color: var(--accent); }
+  .badge-teal { background: rgba(0,212,170,.15); color: var(--accent2); }
+
+  /* PROGRESS */
+  .progress { background: var(--surface2); border-radius: 99px; height: 8px; overflow: hidden; margin-top: 8px; }
+  .progress-bar { height: 100%; border-radius: 99px; transition: width .5s; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: 10px; margin-bottom: 20px; width: fit-content; }
+  .tab { padding: 7px 16px; border-radius: 7px; cursor: pointer; font-size: 13px; color: var(--muted); transition: all .2s; border: none; background: none; }
+  .tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--card-radius); padding: 28px; width: 540px; max-width: 95vw; max-height: 90vh; overflow-y: auto; position: relative; }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; }
+
+  /* ALERT BANNER */
+  .alert { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 9px; font-size: 13px; margin-bottom: 12px; }
+  .alert-danger { background: rgba(255,92,92,.12); border: 1px solid rgba(255,92,92,.3); color: #ff8080; }
+  .alert-warning { background: rgba(255,179,71,.12); border: 1px solid rgba(255,179,71,.3); color: #ffd080; }
+  .alert-success { background: rgba(76,222,128,.12); border: 1px solid rgba(76,222,128,.3); color: #80ffa8; }
+  .alert-info { background: rgba(108,99,255,.12); border: 1px solid rgba(108,99,255,.3); color: #a09eff; }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid rgba(46,50,72,.4); align-items: flex-start; }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .timeline-content { flex: 1; }
+  .timeline-title { font-size: 14px; font-weight: 600; }
+  .timeline-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .timeline-amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
+
+  /* CARD CHIP */
+  .card-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-header h2 { font-size: 17px; font-weight: 700; }
+
+  /* INCOME SOURCES */
+  .income-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 9px; margin-bottom: 8px; }
+
+  /* ALLOCATION PIE VIZ */
+  .alloc-bar { display: flex; height: 18px; border-radius: 9px; overflow: hidden; margin-bottom: 12px; }
+  .alloc-segment { height: 100%; transition: width .5s; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 48px 20px; color: var(--muted); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty p { font-size: 14px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* DRAG UPLOAD */
+  .upload-zone { border: 2px dashed var(--border); border-radius: var(--card-radius); padding: 40px; text-align: center; cursor: pointer; transition: all .2s; }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: rgba(108,99,255,.05); }
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+
+  /* COLOR PICKER ROW */
+  .color-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .color-option { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color .2s; }
+  .color-option.selected { border-color: #fff; }
+
+  /* TOOLTIPS */
+  [title] { cursor: help; }
+
+  /* SCROLL */
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* NOTIFICATION DOT */
+  .notif-dot { display: inline-block; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; margin-left: 6px; vertical-align: middle; }
+
+  .mt-4 { margin-top: 16px; }
+  .mt-2 { margin-top: 8px; }
+  .mb-4 { margin-bottom: 16px; }
+  .flex { display: flex; }
+  .gap-2 { gap: 8px; }
+  .gap-3 { gap: 12px; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .w-full { width: 100%; }
+  .text-right { text-align: right; }
+  .text-muted { color: var(--muted); font-size: 13px; }
+  .font-bold { font-weight: 700; }
+  .text-success { color: var(--success); }
+  .text-danger { color: var(--danger); }
+  .text-warning { color: var(--warning); }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo"><span>💰</span> FinanceOS</div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPage('alerts')"><span class="icon">🔔</span> Alerts <span id="alert-dot" class="notif-dot" style="display:none"></span></div>
+
+    <div class="nav-section">Money</div>
+    <div class="nav-item" onclick="showPage('income')"><span class="icon">💵</span> Income</div>
+    <div class="nav-item" onclick="showPage('bills')"><span class="icon">📄</span> Bills</div>
+    <div class="nav-item" onclick="showPage('cards')"><span class="icon">💳</span> Cards</div>
+
+    <div class="nav-section">Planning</div>
+    <div class="nav-item" onclick="showPage('schedule')"><span class="icon">📅</span> Pay Schedule</div>
+    <div class="nav-item" onclick="showPage('allocation')"><span class="icon">🎯</span> Allocation</div>
+    <div class="nav-item" onclick="showPage('splits')"><span class="icon">✂️</span> Split Payments</div>
+
+    <div class="nav-section">Data</div>
+    <div class="nav-item" onclick="showPage('import')"><span class="icon">📥</span> Import Excel</div>
+    <div class="nav-item" onclick="exportData()"><span class="icon">📤</span> Export</div>
+  </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="page-title">Dashboard</div>
+    <div class="page-sub">Your complete financial overview at a glance.</div>
+
+    <div class="stat-grid" id="stat-grid"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Upcoming Bills (30 days)</h2></div>
+        <div id="upcoming-bills-list"></div>
+      </div>
+      <div class="card">
+        <div class="section-header"><h2>Card Balance Needed</h2></div>
+        <div id="card-needs-list"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-header"><h2>Monthly Budget Breakdown</h2></div>
+      <div id="budget-alloc-bar" class="alloc-bar mb-4"></div>
+      <div id="budget-legend" style="display:flex;flex-wrap:wrap;gap:12px;"></div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div id="page-alerts" class="page">
+    <div class="page-title">Alerts & Reminders</div>
+    <div class="page-sub">Bills needing your attention soon.</div>
+    <div id="alerts-list"></div>
+  </div>
+
+  <!-- INCOME -->
+  <div id="page-income" class="page">
+    <div class="page-title">Income Sources</div>
+    <div class="page-sub">Enter all your income streams. Supports recurring & one-time payments.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Add Income Source</h2></div>
+        <div class="form-group"><label>Source Name</label><input id="inc-name" placeholder="e.g. Main Job, Side Hustle"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Amount ($)</label><input id="inc-amount" type="number" placeholder="0.00"></div>
+          <div class="form-group"><label>Frequency</label>
+            <select id="inc-freq">
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-Weekly</option>
+              <option value="semimonthly">Semi-Monthly</option>
+              <option value="monthly" selected>Monthly</option>
+              <option value="onetime">One-Time</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Pay Day (1-31 or day of week)</label><input id="inc-payday" placeholder="e.g. 1, 15, Friday"></div>
+          <div class="form-group"><label>Type</label>
+            <select id="inc-type">
+              <option value="salary">Salary / Wages</option>
+              <option value="freelance">Freelance</option>
+              <option value="rental">Rental</option>
+              <option value="investment">Investment</option>
+              <option value="benefits">Benefits / Gov</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary w-full" onclick="addIncome()">➕ Add Income</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>Income Summary</h2></div>
+        <div id="income-summary"></div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>Income Sources</h2></div>
+      <div id="income-list"></div>
+    </div>
+  </div>
+
+  <!-- BILLS -->
+  <div id="page-bills" class="page">
+    <div class="page-title">Bills</div>
+    <div class="page-sub">Track every bill, its due date, amount, and which card it's paid from.</div>
+
+    <div class="card mb-4">
+      <div class="section-header"><h2>Add Bill</h2></div>
+      <div class="form-row-3">
+        <div class="form-group"><label>Bill Name</label><input id="bill-name" placeholder="e.g. Rent, Netflix"></div>
+        <div class="form-group"><label>Amount ($)</label><input id="bill-amount" type="number" placeholder="0.00"></div>
+        <div class="form-group"><label>Due Day (1-31)</label><input id="bill-due" type="number" min="1" max="31" placeholder="15"></div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group"><label>Category</label>
+          <select id="bill-category">
+            <option value="housing">🏠 Housing</option>
+            <option value="utilities">⚡ Utilities</option>
+            <option value="groceries">🛒 Groceries</option>
+            <option value="transport">🚗 Transport</option>
+            <option value="insurance">🛡️ Insurance</option>
+            <option value="subscriptions">📱 Subscriptions</option>
+            <option value="healthcare">🏥 Healthcare</option>
+            <option value="debt">💳 Debt Payment</option>
+            <option value="entertainment">🎬 Entertainment</option>
+            <option value="education">📚 Education</option>
+            <option value="personal">💄 Personal Care</option>
+            <option value="savings">🏦 Savings</option>
+            <option value="other">📦 Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Pay With Card</label><select id="bill-card"></select></div>
+        <div class="form-group"><label>Frequency</label>
+          <select id="bill-freq">
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Bi-Weekly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annual">Annual</option>
+            <option value="onetime">One-Time</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Allow Split Payment?</label>
+          <select id="bill-splittable">
+            <option value="no">No — Pay in full</option>
+            <option value="yes">Yes — Can split</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Notes</label><input id="bill-notes" placeholder="Optional notes"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addBill()">➕ Add Bill</button>
+    </div>
+
+    <div class="card">
+      <div class="section-header"><h2>All Bills</h2><div id="bills-total-badge"></div></div>
+      <div class="tabs">
+        <button class="tab active" onclick="filterBills('all',this)">All</button>
+        <button class="tab" onclick="filterBills('housing',this)">Housing</button>
+        <button class="tab" onclick="filterBills('utilities',this)">Utilities</button>
+        <button class="tab" onclick="filterBills('subscriptions',this)">Subscriptions</button>
+        <button class="tab" onclick="filterBills('debt',this)">Debt</button>
+      </div>
+      <div id="bills-list"></div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div id="page-cards" class="page">
+    <div class="page-title">Cards & Accounts</div>
+    <div class="page-sub">Each category gets a dedicated card. Track balances and load amounts.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Add Card / Account</h2></div>
+        <div class="form-group"><label>Card / Account Name</label><input id="card-name" placeholder="e.g. Chase Housing Card"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Last 4 Digits</label><input id="card-last4" maxlength="4" placeholder="1234"></div>
+          <div class="form-group"><label>Card Type</label>
+            <select id="card-type">
+              <option value="debit">Debit Card</option>
+              <option value="credit">Credit Card</option>
+              <option value="checking">Checking Account</option>
+              <option value="savings">Savings Account</option>
+              <option value="prepaid">Prepaid Card</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Primary Category</label>
+          <select id="card-category">
+            <option value="housing">🏠 Housing</option>
+            <option value="utilities">⚡ Utilities</option>
+            <option value="groceries">🛒 Groceries</option>
+            <option value="transport">🚗 Transport</option>
+            <option value="insurance">🛡️ Insurance</option>
+            <option value="subscriptions">📱 Subscriptions</option>
+            <option value="healthcare">🏥 Healthcare</option>
+            <option value="debt">💳 Debt</option>
+            <option value="entertainment">🎬 Entertainment</option>
+            <option value="personal">💄 Personal</option>
+            <option value="savings">🏦 Savings</option>
+            <option value="general">🌐 General</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Current Balance ($)</label><input id="card-balance" type="number" placeholder="0.00"></div>
+        <div class="form-group"><label>Card Color</label>
+          <div class="color-options" id="card-color-picker">
+            <div class="color-option selected" style="background:#6c63ff" data-color="#6c63ff" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#00d4aa" data-color="#00d4aa" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#ff5c5c" data-color="#ff5c5c" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#ffb347" data-color="#ffb347" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#4cde80" data-color="#4cde80" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#38b6ff" data-color="#38b6ff" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#ff6fcf" data-color="#ff6fcf" onclick="selectColor(this)"></div>
+            <div class="color-option" style="background:#f0c040" data-color="#f0c040" onclick="selectColor(this)"></div>
+          </div>
+        </div>
+        <button class="btn btn-primary w-full" onclick="addCard()">➕ Add Card</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>Cards Overview</h2></div>
+        <div id="cards-overview"></div>
+      </div>
+    </div>
+
+    <div class="card mt-4" id="cards-detail-section">
+      <div class="section-header"><h2>All Cards</h2></div>
+      <div id="cards-list"></div>
+    </div>
+  </div>
+
+  <!-- PAYMENT SCHEDULE -->
+  <div id="page-schedule" class="page">
+    <div class="page-title">Payment Schedule</div>
+    <div class="page-sub">Day-by-day view of what to pay and when. Never miss a due date.</div>
+
+    <div class="stat-grid" id="schedule-stats"></div>
+
+    <div class="card mt-4">
+      <div class="section-header">
+        <h2>📅 This Month's Pay Plan</h2>
+        <select id="schedule-month" onchange="renderSchedule()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:7px;font-size:13px;">
+        </select>
+      </div>
+      <div id="schedule-timeline"></div>
+    </div>
+  </div>
+
+  <!-- ALLOCATION -->
+  <div id="page-allocation" class="page">
+    <div class="page-title">Card Allocation</div>
+    <div class="page-sub">Exactly how much to load onto each card this month so every bill gets paid.</div>
+
+    <div id="allocation-alerts" class="mb-4"></div>
+
+    <div class="card mb-4">
+      <div class="section-header"><h2>Monthly Income to Distribute</h2></div>
+      <div id="alloc-income-display"></div>
+    </div>
+
+    <div id="allocation-cards"></div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>Remaining After All Bills</h2></div>
+      <div id="alloc-remaining"></div>
+    </div>
+  </div>
+
+  <!-- SPLIT PAYMENTS -->
+  <div id="page-splits" class="page">
+    <div class="page-title">Split Payments</div>
+    <div class="page-sub">Break large bills into smaller payments so one bill never drains your account.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Create Split Plan</h2></div>
+        <div class="form-group"><label>Select Bill to Split</label><select id="split-bill-select"></select></div>
+        <div class="form-row">
+          <div class="form-group"><label>Number of Payments</label><input id="split-count" type="number" min="2" max="12" value="2"></div>
+          <div class="form-group"><label>Start Month</label><input id="split-start" type="month"></div>
+        </div>
+        <div class="form-group"><label>Strategy</label>
+          <select id="split-strategy">
+            <option value="equal">Equal Payments</option>
+            <option value="front">Front-Loaded (pay more early)</option>
+            <option value="back">Back-Loaded (pay less now)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary w-full" onclick="createSplit()">✂️ Create Split Plan</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>Split Tips</h2></div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;">
+          <p>💡 <strong style="color:var(--text)">Equal</strong> — Same amount each payment. Great for predictability.</p>
+          <br>
+          <p>💡 <strong style="color:var(--text)">Front-Loaded</strong> — Pay more in the first payments. Good if you expect less income later.</p>
+          <br>
+          <p>💡 <strong style="color:var(--text)">Back-Loaded</strong> — Pay less now, more later. Useful when money is tight right now but you expect more income soon.</p>
+          <br>
+          <p>⚠️ Only bills marked as <em>"Can Split"</em> will appear in the selector. Edit a bill to enable splitting.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>Active Split Plans</h2></div>
+      <div id="splits-list"></div>
+    </div>
+  </div>
+
+  <!-- IMPORT -->
+  <div id="page-import" class="page">
+    <div class="page-title">Import from Excel</div>
+    <div class="page-sub">Upload your spreadsheet to auto-populate income and bills.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h2 style="font-size:15px;margin-bottom:12px;">📥 Upload Excel File</h2>
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
+          <div class="upload-icon">📊</div>
+          <p style="font-size:14px;font-weight:600;margin-bottom:6px;">Click or Drag & Drop</p>
+          <p class="text-muted">Supports .xlsx, .xls, .csv files</p>
+          <input type="file" id="file-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFile(event)">
+        </div>
+        <div id="import-status" class="mt-4"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:15px;margin-bottom:12px;">📋 Expected Format</h2>
+        <p class="text-muted" style="font-size:13px;margin-bottom:12px;">Your Excel file should have one or more of these sheets:</p>
+
+        <p style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--accent2)">Sheet: "Income"</p>
+        <div style="font-size:12px;color:var(--muted);background:var(--surface2);padding:10px;border-radius:7px;margin-bottom:14px;font-family:monospace;">
+          Name | Amount | Frequency | PayDay | Type
+        </div>
+
+        <p style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--accent2)">Sheet: "Bills"</p>
+        <div style="font-size:12px;color:var(--muted);background:var(--surface2);padding:10px;border-radius:7px;margin-bottom:14px;font-family:monospace;">
+          Name | Amount | DueDay | Category | Card | Frequency
+        </div>
+
+        <p style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--accent2)">Sheet: "Cards"</p>
+        <div style="font-size:12px;color:var(--muted);background:var(--surface2);padding:10px;border-radius:7px;font-family:monospace;">
+          Name | Last4 | Type | Category | Balance
+        </div>
+
+        <button class="btn btn-ghost btn-sm mt-4" onclick="downloadTemplate()">⬇️ Download Template</button>
+      </div>
+    </div>
+
+    <div class="card mt-4" id="import-preview" style="display:none">
+      <div class="section-header"><h2>Preview</h2><button class="btn btn-success btn-sm" onclick="confirmImport()">✅ Import All</button></div>
+      <div id="import-preview-content"></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ==================== STATE ====================
+let state = {
+  income: [],
+  bills: [],
+  cards: [],
+  splits: [],
+};
+let selectedCardColor = '#6c63ff';
+let importData = null;
+let currentBillFilter = 'all';
+
+// ==================== PERSISTENCE ====================
+function save() { localStorage.setItem('financeOS', JSON.stringify(state)); }
+function load() {
+  const d = localStorage.getItem('financeOS');
+  if (d) state = JSON.parse(d);
+}
+
+// ==================== NAV ====================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const items = document.querySelectorAll('.nav-item');
+  items.forEach(item => { if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(id)) item.classList.add('active'); });
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'income') renderIncome();
+  if (id === 'bills') { populateBillCardSelect(); renderBills(); }
+  if (id === 'cards') { renderCards(); }
+  if (id === 'schedule') { populateScheduleMonths(); renderSchedule(); }
+  if (id === 'allocation') renderAllocation();
+  if (id === 'splits') { populateSplitSelect(); renderSplits(); }
+  if (id === 'alerts') renderAlerts();
+}
+
+// ==================== HELPERS ====================
+function fmt(n) { return '$' + Number(n || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function catIcon(cat) {
+  const icons = {housing:'🏠',utilities:'⚡',groceries:'🛒',transport:'🚗',insurance:'🛡️',subscriptions:'📱',healthcare:'🏥',debt:'💳',entertainment:'🎬',education:'📚',personal:'💄',savings:'🏦',general:'🌐',other:'📦'};
+  return icons[cat] || '📦';
+}
+function freqLabel(f) {
+  const m = {weekly:'Weekly',biweekly:'Bi-Weekly',semimonthly:'Semi-Monthly',monthly:'Monthly',quarterly:'Quarterly',annual:'Annual',onetime:'One-Time'};
+  return m[f] || f;
+}
+function monthlyAmount(amount, freq) {
+  const f = {weekly: 4.33, biweekly: 2.17, semimonthly: 2, monthly: 1, quarterly: 1/3, annual: 1/12, onetime: 0};
+  return amount * (f[freq] || 1);
+}
+function totalMonthlyIncome() { return state.income.reduce((s,i) => s + monthlyAmount(i.amount, i.freq), 0); }
+function totalMonthlyBills() { return state.bills.reduce((s,b) => s + monthlyAmount(b.amount, b.freq), 0); }
+function daysUntilDue(dueDay) {
+  const now = new Date();
+  let due = new Date(now.getFullYear(), now.getMonth(), dueDay);
+  if (due < now) due = new Date(now.getFullYear(), now.getMonth()+1, dueDay);
+  return Math.ceil((due - now) / 86400000);
+}
+function getCard(id) { return state.cards.find(c => c.id === id); }
+function cardName(id) { const c = getCard(id); return c ? c.name : 'No Card'; }
+function cardColor(id) { const c = getCard(id); return c ? c.color : '#8890a8'; }
+
+// ==================== INCOME ====================
+function addIncome() {
+  const name = document.getElementById('inc-name').value.trim();
+  const amount = parseFloat(document.getElementById('inc-amount').value);
+  const freq = document.getElementById('inc-freq').value;
+  const payday = document.getElementById('inc-payday').value.trim();
+  const type = document.getElementById('inc-type').value;
+  if (!name || !amount) { alert('Please fill in name and amount.'); return; }
+  state.income.push({ id: uid(), name, amount, freq, payday, type });
+  save();
+  ['inc-name','inc-amount','inc-payday'].forEach(id => document.getElementById(id).value = '');
+  renderIncome();
+  populateBillCardSelect();
+}
+function deleteIncome(id) { state.income = state.income.filter(i => i.id !== id); save(); renderIncome(); }
+function renderIncome() {
+  const list = document.getElementById('income-list');
+  if (!state.income.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">💵</div><p>No income sources yet. Add one above.</p></div>'; } else {
+    list.innerHTML = state.income.map(i => `
+      <div class="income-item">
+        <div>
+          <div style="font-weight:600;font-size:14px">${i.name}</div>
+          <div class="text-muted">${freqLabel(i.freq)} · Pay day: ${i.payday || '–'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div>
+            <div style="font-weight:700;font-size:16px;text-align:right">${fmt(i.amount)}</div>
+            <div class="text-muted" style="text-align:right;font-size:11px">${fmt(monthlyAmount(i.amount,i.freq))}/mo</div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteIncome('${i.id}')">🗑</button>
+        </div>
+      </div>`).join('');
+  }
+  const total = totalMonthlyIncome();
+  document.getElementById('income-summary').innerHTML = `
+    <div style="text-align:center;padding:20px">
+      <div class="text-muted" style="font-size:13px">Total Monthly Income</div>
+      <div style="font-size:36px;font-weight:800;color:var(--success);margin:8px 0">${fmt(total)}</div>
+      <div class="text-muted" style="font-size:12px">${state.income.length} source${state.income.length!==1?'s':''}</div>
+    </div>
+    <hr class="divider">
+    ${state.income.map(i=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:13px">${i.name}</span>
+        <span style="font-size:13px;font-weight:600">${fmt(monthlyAmount(i.amount,i.freq))}/mo</span>
+      </div>`).join('')}`;
+}
+
+// ==================== BILLS ====================
+function populateBillCardSelect() {
+  const sel = document.getElementById('bill-card');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— No specific card —</option>' + state.cards.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+function addBill() {
+  const name = document.getElementById('bill-name').value.trim();
+  const amount = parseFloat(document.getElementById('bill-amount').value);
+  const dueDay = parseInt(document.getElementById('bill-due').value);
+  const category = document.getElementById('bill-category').value;
+  const cardId = document.getElementById('bill-card').value;
+  const freq = document.getElementById('bill-freq').value;
+  const splittable = document.getElementById('bill-splittable').value === 'yes';
+  const notes = document.getElementById('bill-notes').value.trim();
+  if (!name || !amount || !dueDay) { alert('Please fill in name, amount, and due day.'); return; }
+  state.bills.push({ id: uid(), name, amount, dueDay, category, cardId, freq, splittable, notes, paid: false });
+  save();
+  ['bill-name','bill-amount','bill-due','bill-notes'].forEach(id => document.getElementById(id).value = '');
+  renderBills();
+  populateSplitSelect();
+}
+function deleteBill(id) { state.bills = state.bills.filter(b => b.id !== id); save(); renderBills(); }
+function togglePaid(id) {
+  const b = state.bills.find(b => b.id === id);
+  if (b) { b.paid = !b.paid; save(); renderBills(); }
+}
+function filterBills(cat, el) {
+  currentBillFilter = cat;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderBills();
+}
+function renderBills() {
+  const filtered = currentBillFilter === 'all' ? state.bills : state.bills.filter(b => b.category === currentBillFilter);
+  const total = state.bills.reduce((s,b) => s + monthlyAmount(b.amount, b.freq), 0);
+  document.getElementById('bills-total-badge').innerHTML = `<span class="badge badge-blue">${fmt(total)}/mo total</span>`;
+  const list = document.getElementById('bills-list');
+  if (!filtered.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">📄</div><p>No bills here yet.</p></div>'; return; }
+  list.innerHTML = `<table>
+    <thead><tr><th>Bill</th><th>Amount</th><th>Due</th><th>Category</th><th>Card</th><th>Freq</th><th>Status</th><th></th></tr></thead>
+    <tbody>${filtered.map(b => {
+      const days = daysUntilDue(b.dueDay);
+      const urgency = days <= 3 ? 'badge-red' : days <= 7 ? 'badge-yellow' : 'badge-green';
+      const urgencyLabel = days <= 3 ? '🔥 Due Soon' : days <= 7 ? '⚠️ 7 Days' : `${days}d`;
+      return `<tr>
+        <td><div style="font-weight:600">${b.name}</div>${b.notes?`<div class="text-muted" style="font-size:11px">${b.notes}</div>`:''}</td>
+        <td style="font-weight:700">${fmt(b.amount)}</td>
+        <td>Day ${b.dueDay}</td>
+        <td><span>${catIcon(b.category)} ${b.category}</span></td>
+        <td>${b.cardId ? `<span class="card-chip" style="background:${cardColor(b.cardId)}22;color:${cardColor(b.cardId)}">${cardName(b.cardId)}</span>` : '<span class="text-muted">–</span>'}</td>
+        <td>${freqLabel(b.freq)}</td>
+        <td><span class="badge ${b.paid?'badge-green':urgency}">${b.paid?'✓ Paid':urgencyLabel}</span>${b.splittable?'<br><span style="font-size:10px;color:var(--muted)">✂ splittable</span>':''}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-ghost btn-sm" onclick="togglePaid('${b.id}')">${b.paid?'Unpay':'✓ Pay'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteBill('${b.id}')">🗑</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+// ==================== CARDS ====================
+function selectColor(el) {
+  document.querySelectorAll('.color-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCardColor = el.dataset.color;
+}
+function addCard() {
+  const name = document.getElementById('card-name').value.trim();
+  const last4 = document.getElementById('card-last4').value.trim();
+  const type = document.getElementById('card-type').value;
+  const category = document.getElementById('card-category').value;
+  const balance = parseFloat(document.getElementById('card-balance').value) || 0;
+  if (!name) { alert('Please enter a card name.'); return; }
+  state.cards.push({ id: uid(), name, last4, type, category, balance, color: selectedCardColor });
+  save();
+  ['card-name','card-last4','card-balance'].forEach(id => document.getElementById(id).value = '');
+  renderCards();
+  populateBillCardSelect();
+}
+function deleteCard(id) {
+  state.cards = state.cards.filter(c => c.id !== id);
+  state.bills.forEach(b => { if (b.cardId === id) b.cardId = ''; });
+  save(); renderCards(); populateBillCardSelect();
+}
+function renderCards() {
+  const list = document.getElementById('cards-list');
+  const overview = document.getElementById('cards-overview');
+  if (!state.cards.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">💳</div><p>No cards added yet.</p></div>';
+    overview.innerHTML = '<p class="text-muted" style="font-size:13px">Add cards to see your overview.</p>';
+    return;
+  }
+  // Cards with monthly bills assigned
+  overview.innerHTML = state.cards.map(c => {
+    const assigned = state.bills.filter(b => b.cardId === c.id);
+    const monthly = assigned.reduce((s,b) => s + monthlyAmount(b.amount,b.freq), 0);
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="width:42px;height:28px;border-radius:5px;background:${c.color};"></div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px">${c.name}${c.last4?' ····'+c.last4:''}</div>
+        <div class="text-muted" style="font-size:12px">${catIcon(c.category)} ${c.category} · ${assigned.length} bill${assigned.length!==1?'s':''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700">${fmt(monthly)}/mo</div>
+        <div class="text-muted" style="font-size:11px">needed</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  list.innerHTML = `<table>
+    <thead><tr><th>Card</th><th>Type</th><th>Category</th><th>Current Balance</th><th>Monthly Need</th><th>Bills</th><th></th></tr></thead>
+    <tbody>${state.cards.map(c => {
+      const assigned = state.bills.filter(b => b.cardId === c.id);
+      const monthly = assigned.reduce((s,b) => s + monthlyAmount(b.amount,b.freq), 0);
+      const diff = c.balance - monthly;
+      return `<tr>
+        <td><div style="display:flex;align-items:center;gap:8px"><div style="width:32px;height:20px;border-radius:4px;background:${c.color}"></div><div><div style="font-weight:600">${c.name}</div>${c.last4?`<div class="text-muted" style="font-size:11px">····${c.last4}</div>`:''}</div></div></td>
+        <td>${c.type}</td>
+        <td>${catIcon(c.category)} ${c.category}</td>
+        <td style="font-weight:600">${fmt(c.balance)}</td>
+        <td style="font-weight:600">${fmt(monthly)}</td>
+        <td>${assigned.length}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteCard('${c.id}')">🗑</button></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+// ==================== SCHEDULE ====================
+function populateScheduleMonths() {
+  const sel = document.getElementById('schedule-month');
+  const now = new Date();
+  sel.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    const val = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const label = d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    sel.innerHTML += `<option value="${val}">${label}</option>`;
+  }
+}
+function renderSchedule() {
+  const selVal = document.getElementById('schedule-month').value;
+  const [yr, mo] = selVal.split('-').map(Number);
+  const now = new Date();
+
+  // Group bills by due day
+  const byDay = {};
+  state.bills.forEach(b => {
+    if (!byDay[b.dueDay]) byDay[b.dueDay] = [];
+    byDay[b.dueDay].push(b);
+  });
+  const days = Object.keys(byDay).map(Number).sort((a,b)=>a-b);
+
+  // Also include income pay dates for this month
+  const incomeEvents = [];
+  state.income.forEach(inc => {
+    if (inc.payday && !isNaN(parseInt(inc.payday))) {
+      incomeEvents.push({ day: parseInt(inc.payday), income: inc });
+    }
+  });
+
+  // Merge all events
+  const allDays = [...new Set([...days, ...incomeEvents.map(e=>e.day)])].sort((a,b)=>a-b);
+
+  const timeline = document.getElementById('schedule-timeline');
+  if (!allDays.length) { timeline.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><p>No bills or income scheduled.</p></div>'; return; }
+
+  let totalDue = 0;
+  let paidCount = 0;
+
+  timeline.innerHTML = '<div class="timeline">' + allDays.map(day => {
+    const bills = byDay[day] || [];
+    const inc = incomeEvents.filter(e => e.day === day);
+    const dayDate = new Date(yr, mo-1, day);
+    const isPast = dayDate < now && (yr === now.getFullYear() && mo-1 === now.getMonth());
+    const isToday = dayDate.toDateString() === now.toDateString();
+    totalDue += bills.reduce((s,b) => s + b.amount, 0);
+    paidCount += bills.filter(b=>b.paid).length;
+
+    let items = '';
+    inc.forEach(e => {
+      items += `<div class="timeline-item">
+        <div class="timeline-dot" style="background:rgba(76,222,128,.15);color:var(--success)">💵</div>
+        <div class="timeline-content">
+          <div class="timeline-title" style="color:var(--success)">${e.income.name}</div>
+          <div class="timeline-sub">Income · ${freqLabel(e.income.freq)}</div>
+        </div>
+        <div class="timeline-amount" style="color:var(--success)">${fmt(e.income.amount)}</div>
+      </div>`;
+    });
+    bills.forEach(b => {
+      const col = b.paid ? 'var(--success)' : isPast ? 'var(--danger)' : isToday ? 'var(--warning)' : 'var(--text)';
+      const dotBg = b.paid ? 'rgba(76,222,128,.15)' : isPast ? 'rgba(255,92,92,.15)' : 'rgba(108,99,255,.15)';
+      items += `<div class="timeline-item">
+        <div class="timeline-dot" style="background:${dotBg}">${b.paid?'✓':catIcon(b.category)}</div>
+        <div class="timeline-content">
+          <div class="timeline-title" style="color:${col}">${b.name}</div>
+          <div class="timeline-sub">${catIcon(b.category)} ${b.category}${b.cardId?' · '+cardName(b.cardId):''}${b.paid?' · <span style="color:var(--success)">PAID</span>':''}</div>
+        </div>
+        <div class="timeline-amount" style="color:${col}">${fmt(b.amount)}</div>
+      </div>`;
+    });
+
+    const label = isToday ? '📍 TODAY' : isPast ? '(past)' : '';
+    return `<div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:4px 12px;font-weight:700;font-size:13px">Day ${day}</div>
+        ${label?`<span style="font-size:12px;color:var(--warning);font-weight:600">${label}</span>`:''}
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div style="font-size:12px;color:var(--muted)">${dayDate.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
+      </div>
+      ${items}
+    </div>`;
+  }).join('') + '</div>';
+
+  document.getElementById('schedule-stats').innerHTML = `
+    <div class="card"><div class="card-title">Bills This Month</div><div class="card-value">${state.bills.length}</div></div>
+    <div class="card"><div class="card-title">Total Due</div><div class="card-value" style="color:var(--danger)">${fmt(totalDue)}</div></div>
+    <div class="card"><div class="card-title">Paid</div><div class="card-value" style="color:var(--success)">${paidCount}</div></div>
+    <div class="card"><div class="card-title">Remaining</div><div class="card-value" style="color:var(--warning)">${state.bills.length - paidCount}</div></div>
+  `;
+}
+
+// ==================== ALLOCATION ====================
+function renderAllocation() {
+  const totalIncome = totalMonthlyIncome();
+  document.getElementById('alloc-income-display').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="text-muted" style="font-size:13px">Total Monthly Income Available</div>
+        <div style="font-size:32px;font-weight:800;color:var(--success)">${fmt(totalIncome)}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="text-muted" style="font-size:13px">Total Bills</div>
+        <div style="font-size:32px;font-weight:800;color:var(--danger)">${fmt(totalMonthlyBills())}</div>
+      </div>
+    </div>`;
+
+  const alerts = document.getElementById('allocation-alerts');
+  alerts.innerHTML = '';
+  if (!state.income.length) { alerts.innerHTML += '<div class="alert alert-info">ℹ️ Add your income sources first to see allocation recommendations.</div>'; }
+  if (!state.cards.length) { alerts.innerHTML += '<div class="alert alert-info">ℹ️ Add your cards first to see per-card allocation.</div>'; }
+  if (totalMonthlyBills() > totalIncome && totalIncome > 0) {
+    alerts.innerHTML += `<div class="alert alert-danger">🚨 Your bills (${fmt(totalMonthlyBills())}) exceed your monthly income (${fmt(totalIncome)}). You need to cut expenses or increase income.</div>`;
+  }
+
+  const cardsDiv = document.getElementById('allocation-cards');
+  if (!state.cards.length) { cardsDiv.innerHTML = ''; return; }
+
+  let totalAllocated = 0;
+  cardsDiv.innerHTML = state.cards.map(card => {
+    const bills = state.bills.filter(b => b.cardId === card.id);
+    const monthly = bills.reduce((s,b) => s + monthlyAmount(b.amount,b.freq), 0);
+    totalAllocated += monthly;
+    const pct = totalIncome > 0 ? Math.min((monthly / totalIncome)*100, 100) : 0;
+    // Group bills by due date ranges for timing advice
+    const early = bills.filter(b => b.dueDay <= 10);
+    const mid = bills.filter(b => b.dueDay > 10 && b.dueDay <= 20);
+    const late = bills.filter(b => b.dueDay > 20);
+
+    return `<div class="card mb-4">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:48px;height:32px;border-radius:7px;background:${card.color}"></div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:16px">${card.name}${card.last4?' ····'+card.last4:''}</div>
+          <div class="text-muted" style="font-size:13px">${catIcon(card.category)} ${card.category}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:24px;font-weight:800;color:${card.color}">${fmt(monthly)}</div>
+          <div class="text-muted" style="font-size:12px">load this month</div>
+        </div>
+      </div>
+      <div class="progress mb-4"><div class="progress-bar" style="width:${pct}%;background:${card.color}"></div></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${pct.toFixed(1)}% of monthly income</div>
+
+      ${bills.length ? `
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px">Bills on this card:</div>
+        <table style="margin-bottom:12px">
+          <thead><tr><th>Bill</th><th>Amount</th><th>Due Day</th><th>Monthly</th></tr></thead>
+          <tbody>${bills.map(b=>`<tr>
+            <td>${b.name}</td>
+            <td>${fmt(b.amount)}</td>
+            <td>Day ${b.dueDay}</td>
+            <td>${fmt(monthlyAmount(b.amount,b.freq))}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+
+        <div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:9px;padding:12px;font-size:13px">
+          <div style="font-weight:600;margin-bottom:8px;color:var(--accent)">💡 Funding Recommendation</div>
+          ${early.length?`<div style="margin-bottom:6px">• Load <strong>${fmt(early.reduce((s,b)=>s+b.amount,0))}</strong> <em>before the 1st</em> for: ${early.map(b=>b.name).join(', ')}</div>`:''}
+          ${mid.length?`<div style="margin-bottom:6px">• Add <strong>${fmt(mid.reduce((s,b)=>s+b.amount,0))}</strong> <em>by the 10th</em> for: ${mid.map(b=>b.name).join(', ')}</div>`:''}
+          ${late.length?`<div style="margin-bottom:6px">• Add <strong>${fmt(late.reduce((s,b)=>s+b.amount,0))}</strong> <em>by the 20th</em> for: ${late.map(b=>b.name).join(', ')}</div>`:''}
+          <div style="margin-top:8px;color:var(--muted)">Total to load by end of month: <strong style="color:var(--text)">${fmt(monthly)}</strong></div>
+        </div>` : `<div class="text-muted" style="font-size:13px">No bills assigned to this card yet.</div>`}
+    </div>`;
+  }).join('');
+
+  const remaining = totalIncome - totalAllocated;
+  const unassigned = state.bills.filter(b => !b.cardId).reduce((s,b) => s + monthlyAmount(b.amount,b.freq), 0);
+  document.getElementById('alloc-remaining').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px">
+      <div style="text-align:center">
+        <div class="text-muted" style="font-size:12px">Allocated to Cards</div>
+        <div style="font-size:22px;font-weight:700;color:var(--accent)">${fmt(totalAllocated)}</div>
+      </div>
+      <div style="text-align:center">
+        <div class="text-muted" style="font-size:12px">Unassigned Bills</div>
+        <div style="font-size:22px;font-weight:700;color:var(--warning)">${fmt(unassigned)}</div>
+      </div>
+      <div style="text-align:center">
+        <div class="text-muted" style="font-size:12px">Leftover / Savings</div>
+        <div style="font-size:22px;font-weight:700;color:${remaining>=0?'var(--success)':'var(--danger)'}">${fmt(remaining)}</div>
+      </div>
+    </div>
+    ${remaining > 0 ? `<div class="alert alert-success mt-4">✅ Great! You have ${fmt(remaining)} left after all bills. Consider moving this to savings.</div>` : ''}
+    ${remaining < 0 ? `<div class="alert alert-danger mt-4">🚨 You're short ${fmt(Math.abs(remaining))}. Review your bills or find additional income.</div>` : ''}`;
+}
+
+// ==================== SPLITS ====================
+function populateSplitSelect() {
+  const sel = document.getElementById('split-bill-select');
+  if (!sel) return;
+  const splittable = state.bills.filter(b => b.splittable);
+  sel.innerHTML = splittable.length
+    ? splittable.map(b => `<option value="${b.id}">${b.name} — ${fmt(b.amount)}</option>`).join('')
+    : '<option value="">No splittable bills (mark bills as splittable first)</option>';
+}
+function createSplit() {
+  const billId = document.getElementById('split-bill-select').value;
+  const count = parseInt(document.getElementById('split-count').value);
+  const startMonth = document.getElementById('split-start').value;
+  const strategy = document.getElementById('split-strategy').value;
+  if (!billId) { alert('Select a bill to split.'); return; }
+  if (!count || count < 2) { alert('Need at least 2 payments.'); return; }
+  if (!startMonth) { alert('Select a start month.'); return; }
+  const bill = state.bills.find(b => b.id === billId);
+  if (!bill) return;
+  const total = bill.amount;
+  let payments = [];
+  if (strategy === 'equal') {
+    const each = total / count;
+    for (let i = 0; i < count; i++) payments.push(parseFloat(each.toFixed(2)));
+    // Fix rounding
+    const diff = total - payments.reduce((s,p)=>s+p,0);
+    payments[0] = parseFloat((payments[0]+diff).toFixed(2));
+  } else if (strategy === 'front') {
+    // More weight on early payments
+    const weights = Array.from({length:count},(_,i) => count-i);
+    const wsum = weights.reduce((s,w)=>s+w,0);
+    payments = weights.map(w => parseFloat(((w/wsum)*total).toFixed(2)));
+  } else {
+    // Back-loaded
+    const weights = Array.from({length:count},(_,i) => i+1);
+    const wsum = weights.reduce((s,w)=>s+w,0);
+    payments = weights.map(w => parseFloat(((w/wsum)*total).toFixed(2)));
+  }
+  const [yr, mo] = startMonth.split('-').map(Number);
+  const schedule = payments.map((amount, i) => {
+    const d = new Date(yr, mo-1+i, bill.dueDay || 1);
+    return { month: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`, amount, paid: false };
+  });
+  state.splits.push({ id: uid(), billId, billName: bill.name, total, strategy, schedule });
+  save();
+  renderSplits();
+}
+function deleteSplit(id) { state.splits = state.splits.filter(s => s.id !== id); save(); renderSplits(); }
+function toggleSplitPay(splitId, idx) {
+  const s = state.splits.find(s => s.id === splitId);
+  if (s) { s.schedule[idx].paid = !s.schedule[idx].paid; save(); renderSplits(); }
+}
+function renderSplits() {
+  const list = document.getElementById('splits-list');
+  if (!state.splits.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">✂️</div><p>No split plans yet.</p></div>'; return; }
+  list.innerHTML = state.splits.map(s => {
+    const paidTotal = s.schedule.filter(p=>p.paid).reduce((t,p)=>t+p.amount,0);
+    const remaining = s.total - paidTotal;
+    const pct = (paidTotal/s.total)*100;
+    return `<div style="background:var(--surface2);border-radius:10px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div><div style="font-weight:700">${s.billName}</div><div class="text-muted" style="font-size:12px">Total: ${fmt(s.total)} · ${s.strategy} · ${s.schedule.length} payments</div></div>
+        <button class="btn btn-danger btn-sm" onclick="deleteSplit('${s.id}')">🗑</button>
+      </div>
+      <div class="progress mb-4"><div class="progress-bar" style="width:${pct}%;background:var(--accent2)"></div></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${fmt(paidTotal)} paid · ${fmt(remaining)} remaining</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${s.schedule.map((p,i) => `
+          <div style="background:${p.paid?'rgba(76,222,128,.15)':'var(--surface)'};border:1px solid ${p.paid?'rgba(76,222,128,.4)':'var(--border)'};border-radius:8px;padding:8px 12px;min-width:110px;cursor:pointer" onclick="toggleSplitPay('${s.id}',${i})">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:3px">${p.month}</div>
+            <div style="font-weight:700;font-size:15px;color:${p.paid?'var(--success)':'var(--text)'}">${fmt(p.amount)}</div>
+            <div style="font-size:11px;color:${p.paid?'var(--success)':'var(--muted)'}">${p.paid?'✓ Paid':'Tap to pay'}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ==================== ALERTS ====================
+function renderAlerts() {
+  const list = document.getElementById('alerts-list');
+  const now = new Date();
+  const alerts = [];
+  // Bills due within 7 days
+  state.bills.filter(b=>!b.paid).forEach(b => {
+    const days = daysUntilDue(b.dueDay);
+    if (days <= 3) alerts.push({type:'danger', icon:'🔥', text:`<strong>${b.name}</strong> is due in <strong>${days} day${days!==1?'s':''}</strong> — ${fmt(b.amount)}${b.cardId?' on '+cardName(b.cardId):''}`});
+    else if (days <= 7) alerts.push({type:'warning', icon:'⚠️', text:`<strong>${b.name}</strong> is due in <strong>${days} days</strong> — ${fmt(b.amount)}${b.cardId?' on '+cardName(b.cardId):''}`});
+  });
+  // Overspend check
+  const totalIncome = totalMonthlyIncome();
+  const totalBills = totalMonthlyBills();
+  if (totalIncome > 0 && totalBills > totalIncome) {
+    alerts.push({type:'danger', icon:'🚨', text:`Your monthly bills (${fmt(totalBills)}) exceed your income (${fmt(totalIncome)}) by <strong>${fmt(totalBills-totalIncome)}</strong>.`});
+  }
+  // Cards without bills
+  state.cards.forEach(c => {
+    if (!state.bills.find(b=>b.cardId===c.id)) alerts.push({type:'info', icon:'💳', text:`Card <strong>${c.name}</strong> has no bills assigned to it.`});
+  });
+  // Bills without cards
+  const unassigned = state.bills.filter(b=>!b.cardId);
+  if (unassigned.length) alerts.push({type:'warning', icon:'📄', text:`<strong>${unassigned.length} bill${unassigned.length!==1?'s':''}</strong> have no card assigned: ${unassigned.map(b=>b.name).join(', ')}`});
+  // Split payments coming up
+  state.splits.forEach(s => {
+    const current = s.schedule.find(p => !p.paid && p.month === `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
+    if (current) alerts.push({type:'info', icon:'✂️', text:`Split payment for <strong>${s.billName}</strong> this month: <strong>${fmt(current.amount)}</strong>`});
+  });
+
+  const dot = document.getElementById('alert-dot');
+  const urgent = alerts.filter(a=>a.type==='danger').length;
+  dot.style.display = urgent ? 'inline-block' : 'none';
+
+  if (!alerts.length) { list.innerHTML = '<div class="alert alert-success">✅ No alerts right now. Everything looks good!</div>'; return; }
+  list.innerHTML = alerts.map(a => `<div class="alert alert-${a.type}">${a.icon} ${a.text}</div>`).join('');
+}
+
+// ==================== DASHBOARD ====================
+function renderDashboard() {
+  const totalIncome = totalMonthlyIncome();
+  const totalBills = totalMonthlyBills();
+  const remaining = totalIncome - totalBills;
+  const pctUsed = totalIncome > 0 ? Math.min((totalBills/totalIncome)*100,100) : 0;
+  const dueSoon = state.bills.filter(b=>!b.paid && daysUntilDue(b.dueDay)<=7).length;
+
+  document.getElementById('stat-grid').innerHTML = `
+    <div class="card"><div class="card-title">Monthly Income</div><div class="card-value" style="color:var(--success)">${fmt(totalIncome)}</div></div>
+    <div class="card"><div class="card-title">Monthly Bills</div><div class="card-value" style="color:var(--danger)">${fmt(totalBills)}</div></div>
+    <div class="card"><div class="card-title">Left Over</div><div class="card-value" style="color:${remaining>=0?'var(--success)':'var(--danger)'}">${fmt(remaining)}</div></div>
+    <div class="card"><div class="card-title">Budget Used</div><div class="card-value">${pctUsed.toFixed(0)}%</div><div class="progress"><div class="progress-bar" style="width:${pctUsed}%;background:${pctUsed>90?'var(--danger)':pctUsed>70?'var(--warning)':'var(--success)'}"></div></div></div>
+    <div class="card"><div class="card-title">Bills Due Soon (7d)</div><div class="card-value" style="color:${dueSoon?'var(--danger)':'var(--success)'}">${dueSoon}</div></div>
+    <div class="card"><div class="card-title">Total Bills</div><div class="card-value">${state.bills.length}</div></div>
+  `;
+
+  // Upcoming bills
+  const upList = document.getElementById('upcoming-bills-list');
+  const upcoming = state.bills.filter(b=>!b.paid).sort((a,b)=>daysUntilDue(a.dueDay)-daysUntilDue(b.dueDay)).slice(0,8);
+  if (!upcoming.length) { upList.innerHTML = '<div class="empty"><div class="empty-icon">🎉</div><p>All bills paid!</p></div>'; }
+  else upList.innerHTML = '<div class="timeline">' + upcoming.map(b => {
+    const days = daysUntilDue(b.dueDay);
+    const col = days<=3?'var(--danger)':days<=7?'var(--warning)':'var(--text)';
+    return `<div class="timeline-item">
+      <div class="timeline-dot" style="background:${days<=3?'rgba(255,92,92,.15)':days<=7?'rgba(255,179,71,.15)':'rgba(108,99,255,.15)'}">${catIcon(b.category)}</div>
+      <div class="timeline-content">
+        <div class="timeline-title">${b.name}</div>
+        <div class="timeline-sub">Due day ${b.dueDay} · ${days}d${b.cardId?' · '+cardName(b.cardId):''}</div>
+      </div>
+      <div class="timeline-amount" style="color:${col}">${fmt(b.amount)}</div>
+    </div>`;
+  }).join('') + '</div>';
+
+  // Card needs
+  const cnList = document.getElementById('card-needs-list');
+  if (!state.cards.length) { cnList.innerHTML = '<div class="empty"><div class="empty-icon">💳</div><p>Add cards to see funding needs.</p></div>'; }
+  else cnList.innerHTML = '<div class="timeline">' + state.cards.map(c => {
+    const bills = state.bills.filter(b=>b.cardId===c.id);
+    const need = bills.reduce((s,b)=>s+monthlyAmount(b.amount,b.freq),0);
+    return `<div class="timeline-item">
+      <div class="timeline-dot" style="background:${c.color}22;color:${c.color}">💳</div>
+      <div class="timeline-content">
+        <div class="timeline-title">${c.name}</div>
+        <div class="timeline-sub">${bills.length} bill${bills.length!==1?'s':''} · ${catIcon(c.category)} ${c.category}</div>
+      </div>
+      <div class="timeline-amount" style="color:${c.color}">${fmt(need)}</div>
+    </div>`;
+  }).join('') + '</div>';
+
+  // Budget breakdown bar
+  const catTotals = {};
+  state.bills.forEach(b => { catTotals[b.category] = (catTotals[b.category]||0) + monthlyAmount(b.amount,b.freq); });
+  const catColors = {housing:'#6c63ff',utilities:'#00d4aa',groceries:'#4cde80',transport:'#38b6ff',insurance:'#f0c040',subscriptions:'#ff6fcf',healthcare:'#ff5c5c',debt:'#ffb347',entertainment:'#a78bfa',personal:'#34d399',savings:'#4cde80',other:'#8890a8'};
+  const bar = document.getElementById('budget-alloc-bar');
+  const legend = document.getElementById('budget-legend');
+  if (totalBills === 0) { bar.innerHTML=''; legend.innerHTML='<p class="text-muted">Add bills to see breakdown.</p>'; return; }
+  bar.innerHTML = Object.entries(catTotals).map(([cat, amt]) =>
+    `<div class="alloc-segment" title="${cat}: ${fmt(amt)}" style="width:${(amt/totalBills*100)}%;background:${catColors[cat]||'#8890a8'}"></div>`
+  ).join('');
+  legend.innerHTML = Object.entries(catTotals).sort(([,a],[,b])=>b-a).map(([cat,amt]) =>
+    `<div style="display:flex;align-items:center;gap:6px;font-size:13px">
+      <div style="width:12px;height:12px;border-radius:3px;background:${catColors[cat]||'#8890a8'};flex-shrink:0"></div>
+      <span>${catIcon(cat)} ${cat}</span>
+      <span style="color:var(--muted)">${fmt(amt)}</span>
+    </div>`
+  ).join('');
+}
+
+// ==================== IMPORT ====================
+function handleDrag(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
+function handleDrop(e) { e.preventDefault(); document.getElementById('upload-zone').classList.remove('drag'); handleFile({target:{files:e.dataTransfer.files}}); }
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const wb = XLSX.read(ev.target.result, {type:'binary'});
+      importData = {};
+      wb.SheetNames.forEach(name => {
+        importData[name.toLowerCase()] = XLSX.utils.sheet_to_json(wb.Sheets[name]);
+      });
+      showImportPreview();
+    } catch(err) { document.getElementById('import-status').innerHTML = `<div class="alert alert-danger">❌ Failed to read file: ${err.message}</div>`; }
+  };
+  reader.readAsBinaryString(file);
+}
+function showImportPreview() {
+  const preview = document.getElementById('import-preview');
+  const content = document.getElementById('import-preview-content');
+  preview.style.display = 'block';
+  let html = '';
+  if (importData.income) {
+    html += `<div style="margin-bottom:16px"><h3 style="font-size:14px;margin-bottom:8px">💵 Income (${importData.income.length} rows)</h3><table><thead><tr><th>Name</th><th>Amount</th><th>Frequency</th><th>PayDay</th><th>Type</th></tr></thead><tbody>${importData.income.slice(0,5).map(r=>`<tr><td>${r.Name||''}</td><td>${fmt(r.Amount||0)}</td><td>${r.Frequency||'monthly'}</td><td>${r.PayDay||''}</td><td>${r.Type||'other'}</td></tr>`).join('')}${importData.income.length>5?`<tr><td colspan="5" style="color:var(--muted)">...and ${importData.income.length-5} more</td></tr>`:''}</tbody></table></div>`;
+  }
+  if (importData.bills) {
+    html += `<div style="margin-bottom:16px"><h3 style="font-size:14px;margin-bottom:8px">📄 Bills (${importData.bills.length} rows)</h3><table><thead><tr><th>Name</th><th>Amount</th><th>DueDay</th><th>Category</th><th>Frequency</th></tr></thead><tbody>${importData.bills.slice(0,5).map(r=>`<tr><td>${r.Name||''}</td><td>${fmt(r.Amount||0)}</td><td>${r.DueDay||''}</td><td>${r.Category||'other'}</td><td>${r.Frequency||'monthly'}</td></tr>`).join('')}${importData.bills.length>5?`<tr><td colspan="5" style="color:var(--muted)">...and ${importData.bills.length-5} more</td></tr>`:''}</tbody></table></div>`;
+  }
+  if (importData.cards) {
+    html += `<div><h3 style="font-size:14px;margin-bottom:8px">💳 Cards (${importData.cards.length} rows)</h3><table><thead><tr><th>Name</th><th>Last4</th><th>Type</th><th>Category</th><th>Balance</th></tr></thead><tbody>${importData.cards.slice(0,5).map(r=>`<tr><td>${r.Name||''}</td><td>${r.Last4||''}</td><td>${r.Type||'debit'}</td><td>${r.Category||'general'}</td><td>${fmt(r.Balance||0)}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  if (!html) html = '<div class="alert alert-warning">⚠️ No recognized sheets found. Make sure sheets are named "Income", "Bills", or "Cards".</div>';
+  content.innerHTML = html;
+  document.getElementById('import-status').innerHTML = `<div class="alert alert-success">✅ File loaded! Review the preview below and click "Import All".</div>`;
+}
+function confirmImport() {
+  if (!importData) return;
+  if (importData.income) {
+    importData.income.forEach(r => {
+      if (r.Name && r.Amount) {
+        state.income.push({ id:uid(), name:r.Name, amount:parseFloat(r.Amount)||0, freq:(r.Frequency||'monthly').toLowerCase(), payday:String(r.PayDay||''), type:(r.Type||'other').toLowerCase() });
+      }
+    });
+  }
+  if (importData.cards) {
+    importData.cards.forEach(r => {
+      if (r.Name) {
+        state.cards.push({ id:uid(), name:r.Name, last4:String(r.Last4||''), type:(r.Type||'debit').toLowerCase(), category:(r.Category||'general').toLowerCase(), balance:parseFloat(r.Balance)||0, color:'#6c63ff' });
+      }
+    });
+  }
+  if (importData.bills) {
+    importData.bills.forEach(r => {
+      if (r.Name && r.Amount) {
+        const matchCard = r.Card ? state.cards.find(c=>c.name.toLowerCase().includes(String(r.Card).toLowerCase())) : null;
+        state.bills.push({ id:uid(), name:r.Name, amount:parseFloat(r.Amount)||0, dueDay:parseInt(r.DueDay)||1, category:(r.Category||'other').toLowerCase(), cardId:matchCard?matchCard.id:'', freq:(r.Frequency||'monthly').toLowerCase(), splittable:false, notes:'', paid:false });
+      }
+    });
+  }
+  save();
+  importData = null;
+  document.getElementById('import-preview').style.display = 'none';
+  document.getElementById('import-status').innerHTML = '<div class="alert alert-success">✅ Import complete! Your data has been saved.</div>';
+}
+
+// ==================== EXPORT ====================
+function exportData() {
+  const wb = XLSX.utils.book_new();
+  if (state.income.length) {
+    const ws = XLSX.utils.json_to_sheet(state.income.map(i=>({Name:i.name,Amount:i.amount,Frequency:i.freq,PayDay:i.payday,Type:i.type})));
+    XLSX.utils.book_append_sheet(wb, ws, 'Income');
+  }
+  if (state.bills.length) {
+    const ws = XLSX.utils.json_to_sheet(state.bills.map(b=>({Name:b.name,Amount:b.amount,DueDay:b.dueDay,Category:b.category,Card:cardName(b.cardId),Frequency:b.freq,Splittable:b.splittable,Notes:b.notes,Paid:b.paid})));
+    XLSX.utils.book_append_sheet(wb, ws, 'Bills');
+  }
+  if (state.cards.length) {
+    const ws = XLSX.utils.json_to_sheet(state.cards.map(c=>({Name:c.name,Last4:c.last4,Type:c.type,Category:c.category,Balance:c.balance})));
+    XLSX.utils.book_append_sheet(wb, ws, 'Cards');
+  }
+  XLSX.writeFile(wb, 'FinanceOS_Export.xlsx');
+}
+
+// ==================== TEMPLATE ====================
+function downloadTemplate() {
+  const wb = XLSX.utils.book_new();
+  const income = XLSX.utils.json_to_sheet([{Name:'Main Job',Amount:3000,Frequency:'biweekly',PayDay:'Friday',Type:'salary'},{Name:'Side Hustle',Amount:500,Frequency:'monthly',PayDay:'1',Type:'freelance'}]);
+  XLSX.utils.book_append_sheet(wb, income, 'Income');
+  const bills = XLSX.utils.json_to_sheet([{Name:'Rent',Amount:1200,DueDay:1,Category:'housing',Card:'Chase Housing Card',Frequency:'monthly'},{Name:'Electric',Amount:120,DueDay:15,Category:'utilities',Card:'Utilities Card',Frequency:'monthly'},{Name:'Netflix',Amount:18,DueDay:8,Category:'subscriptions',Card:'Entertainment Card',Frequency:'monthly'}]);
+  XLSX.utils.book_append_sheet(wb, bills, 'Bills');
+  const cards = XLSX.utils.json_to_sheet([{Name:'Chase Housing Card',Last4:'1234',Type:'debit',Category:'housing',Balance:0},{Name:'Utilities Card',Last4:'5678',Type:'debit',Category:'utilities',Balance:0},{Name:'Entertainment Card',Last4:'9012',Type:'debit',Category:'entertainment',Balance:0}]);
+  XLSX.utils.book_append_sheet(wb, cards, 'Cards');
+  XLSX.writeFile(wb, 'FinanceOS_Template.xlsx');
+}
+
+// ==================== MODAL ====================
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+// ==================== INIT ====================
+function init() {
+  load();
+  // Populate split start with current month
+  const now = new Date();
+  const si = document.getElementById('split-start');
+  if (si) si.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  renderDashboard();
+  renderAlerts();
+  populateBillCardSelect();
+}
+init();
+</script>
+</body>
+</html>
