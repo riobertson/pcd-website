@@ -223,9 +223,77 @@
   .card-bill-row:last-child { border-bottom: none; }
   .cc-need-bar { height: 5px; border-radius: 99px; background: var(--surface2); overflow: hidden; margin: 6px 0 2px; }
   .cc-need-fill { height: 100%; border-radius: 99px; }
+
+  /* ===== MOBILE ===== */
+  .mobile-header { display: none; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+  .hamburger { background: none; border: none; color: var(--text); cursor: pointer; font-size: 24px; padding: 4px 8px; line-height: 1; }
+  .mobile-logo { font-size: 17px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+  .mobile-alerts-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; padding: 4px 8px; position: relative; }
+
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 80; }
+  .sidebar-overlay.open { display: block; }
+
+  .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); z-index: 50; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .bottom-nav-items { display: flex; }
+  .bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 6px; cursor: pointer; color: var(--muted); border: none; background: none; font-size: 10px; font-weight: 600; transition: color .15s; }
+  .bottom-nav-item .bn-icon { font-size: 20px; line-height: 1; }
+  .bottom-nav-item.active { color: var(--accent); }
+
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  @media (max-width: 768px) {
+    .mobile-header { display: flex; }
+    .bottom-nav { display: block; }
+
+    .app { grid-template-columns: 1fr; }
+
+    .sidebar {
+      position: fixed;
+      top: 0; left: -260px;
+      width: 240px; height: 100vh;
+      z-index: 90;
+      transition: left .25s ease;
+      overflow-y: auto;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar > .logo { display: none; } /* hide desktop logo, mobile header shows it */
+
+    .main { padding: 14px; padding-bottom: 80px; }
+
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .card-visual-grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; width: 100%; }
+
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+
+    .credit-card { min-height: 155px; padding: 16px; }
+    .cc-number { font-size: 13px; letter-spacing: .12em; }
+
+    .modal { width: 96vw; padding: 20px; }
+
+    .ai-priority-row { flex-wrap: wrap; gap: 10px; }
+    .btn { padding: 10px 16px; min-height: 42px; }
+    .btn-sm { padding: 8px 12px; min-height: 36px; }
+
+    .page-title { font-size: 20px; }
+    .section-header h2 { font-size: 15px; }
+  }
 </style>
 </head>
 <body>
+
+<!-- MOBILE HEADER (visible on phones only) -->
+<header class="mobile-header">
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  <div class="mobile-logo"><span>💰</span> FinanceOS</div>
+  <button class="mobile-alerts-btn" onclick="showPage('alerts')">🔔</button>
+</header>
+
+<!-- SIDEBAR OVERLAY (tap outside to close) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <div class="app">
 
 <!-- SIDEBAR -->
@@ -666,6 +734,27 @@
 </main>
 </div>
 
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-items">
+    <button class="bottom-nav-item active" id="bn-dashboard" onclick="showPage('dashboard')">
+      <span class="bn-icon">📊</span>Dashboard
+    </button>
+    <button class="bottom-nav-item" id="bn-bills" onclick="showPage('bills')">
+      <span class="bn-icon">📄</span>Bills
+    </button>
+    <button class="bottom-nav-item" id="bn-cards" onclick="showPage('cards')">
+      <span class="bn-icon">💳</span>Cards
+    </button>
+    <button class="bottom-nav-item" id="bn-ai" onclick="showPage('ai')">
+      <span class="bn-icon">🤖</span>Advisor
+    </button>
+    <button class="bottom-nav-item" id="bn-more" onclick="toggleSidebar()">
+      <span class="bn-icon">☰</span>More
+    </button>
+  </div>
+</nav>
+
   <!-- EMAIL REMINDERS -->
   <div id="page-reminders" class="page">
     <div class="page-title">Email Reminders</div>
@@ -752,13 +841,34 @@ function load() {
   if (d) state = JSON.parse(d);
 }
 
+// ==================== MOBILE NAV ====================
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
 // ==================== NAV ====================
+const BOTTOM_NAV_PAGES = ['dashboard', 'bills', 'cards', 'ai'];
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   const items = document.querySelectorAll('.nav-item');
   items.forEach(item => { if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(id)) item.classList.add('active'); });
+
+  // Update bottom nav active state
+  document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+  const bn = document.getElementById('bn-' + id);
+  if (bn) bn.classList.add('active');
+
+  // Close sidebar on mobile after navigating
+  closeSidebar();
+
   if (id === 'dashboard') renderDashboard();
   if (id === 'income') renderIncome();
   if (id === 'bills') { populateBillCardSelect(); renderBills(); }
@@ -1873,6 +1983,71 @@ function sendGmailReminder() {
 // ==================== SEED DATA (from your Excel spreadsheet) ====================
 function seedFromExcel() {
   // Blank version — no pre-loaded data. Start by adding your Income, Cards, and Bills.
+  if (false) {
+
+  // --- CARDS (one per category) ---
+  state.cards = [
+    { id:'card-housing',  name:'Housing Card',       last4:'', type:'debit', category:'housing',       balance:0, color:'#6c63ff' },
+    { id:'card-trans',    name:'Transport Card',      last4:'', type:'debit', category:'transport',     balance:0, color:'#38b6ff' },
+    { id:'card-sub',      name:'Subscriptions Card',  last4:'', type:'debit', category:'subscriptions', balance:0, color:'#ff6fcf' },
+    { id:'card-util',     name:'Utilities Card',      last4:'', type:'debit', category:'utilities',     balance:0, color:'#00d4aa' },
+    { id:'card-ins',      name:'Insurance Card',      last4:'', type:'debit', category:'insurance',     balance:0, color:'#ffb347' },
+    { id:'card-debt',     name:'Debt Card',           last4:'', type:'debit', category:'debt',          balance:0, color:'#ff5c5c' },
+    { id:'card-ent',      name:'Entertainment Card',  last4:'', type:'debit', category:'entertainment', balance:0, color:'#a78bfa' },
+    { id:'card-savings',  name:'Savings / LaTara',    last4:'', type:'savings', category:'savings',     balance:0, color:'#4cde80' },
+    { id:'card-general',  name:'General / Main',      last4:'', type:'checking', category:'general',    balance:0, color:'#f0c040' },
+  ];
+
+  // Church offering is ~10% of each paycheck (averaged at $125/mo per check = ~$500/mo)
+  const churchMonthly = Math.ceil((1341.82+200+1190.67+1238.99)*0.1);
+
+  // --- BILLS ---
+  // Format: { name, amount, dueDay, category, cardId, freq, splittable, notes }
+  state.bills = [
+    // HOUSING
+    { id:'b1',  name:'Mortgage / Rent',           amount:2515.68, dueDay:1,  category:'housing',       cardId:'card-housing', freq:'monthly', splittable:true,  notes:'Split into 4 weekly payments of $628.92', paid:false },
+    { id:'b2',  name:'HOA',                        amount:50.00,   dueDay:18, category:'housing',       cardId:'card-housing', freq:'monthly', splittable:false, notes:'', paid:false },
+    // TRANSPORT
+    { id:'b3',  name:'Gas - Car',                  amount:500.00,  dueDay:1,  category:'transport',     cardId:'card-trans',   freq:'monthly', splittable:false, notes:'$125/week x 4 weeks', paid:false },
+    { id:'b4',  name:'Tolls / NTTA',               amount:120.00,  dueDay:1,  category:'transport',     cardId:'card-trans',   freq:'monthly', splittable:false, notes:'$60 on 1st + $60 on 15th', paid:false },
+    { id:'b5',  name:'Car Note',                   amount:346.22,  dueDay:14, category:'debt',          cardId:'card-debt',    freq:'monthly', splittable:false, notes:'', paid:false },
+    // INSURANCE
+    { id:'b6',  name:'Car Insurance / Progressive',amount:272.50,  dueDay:21, category:'insurance',     cardId:'card-ins',     freq:'monthly', splittable:true,  notes:'', paid:false },
+    // UTILITIES
+    { id:'b7',  name:'Coserv / Electricity',       amount:220.96,  dueDay:10, category:'utilities',     cardId:'card-util',    freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b8',  name:'Water',                      amount:185.00,  dueDay:15, category:'utilities',     cardId:'card-util',    freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b9',  name:'Internet - ATT / HBO',        amount:111.33,  dueDay:11, category:'utilities',     cardId:'card-util',    freq:'monthly', splittable:false, notes:'', paid:false },
+    // SUBSCRIPTIONS
+    { id:'b10', name:'Cell Phone / T-Mobile / Netflix', amount:209.00, dueDay:18, category:'subscriptions', cardId:'card-sub', freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b11', name:'Youtube TV',                 amount:20.00,   dueDay:15, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b12', name:'Youtube Music',              amount:24.89,   dueDay:14, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b13', name:'Disney / Hulu',              amount:11.90,   dueDay:8,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b14', name:'Xbox Live',                  amount:21.99,   dueDay:15, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b15', name:'Amazon Prime',               amount:16.22,   dueDay:15, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b16', name:'Crunchy Roll',               amount:11.99,   dueDay:6,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b17', name:'Nintendo',                   amount:3.15,    dueDay:1,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b18', name:'Microsoft',                  amount:10.00,   dueDay:5,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b19', name:'Google',                     amount:6.00,    dueDay:5,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b20', name:'Showtime',                   amount:5.99,    dueDay:7,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b21', name:'HP Print',                   amount:15.99,   dueDay:5,  category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b22', name:'Norton',                     amount:10.61,   dueDay:15, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b23', name:'Adobe',                      amount:10.00,   dueDay:30, category:'subscriptions', cardId:'card-sub',     freq:'monthly', splittable:false, notes:'', paid:false },
+    { id:'b24', name:'Cinemark',                   amount:10.99,   dueDay:1,  category:'entertainment', cardId:'card-ent',     freq:'monthly', splittable:false, notes:'', paid:false },
+    // DEBT
+    { id:'b25', name:'Capitol One / Mike',         amount:25.00,   dueDay:8,  category:'debt',          cardId:'card-debt',    freq:'monthly', splittable:false, notes:'', paid:false },
+    // PERSONAL
+    { id:'b26', name:'Hair Cuts',                  amount:60.00,   dueDay:1,  category:'personal',      cardId:'card-general', freq:'monthly', splittable:false, notes:'Only when paycheck ≥ $1,500', paid:false },
+    // EDUCATION
+    { id:'b27', name:'Time 4 Learning',            amount:21.27,   dueDay:25, category:'education',     cardId:'card-general', freq:'monthly', splittable:false, notes:'', paid:false },
+    // MISC
+    { id:'b28', name:'Walmart',                    amount:14.02,   dueDay:7,  category:'groceries',     cardId:'card-general', freq:'monthly', splittable:false, notes:'', paid:false },
+    // CHURCH
+    { id:'b29', name:'Church Offering (Tithe)',    amount:churchMonthly, dueDay:1, category:'other',    cardId:'card-general', freq:'monthly', splittable:false, notes:'10% of each paycheck — auto-calculated', paid:false },
+    // SAVINGS / ALLOCATION
+    { id:'b30', name:'Groceries Budget',           amount:500.00,  dueDay:1,  category:'groceries',     cardId:'card-general', freq:'monthly', splittable:false, notes:'Up to $125 per paycheck', paid:false },
+    { id:'b31', name:'LaTara Account',             amount:400.00,  dueDay:1,  category:'savings',       cardId:'card-savings', freq:'monthly', splittable:false, notes:'Up to $100 per paycheck after groceries', paid:false },
+    { id:'b32', name:'Dining Out',                 amount:400.00,  dueDay:1,  category:'entertainment', cardId:'card-ent',     freq:'monthly', splittable:false, notes:'Up to $150 per paycheck after groceries + LaTara', paid:false },
+  } // end blank stub
 }
 
 // ==================== AI BILL ADVISOR ====================
