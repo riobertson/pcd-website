@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Financial Management System</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root {
     --bg: #0f1117;
@@ -328,6 +332,15 @@
     <div class="nav-item" onclick="showPage('howto')"><span class="icon">📖</span> How To Use</div>
     <div class="nav-item" onclick="showPage('categories')"><span class="icon">🗂️</span> Category Guide</div>
   </nav>
+
+  <!-- User info + logout at bottom of sidebar -->
+  <div style="padding:16px 20px;border-top:1px solid var(--border);margin-top:auto">
+    <div id="sidebar-user" style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">
+      <div id="sidebar-username" style="font-weight:700;color:var(--text);font-size:13px"></div>
+      <div>Household: <span id="sidebar-hhcode" style="font-weight:700;color:var(--accent2);letter-spacing:.08em"></span></div>
+    </div>
+    <button class="btn btn-ghost" onclick="signOutUser()" style="width:100%;font-size:13px;padding:8px">🚪 Sign Out</button>
+  </div>
 </aside>
 
 <!-- MAIN CONTENT -->
@@ -1147,11 +1160,46 @@ let selectedCardColor = '#6c63ff';
 let importData = null;
 let currentBillFilter = 'all';
 
+// ============================================================
+// PASTE YOUR FIREBASE CONFIG HERE — same values as login page
+// ============================================================
+const FIREBASE_CONFIG = {
+  apiKey:            "PASTE_YOUR_API_KEY_HERE",
+  authDomain:        "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
+  projectId:         "PASTE_YOUR_PROJECT_ID",
+  storageBucket:     "PASTE_YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+  appId:             "PASTE_YOUR_APP_ID"
+};
+
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+db.enablePersistence().catch(() => {}); // offline support
+
+let currentHouseholdId = null;
+let unsubscribeListener = null;
+
 // ==================== PERSISTENCE ====================
-function save() { localStorage.setItem('financeOS', JSON.stringify(state)); }
+async function save() {
+  if (!currentHouseholdId) {
+    // Fallback to localStorage if not connected to Firebase yet
+    localStorage.setItem('financeOS', JSON.stringify(state));
+    return;
+  }
+  db.collection('households').doc(currentHouseholdId)
+    .update({ budget: state })
+    .catch(err => console.error('Save failed:', err));
+}
 function load() {
+  // Legacy localStorage load — used only as fallback
   const d = localStorage.getItem('financeOS');
-  if (d) state = JSON.parse(d);
+  if (d) { try { state = JSON.parse(d); } catch(e) {} }
+}
+
+function signOutUser() {
+  if (unsubscribeListener) unsubscribeListener();
+  auth.signOut().then(() => { window.location.href = 'finance-login.html'; });
 }
 
 // ==================== MOBILE NAV ====================
@@ -2938,10 +2986,8 @@ function generateChatReply(msg) {
 }
 
 // ==================== INIT ====================
-function init() {
-  load();
-  seedFromExcel();  // pre-load your spreadsheet data on first open
-  // Populate split start with current month
+function bootApp() {
+  // Set up split-start month picker
   const now = new Date();
   const si = document.getElementById('split-start');
   if (si) si.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
@@ -2949,7 +2995,86 @@ function init() {
   renderAlerts();
   populateBillCardSelect();
 }
-init();
+
+// ==================== FIREBASE AUTH GATE ====================
+// Show a loading overlay while Firebase resolves auth state
+document.body.insertAdjacentHTML('afterbegin', `
+  <div id="auth-loading" style="
+    position:fixed;inset:0;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    z-index:9999;font-size:16px;gap:14px;color:var(--muted)
+  ">
+    <div style="font-size:48px">💰</div>
+    <div style="font-weight:700;font-size:20px;color:var(--accent)">FinanceOS</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite"></div>
+      Loading your budget…
+    </div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>`);
+
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    // Not logged in — redirect to login page
+    window.location.href = 'finance-login.html';
+    return;
+  }
+
+  try {
+    // Get this user's household
+    const userDoc = await db.collection('users').doc(user.uid).get();
+
+    if (!userDoc.exists) {
+      // User has no household yet — send back to login to set one up
+      await auth.signOut();
+      window.location.href = 'finance-login.html';
+      return;
+    }
+
+    const { householdId, displayName } = userDoc.data();
+    currentHouseholdId = householdId;
+
+    // Update sidebar user info
+    const uname = document.getElementById('sidebar-username');
+    const ucode = document.getElementById('sidebar-hhcode');
+    if (uname) uname.textContent = '👤 ' + (displayName || user.email);
+    if (ucode) ucode.textContent = householdId;
+
+    // Real-time Firestore listener — both household members see updates instantly
+    unsubscribeListener = db.collection('households').doc(householdId)
+      .onSnapshot(snap => {
+        const data = snap.data();
+        if (data && data.budget) {
+          state = {
+            income:       data.budget.income       || [],
+            bills:        data.budget.bills        || [],
+            cards:        data.budget.cards        || [],
+            splits:       data.budget.splits       || [],
+            savingsGoals: data.budget.savingsGoals || [],
+            investments:  data.budget.investments  || [],
+          };
+        }
+        // Hide loading screen and boot app on first snapshot
+        const loader = document.getElementById('auth-loading');
+        if (loader) loader.remove();
+        bootApp();
+        renderAlerts();
+      }, err => {
+        console.error('Firestore listener error:', err);
+        // Fall back to localStorage if Firestore fails
+        load();
+        document.getElementById('auth-loading')?.remove();
+        bootApp();
+      });
+
+  } catch(err) {
+    console.error('Auth setup error:', err);
+    // Fall back to localStorage
+    load();
+    document.getElementById('auth-loading')?.remove();
+    bootApp();
+  }
+});
 </script>
 </body>
 </html>
