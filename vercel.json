@@ -10,8 +10,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/dashboard",     "destination": "/PurposeChurch_Dashboard.html" },
-    { "source": "/finance",       "destination": "/finance.html" },
-    { "source": "/finance-login", "destination": "/finance-login.html" }
+    { "source": "/dashboard",     "destination": "/PurposeChurch_Dashboard.html" }
   ]
 }
