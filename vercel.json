@@ -10,6 +10,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/dashboard", "destination": "/PurposeChurch_Dashboard.html" }
+    { "source": "/dashboard",     "destination": "/PurposeChurch_Dashboard.html" }
   ]
 }
