@@ -308,6 +308,8 @@
     <div class="nav-item" onclick="showPage('income')"><span class="icon">💵</span> Income</div>
     <div class="nav-item" onclick="showPage('bills')"><span class="icon">📄</span> Bills</div>
     <div class="nav-item" onclick="showPage('cards')"><span class="icon">💳</span> Cards</div>
+    <div class="nav-item" onclick="showPage('savings')"><span class="icon">🏦</span> Savings</div>
+    <div class="nav-item" onclick="showPage('investments')"><span class="icon">📈</span> Investments</div>
 
     <div class="nav-section">Planning</div>
     <div class="nav-item" onclick="showPage('schedule')"><span class="icon">📅</span> Pay Schedule</div>
@@ -316,11 +318,15 @@
 
     <div class="nav-section">Data</div>
     <div class="nav-item" onclick="showPage('import')"><span class="icon">📥</span> Import Excel</div>
-    <div class="nav-item" onclick="exportData()"><span class="icon">📤</span> Export</div>
+    <div class="nav-item" onclick="exportData()"><span class="icon">📤</span> Export All</div>
     <div class="nav-item" onclick="showPage('reminders')"><span class="icon">📧</span> Email Reminders</div>
 
     <div class="nav-section">AI</div>
     <div class="nav-item" onclick="showPage('ai')"><span class="icon">🤖</span> Bill Advisor</div>
+
+    <div class="nav-section">Help</div>
+    <div class="nav-item" onclick="showPage('howto')"><span class="icon">📖</span> How To Use</div>
+    <div class="nav-item" onclick="showPage('categories')"><span class="icon">🗂️</span> Category Guide</div>
   </nav>
 </aside>
 
@@ -666,6 +672,310 @@
     </div>
   </div>
 
+  <!-- SAVINGS -->
+  <div id="page-savings" class="page">
+    <div class="page-title">🏦 Savings Goals</div>
+    <div class="page-sub">Set savings targets and track your progress toward each one.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Add Savings Goal</h2></div>
+        <div class="form-group"><label>Goal Name</label><input id="sg-name" placeholder="e.g. Emergency Fund, Vacation, New Car"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Target Amount ($)</label><input id="sg-target" type="number" placeholder="5000"></div>
+          <div class="form-group"><label>Current Balance ($)</label><input id="sg-balance" type="number" placeholder="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Monthly Contribution ($)</label><input id="sg-monthly" type="number" placeholder="100"></div>
+          <div class="form-group"><label>Priority</label>
+            <select id="sg-priority">
+              <option value="high">🔴 High — Essential</option>
+              <option value="medium" selected>🟡 Medium — Important</option>
+              <option value="low">🟢 Low — Nice to have</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Goal Color</label>
+          <div class="color-options" id="sg-color-picker">
+            <div class="color-option selected" style="background:#4cde80" data-color="#4cde80" onclick="selectSgColor(this)"></div>
+            <div class="color-option" style="background:#6c63ff" data-color="#6c63ff" onclick="selectSgColor(this)"></div>
+            <div class="color-option" style="background:#00d4aa" data-color="#00d4aa" onclick="selectSgColor(this)"></div>
+            <div class="color-option" style="background:#ffb347" data-color="#ffb347" onclick="selectSgColor(this)"></div>
+            <div class="color-option" style="background:#38b6ff" data-color="#38b6ff" onclick="selectSgColor(this)"></div>
+            <div class="color-option" style="background:#ff6fcf" data-color="#ff6fcf" onclick="selectSgColor(this)"></div>
+          </div>
+        </div>
+        <button class="btn btn-primary w-full" onclick="addSavingsGoal()">➕ Add Goal</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>Savings Summary</h2></div>
+        <div id="savings-summary"></div>
+      </div>
+    </div>
+
+    <div id="savings-goals-list" class="mt-4"></div>
+  </div>
+
+  <!-- INVESTMENTS -->
+  <div id="page-investments" class="page">
+    <div class="page-title">📈 Investments</div>
+    <div class="page-sub">Track your investment accounts, contributions, and growth.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-header"><h2>Add Investment Account</h2></div>
+        <div class="form-group"><label>Account Name</label><input id="inv-name" placeholder="e.g. 401k, Roth IRA, Robinhood"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Account Type</label>
+            <select id="inv-type">
+              <option value="401k">401(k)</option>
+              <option value="roth">Roth IRA</option>
+              <option value="ira">Traditional IRA</option>
+              <option value="brokerage">Brokerage</option>
+              <option value="crypto">Crypto</option>
+              <option value="hsa">HSA</option>
+              <option value="529">529 (Education)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Current Value ($)</label><input id="inv-value" type="number" placeholder="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Monthly Contribution ($)</label><input id="inv-monthly" type="number" placeholder="0"></div>
+          <div class="form-group"><label>Employer Match ($)</label><input id="inv-match" type="number" placeholder="0"></div>
+        </div>
+        <div class="form-group"><label>Expected Annual Return (%)</label><input id="inv-return" type="number" placeholder="7" value="7"></div>
+        <button class="btn btn-primary w-full" onclick="addInvestment()">➕ Add Account</button>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><h2>Portfolio Summary</h2></div>
+        <div id="investment-summary"></div>
+      </div>
+    </div>
+
+    <div id="investment-list" class="mt-4"></div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div id="page-howto" class="page">
+    <div class="page-title">📖 How To Use FinanceOS</div>
+    <div class="page-sub">A step-by-step guide to getting the most out of your financial dashboard.</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 1</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">💵 Add Your Income</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Money → Income</strong> and add every source of money you receive. Include your salary, side hustle, benefits — anything that hits your bank account. Enter the amount, how often you get paid (weekly, bi-weekly, monthly), and the day you get paid.</p>
+        <div class="alert alert-info mt-4" style="font-size:12px">💡 If you get paid weekly, add 4 separate entries — one per paycheck — so the app knows exactly when money arrives.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 2</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">💳 Set Up Your Cards</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Money → Cards</strong> and add a card for each spending category. The idea: one card for housing, one for utilities, one for subscriptions, etc. This keeps your money organized by purpose. Enter the last 4 digits, card type, and current balance.</p>
+        <div class="alert alert-info mt-4" style="font-size:12px">💡 You don't need real separate cards — you can use one card for multiple categories. Cards here are just labels to organize your budget.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 3</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">📄 Enter Your Bills</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Money → Bills</strong> and add every recurring expense. Include the bill name, amount, the day of the month it's due, which category it falls under, and which card pays it. Mark large bills as "splittable" if you want to pay them in installments.</p>
+        <div class="alert alert-warning mt-4" style="font-size:12px">⚠️ Be thorough — subscriptions, insurance, utilities, groceries, everything. The more complete your bill list, the better the AI advice.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 4</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">🏦 Add Savings Goals</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Money → Savings</strong> and set up goals for your emergency fund, vacations, big purchases, etc. Enter how much you have saved now and how much you want to put away each month. The app will project when you'll reach your goal.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 5</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">🎯 Review Allocation</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Planning → Allocation</strong> to see exactly how much to load onto each card each month. It breaks down your income vs. your bills and tells you if you're short or have money left over. This is your monthly money distribution plan.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 6</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">🤖 Use the AI Advisor</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">AI → Bill Advisor</strong> and enter how much cash you have right now. The AI will rank every bill in priority order, tell you which to pay first, which to split, and which can wait. You can also ask it questions in plain English.</p>
+        <div class="alert alert-success mt-4" style="font-size:12px">✅ Use the AI Advisor every payday to get a fresh priority plan based on your current cash.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 7</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">✂️ Split Large Bills</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Planning → Split Payments</strong> to break large bills (like rent or insurance) into smaller payments across multiple paychecks. Choose equal, front-loaded, or back-loaded payment schedules and track each installment.</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px">Step 8</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px">📅 Check Pay Schedule</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Go to <strong style="color:var(--text)">Planning → Pay Schedule</strong> to see a day-by-day calendar of income arriving and bills due. This shows you exactly when money comes in and when it goes out — use it to avoid overdrafts and plan ahead.</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>🔁 Monthly Routine</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;font-size:13px">
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:18px;margin-bottom:6px">💰 Payday</div><div style="color:var(--muted)">Open AI Advisor → enter your check amount → follow the priority list to pay bills in order.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:18px;margin-bottom:6px">📊 Weekly</div><div style="color:var(--muted)">Check the Dashboard and Alerts tab. Mark bills as paid as you pay them.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:18px;margin-bottom:6px">📅 Monthly</div><div style="color:var(--muted)">Review Allocation to adjust card funding. Update savings goal balances. Check investment growth.</div></div>
+        <div style="background:var(--surface2);border-radius:9px;padding:14px"><div style="font-size:18px;margin-bottom:6px">📤 Quarterly</div><div style="color:var(--muted)">Export All your data as a backup. Review subscriptions — cancel ones you don't use.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY GUIDE -->
+  <div id="page-categories" class="page">
+    <div class="page-title">🗂️ Category Guide</div>
+    <div class="page-sub">Every spending category explained — what it covers and what bills belong in it.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">
+
+      <div class="card" style="border-left:4px solid #6c63ff">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🏠</span>
+          <div><div style="font-weight:800;font-size:16px">Housing</div><div style="font-size:12px;color:var(--accent)">Priority Tier 1 — Always Pay First</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Your shelter costs. Missing these can result in eviction, foreclosure, or late fees with major consequences.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Mortgage, Rent, HOA fees, Renters insurance, Property taxes, Home repairs</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #00d4aa">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">⚡</span>
+          <div><div style="font-weight:800;font-size:16px">Utilities</div><div style="font-size:12px;color:var(--accent2)">Priority Tier 1 — Always Pay Second</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Services that keep your home functioning. Shutoffs cost more to restore than the original bill.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Electricity (CoServ), Water, Natural Gas, Internet, Cable, Home Phone</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #38b6ff">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🚗</span>
+          <div><div style="font-weight:800;font-size:16px">Transport</div><div style="font-size:12px;color:#38b6ff">Priority Tier 2</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Getting to work and back. Without transportation you can't earn income.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Gas, Tolls/NTTA, Car wash, Parking, Bus/train pass, Uber/Lyft budget, Vehicle maintenance</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #ffb347">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🛡️</span>
+          <div><div style="font-weight:800;font-size:16px">Insurance</div><div style="font-size:12px;color:var(--warning)">Priority Tier 2</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Protection against financial disasters. A lapse in coverage can cost far more than the premium.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Car insurance, Life insurance, Health insurance, Dental/Vision, Disability insurance</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #ff5c5c">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🏥</span>
+          <div><div style="font-weight:800;font-size:16px">Healthcare</div><div style="font-size:12px;color:var(--danger)">Priority Tier 2</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Medical costs that can't be delayed without health consequences.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Prescriptions, Doctor copays, Therapy, Gym/fitness (if medically needed), HSA contributions</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #ff5c5c">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">💳</span>
+          <div><div style="font-weight:800;font-size:16px">Debt Payment</div><div style="font-size:12px;color:var(--danger)">Priority Tier 3</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Minimum payments on borrowed money. Missing these damages your credit and adds fees.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Car note, Credit card minimum payment, Student loan, Buy Now Pay Later (Afterpay), Personal loan</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #4cde80">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🛒</span>
+          <div><div style="font-weight:800;font-size:16px">Groceries</div><div style="font-size:12px;color:var(--success)">Priority Tier 3</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Food and household essentials. Necessary but flexible — you control how much you spend.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Walmart grocery runs, Sam's Club, Costco, Household supplies, Baby items, Pet food</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #ff6fcf">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">📱</span>
+          <div><div style="font-weight:800;font-size:16px">Subscriptions</div><div style="font-size:12px;color:#ff6fcf">Priority Tier 4 — Lowest</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Auto-recurring digital services. Easy to forget, easy to cancel. Audit these regularly.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Cell phone plan, Netflix, Hulu, Disney+, Spotify, YouTube TV, Xbox/PlayStation, Amazon Prime, Adobe, Microsoft 365, Norton, iCloud</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #a78bfa">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🎬</span>
+          <div><div style="font-weight:800;font-size:16px">Entertainment</div><div style="font-size:12px;color:#a78bfa">Priority Tier 4</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Fun and leisure spending. Important for quality of life but the first to cut when money is tight.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Dining out, Movies/Cinemark, Concerts, Sports events, Hobbies, Video games, Date nights</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #f0c040">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">📚</span>
+          <div><div style="font-weight:800;font-size:16px">Education</div><div style="font-size:12px;color:#f0c040">Priority Tier 3</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Learning and development costs. An investment in your future earning potential.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Homeschool curriculum (Time4Learning), College tuition, Online courses, Books, Tutoring, School supplies</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #34d399">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">💄</span>
+          <div><div style="font-weight:800;font-size:16px">Personal Care</div><div style="font-size:12px;color:#34d399">Priority Tier 4</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Self-care and grooming. Necessary but flexible in amount.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Haircuts, Hair products, Nail salon, Skincare, Barber, Clothing allowance, Gym membership</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #4cde80">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">🏦</span>
+          <div><div style="font-weight:800;font-size:16px">Savings</div><div style="font-size:12px;color:var(--success)">Pay yourself first</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Money set aside for future goals. Treat this like a bill — pay it every month without fail.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Emergency fund, Vacation fund, Down payment, Christmas fund, Personal savings account, Kid's college fund</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid #6c63ff">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">📦</span>
+          <div><div style="font-weight:800;font-size:16px">Other</div><div style="font-size:12px;color:var(--muted)">Miscellaneous</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Anything that doesn't fit another category.</p>
+        <div style="font-size:12px;color:var(--text)"><strong>Examples:</strong> Church tithe/offering, Charitable donations, Gifts, Pet vet bills, HOA fees, Storage unit, Legal fees</div>
+      </div>
+
+    </div>
+
+    <div class="card mt-4">
+      <div class="section-header"><h2>💡 The 50/30/20 Rule — A Simple Budget Framework</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;font-size:13px">
+        <div style="background:rgba(255,92,92,.1);border-radius:10px;padding:16px">
+          <div style="font-size:24px;font-weight:800;color:var(--danger)">50%</div>
+          <div style="font-weight:700;margin-bottom:6px">Needs</div>
+          <div style="color:var(--muted)">Housing, Utilities, Transport, Insurance, Groceries, Debt minimums</div>
+        </div>
+        <div style="background:rgba(108,99,255,.1);border-radius:10px;padding:16px">
+          <div style="font-size:24px;font-weight:800;color:var(--accent)">30%</div>
+          <div style="font-weight:700;margin-bottom:6px">Wants</div>
+          <div style="color:var(--muted)">Entertainment, Dining out, Subscriptions, Personal care, Hobbies</div>
+        </div>
+        <div style="background:rgba(76,222,128,.1);border-radius:10px;padding:16px">
+          <div style="font-size:24px;font-weight:800;color:var(--success)">20%</div>
+          <div style="font-weight:700;margin-bottom:6px">Savings & Investing</div>
+          <div style="color:var(--muted)">Emergency fund, Retirement (401k/IRA), Savings goals, Extra debt payoff</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- AI BILL ADVISOR -->
   <div id="page-ai" class="page">
     <div class="page-title">🤖 AI Bill Advisor</div>
@@ -829,7 +1139,10 @@ let state = {
   bills: [],
   cards: [],
   splits: [],
+  savingsGoals: [],
+  investments: [],
 };
+let selectedSgColor = '#4cde80';
 let selectedCardColor = '#6c63ff';
 let importData = null;
 let currentBillFilter = 'all';
@@ -879,6 +1192,9 @@ function showPage(id) {
   if (id === 'alerts') renderAlerts();
   if (id === 'reminders') { loadReminderSettings(); renderReminderPreviewList(); }
   if (id === 'ai') initAIPage();
+  if (id === 'savings') renderSavings();
+  if (id === 'investments') renderInvestments();
+  if (id === 'howto' || id === 'categories') {} // static pages
 }
 
 // ==================== HELPERS ====================
@@ -1383,8 +1699,12 @@ function renderAllocation() {
 
   const remaining = totalIncome - totalAllocated;
   const unassigned = state.bills.filter(b => !b.cardId).reduce((s,b) => s + monthlyAmount(b.amount,b.freq), 0);
+  const savingsContrib = (state.savingsGoals||[]).reduce((s,g)=>s+g.monthly,0);
+  const investContrib  = (state.investments||[]).reduce((s,i)=>s+(i.monthly||0)+(i.match||0),0);
+  const leftAfterAll   = remaining - savingsContrib - investContrib;
+
   document.getElementById('alloc-remaining').innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:16px">
       <div style="text-align:center">
         <div class="text-muted" style="font-size:12px">Allocated to Cards</div>
         <div style="font-size:22px;font-weight:700;color:var(--accent)">${fmt(totalAllocated)}</div>
@@ -1394,12 +1714,22 @@ function renderAllocation() {
         <div style="font-size:22px;font-weight:700;color:var(--warning)">${fmt(unassigned)}</div>
       </div>
       <div style="text-align:center">
-        <div class="text-muted" style="font-size:12px">Leftover / Savings</div>
-        <div style="font-size:22px;font-weight:700;color:${remaining>=0?'var(--success)':'var(--danger)'}">${fmt(remaining)}</div>
+        <div class="text-muted" style="font-size:12px">Savings Goals</div>
+        <div style="font-size:22px;font-weight:700;color:var(--success)">${fmt(savingsContrib)}</div>
+      </div>
+      <div style="text-align:center">
+        <div class="text-muted" style="font-size:12px">Investments</div>
+        <div style="font-size:22px;font-weight:700;color:var(--accent)">${fmt(investContrib)}</div>
+      </div>
+      <div style="text-align:center">
+        <div class="text-muted" style="font-size:12px">True Leftover</div>
+        <div style="font-size:22px;font-weight:700;color:${leftAfterAll>=0?'var(--success)':'var(--danger)'}">${fmt(leftAfterAll)}</div>
       </div>
     </div>
-    ${remaining > 0 ? `<div class="alert alert-success mt-4">✅ Great! You have ${fmt(remaining)} left after all bills. Consider moving this to savings.</div>` : ''}
-    ${remaining < 0 ? `<div class="alert alert-danger mt-4">🚨 You're short ${fmt(Math.abs(remaining))}. Review your bills or find additional income.</div>` : ''}`;
+    ${savingsContrib > 0 ? `<div class="alert alert-success" style="font-size:12px">🏦 Savings goals claim ${fmt(savingsContrib)}/mo — going to ${(state.savingsGoals||[]).map(g=>g.name).join(', ')}.</div>` : ''}
+    ${investContrib > 0 ? `<div class="alert alert-info" style="font-size:12px">📈 Investments claim ${fmt(investContrib)}/mo across ${(state.investments||[]).length} account${(state.investments||[]).length!==1?'s':''}.</div>` : ''}
+    ${leftAfterAll > 0 ? `<div class="alert alert-success">✅ After bills, savings & investments you have <strong>${fmt(leftAfterAll)}</strong> truly free each month.</div>` : ''}
+    ${leftAfterAll < 0 ? `<div class="alert alert-danger">🚨 You're <strong>${fmt(Math.abs(leftAfterAll))}</strong> over budget after all commitments. Review bills or reduce savings contributions temporarily.</div>` : ''}`;
 }
 
 // ==================== SPLITS ====================
@@ -1654,9 +1984,10 @@ function confirmImport() {
   document.getElementById('import-status').innerHTML = '<div class="alert alert-success">✅ Import complete! Your data has been saved.</div>';
 }
 
-// ==================== EXPORT ====================
+// ==================== EXPORT ALL ====================
 function exportData() {
   const wb = XLSX.utils.book_new();
+
   if (state.income.length) {
     const ws = XLSX.utils.json_to_sheet(state.income.map(i=>({Name:i.name,Amount:i.amount,Frequency:i.freq,PayDay:i.payday,Type:i.type})));
     XLSX.utils.book_append_sheet(wb, ws, 'Income');
@@ -1666,10 +1997,201 @@ function exportData() {
     XLSX.utils.book_append_sheet(wb, ws, 'Bills');
   }
   if (state.cards.length) {
-    const ws = XLSX.utils.json_to_sheet(state.cards.map(c=>({Name:c.name,Last4:c.last4,Type:c.type,Category:c.category,Balance:c.balance})));
+    const ws = XLSX.utils.json_to_sheet(state.cards.map(c=>({Name:c.name,Last4:c.last4,Type:c.type,Category:c.category,Balance:c.balance,Color:c.color})));
     XLSX.utils.book_append_sheet(wb, ws, 'Cards');
   }
-  XLSX.writeFile(wb, 'FinanceOS_Export.xlsx');
+  if (state.splits.length) {
+    const rows = [];
+    state.splits.forEach(s => s.schedule.forEach((p,i) => rows.push({Bill:s.billName,Total:s.total,Strategy:s.strategy,PaymentNum:i+1,Month:p.month,Amount:p.amount,Paid:p.paid})));
+    const ws = XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, 'Split Payments');
+  }
+  if (state.savingsGoals && state.savingsGoals.length) {
+    const ws = XLSX.utils.json_to_sheet(state.savingsGoals.map(g=>({Name:g.name,Target:g.target,CurrentBalance:g.balance,MonthlyContribution:g.monthly,Priority:g.priority,Color:g.color,MonthsToGoal:g.balance>=g.target?'REACHED':Math.ceil((g.target-g.balance)/Math.max(g.monthly,1))})));
+    XLSX.utils.book_append_sheet(wb, ws, 'Savings Goals');
+  }
+  if (state.investments && state.investments.length) {
+    const ws = XLSX.utils.json_to_sheet(state.investments.map(inv=>({Name:inv.name,Type:inv.type,CurrentValue:inv.value,MonthlyContribution:inv.monthly,EmployerMatch:inv.match,ExpectedReturn:inv.returnPct+'%'})));
+    XLSX.utils.book_append_sheet(wb, ws, 'Investments');
+  }
+
+  // Summary sheet
+  const totalIncome = totalMonthlyIncome();
+  const totalBills  = totalMonthlyBills();
+  const totalSavingsContrib = (state.savingsGoals||[]).reduce((s,g)=>s+g.monthly,0);
+  const totalInvestContrib  = (state.investments||[]).reduce((s,i)=>s+(i.monthly||0)+(i.match||0),0);
+  const summary = [
+    ['FinanceOS Export — ' + new Date().toLocaleDateString(),''],
+    ['',''],
+    ['Monthly Income', totalIncome],
+    ['Monthly Bills',  totalBills],
+    ['Savings Contributions', totalSavingsContrib],
+    ['Investment Contributions', totalInvestContrib],
+    ['Left Over', totalIncome - totalBills - totalSavingsContrib - totalInvestContrib],
+    ['',''],
+    ['Total Bills', state.bills.length],
+    ['Total Cards', state.cards.length],
+    ['Savings Goals', (state.savingsGoals||[]).length],
+    ['Investment Accounts', (state.investments||[]).length],
+    ['Split Plans', state.splits.length],
+  ];
+  const ws = XLSX.utils.aoa_to_sheet(summary);
+  ws['!cols'] = [{wch:28},{wch:16}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Summary');
+
+  XLSX.writeFile(wb, 'FinanceOS_Full_Export.xlsx');
+}
+
+// ==================== SAVINGS ====================
+function selectSgColor(el) {
+  document.querySelectorAll('#sg-color-picker .color-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSgColor = el.dataset.color;
+}
+function addSavingsGoal() {
+  const name    = document.getElementById('sg-name').value.trim();
+  const target  = parseFloat(document.getElementById('sg-target').value) || 0;
+  const balance = parseFloat(document.getElementById('sg-balance').value) || 0;
+  const monthly = parseFloat(document.getElementById('sg-monthly').value) || 0;
+  const priority= document.getElementById('sg-priority').value;
+  if (!name || !target) { alert('Please enter a goal name and target amount.'); return; }
+  if (!state.savingsGoals) state.savingsGoals = [];
+  state.savingsGoals.push({ id: uid(), name, target, balance, monthly, priority, color: selectedSgColor });
+  save();
+  ['sg-name','sg-target','sg-balance','sg-monthly'].forEach(id => document.getElementById(id).value = '');
+  renderSavings();
+}
+function deleteSavingsGoal(id) { state.savingsGoals = state.savingsGoals.filter(g => g.id !== id); save(); renderSavings(); }
+function updateSavingsBalance(id, val) {
+  const g = state.savingsGoals.find(g => g.id === id);
+  if (g) { g.balance = parseFloat(val) || 0; save(); renderSavings(); }
+}
+function renderSavings() {
+  const goals = state.savingsGoals || [];
+  const totalTarget  = goals.reduce((s,g)=>s+g.target,0);
+  const totalSaved   = goals.reduce((s,g)=>s+g.balance,0);
+  const totalMonthly = goals.reduce((s,g)=>s+g.monthly,0);
+
+  document.getElementById('savings-summary').innerHTML = `
+    <div style="text-align:center;padding:16px 0">
+      <div class="text-muted" style="font-size:12px">Total Saved</div>
+      <div style="font-size:32px;font-weight:800;color:var(--success)">${fmt(totalSaved)}</div>
+      <div class="text-muted" style="font-size:12px;margin-top:4px">of ${fmt(totalTarget)} total goal · ${fmt(totalMonthly)}/mo contribution</div>
+    </div>
+    ${totalTarget > 0 ? `<div class="progress"><div class="progress-bar" style="width:${Math.min((totalSaved/totalTarget)*100,100)}%;background:var(--success)"></div></div>
+    <div class="text-muted" style="font-size:11px;margin-top:6px;text-align:center">${((totalSaved/totalTarget)*100).toFixed(1)}% of all goals funded</div>` : ''}`;
+
+  const listEl = document.getElementById('savings-goals-list');
+  if (!goals.length) { listEl.innerHTML = '<div class="empty"><div class="empty-icon">🏦</div><p>No savings goals yet. Add one above.</p></div>'; return; }
+
+  const priorityOrder = { high: 0, medium: 1, low: 2 };
+  const sorted = [...goals].sort((a,b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+
+  listEl.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">' +
+    sorted.map(g => {
+      const pct = g.target > 0 ? Math.min((g.balance/g.target)*100, 100) : 0;
+      const monthsLeft = g.monthly > 0 && g.balance < g.target ? Math.ceil((g.target - g.balance) / g.monthly) : null;
+      const reached = g.balance >= g.target;
+      const prioLabel = { high:'🔴 High Priority', medium:'🟡 Medium Priority', low:'🟢 Low Priority' }[g.priority];
+      return `<div class="card" style="border-top:4px solid ${g.color}">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+          <div>
+            <div style="font-weight:800;font-size:16px">${g.name}</div>
+            <div style="font-size:12px;color:var(--muted)">${prioLabel}</div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteSavingsGoal('${g.id}')">🗑</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:24px;font-weight:800;color:${g.color}">${fmt(g.balance)}</span>
+          <span style="font-size:13px;color:var(--muted);align-self:flex-end">of ${fmt(g.target)}</span>
+        </div>
+        <div class="progress mb-4"><div class="progress-bar" style="width:${pct}%;background:${g.color}"></div></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${pct.toFixed(1)}% funded${monthsLeft?` · ~${monthsLeft} month${monthsLeft!==1?'s':''} to go`:''}${reached?' · ✅ Goal Reached!':''}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <label style="font-size:12px;white-space:nowrap">Update balance:</label>
+          <input type="number" value="${g.balance}" style="flex:1" onchange="updateSavingsBalance('${g.id}',this.value)">
+        </div>
+        <div style="font-size:12px;color:var(--muted)">Monthly contribution: <strong style="color:var(--text)">${fmt(g.monthly)}</strong></div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+// ==================== INVESTMENTS ====================
+function addInvestment() {
+  const name      = document.getElementById('inv-name').value.trim();
+  const type      = document.getElementById('inv-type').value;
+  const value     = parseFloat(document.getElementById('inv-value').value) || 0;
+  const monthly   = parseFloat(document.getElementById('inv-monthly').value) || 0;
+  const match     = parseFloat(document.getElementById('inv-match').value) || 0;
+  const returnPct = parseFloat(document.getElementById('inv-return').value) || 7;
+  if (!name) { alert('Please enter an account name.'); return; }
+  if (!state.investments) state.investments = [];
+  state.investments.push({ id: uid(), name, type, value, monthly, match, returnPct });
+  save();
+  ['inv-name','inv-value','inv-monthly','inv-match'].forEach(id => document.getElementById(id).value = '');
+  renderInvestments();
+}
+function deleteInvestment(id) { state.investments = state.investments.filter(i => i.id !== id); save(); renderInvestments(); }
+function renderInvestments() {
+  const investments = state.investments || [];
+  const totalValue   = investments.reduce((s,i)=>s+i.value,0);
+  const totalMonthly = investments.reduce((s,i)=>s+(i.monthly||0),0);
+  const totalMatch   = investments.reduce((s,i)=>s+(i.match||0),0);
+
+  const typeColors = { '401k':'#6c63ff', 'roth':'#4cde80', 'ira':'#00d4aa', 'brokerage':'#38b6ff', 'crypto':'#ffb347', 'hsa':'#ff6fcf', '529':'#f0c040', 'other':'#8890a8' };
+  const typeIcons  = { '401k':'🏢', 'roth':'🌱', 'ira':'📋', 'brokerage':'📊', 'crypto':'₿', 'hsa':'🏥', '529':'🎓', 'other':'💼' };
+
+  document.getElementById('investment-summary').innerHTML = investments.length ? `
+    <div style="text-align:center;padding:16px 0">
+      <div class="text-muted" style="font-size:12px">Total Portfolio Value</div>
+      <div style="font-size:32px;font-weight:800;color:var(--accent)">${fmt(totalValue)}</div>
+      <div class="text-muted" style="font-size:12px;margin-top:4px">${fmt(totalMonthly)}/mo contributions · ${fmt(totalMatch)}/mo employer match</div>
+    </div>
+    <hr class="divider">
+    <div style="font-size:13px;margin-top:8px">
+      <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Your contributions/mo</span><strong>${fmt(totalMonthly)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Employer match/mo</span><strong style="color:var(--success)">${fmt(totalMatch)}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--border)"><span>Total invested/mo</span><strong style="color:var(--accent)">${fmt(totalMonthly+totalMatch)}</strong></div>
+    </div>
+    ${totalValue > 0 ? `<div class="alert alert-info mt-4" style="font-size:12px">📈 At 7% avg annual return, your portfolio could grow to <strong>${fmt(totalValue * Math.pow(1.07, 10))}</strong> in 10 years (contributions not included).</div>` : ''}` :
+    '<p class="text-muted" style="font-size:13px">Add your investment accounts to see your portfolio overview.</p>';
+
+  const listEl = document.getElementById('investment-list');
+  if (!investments.length) { listEl.innerHTML = '<div class="empty"><div class="empty-icon">📈</div><p>No investment accounts yet. Add one above.</p></div>'; return; }
+
+  listEl.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">' +
+    investments.map(inv => {
+      const col = typeColors[inv.type] || '#8890a8';
+      const icon = typeIcons[inv.type] || '💼';
+      const yearlyContrib = ((inv.monthly||0) + (inv.match||0)) * 12;
+      const projected10 = inv.value * Math.pow(1 + inv.returnPct/100, 10) + (yearlyContrib * ((Math.pow(1 + inv.returnPct/100, 10) - 1) / (inv.returnPct/100)));
+      return `<div class="card" style="border-top:4px solid ${col}">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:28px">${icon}</span>
+            <div>
+              <div style="font-weight:800;font-size:15px">${inv.name}</div>
+              <div style="font-size:12px;color:${col};font-weight:600">${inv.type.toUpperCase()}</div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteInvestment('${inv.id}')">🗑</button>
+        </div>
+        <div style="font-size:28px;font-weight:800;color:${col};margin-bottom:8px">${fmt(inv.value)}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:12px">
+          <div style="background:var(--surface2);border-radius:7px;padding:8px">
+            <div class="text-muted">Your/mo</div>
+            <div style="font-weight:700">${fmt(inv.monthly)}</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:7px;padding:8px">
+            <div class="text-muted">Match/mo</div>
+            <div style="font-weight:700;color:var(--success)">${fmt(inv.match)}</div>
+          </div>
+        </div>
+        <div class="alert alert-info" style="font-size:12px">
+          📈 10-yr projection at ${inv.returnPct}% return: <strong>${fmt(projected10)}</strong>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
 }
 
 // ==================== TEMPLATE ====================
