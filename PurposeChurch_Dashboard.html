@@ -289,6 +289,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           
           <div class="nav-item" onclick="switchPanel('newsletter')"><span class="nav-item-icon">✉️</span>Newsletter</div>
           <div class="nav-item" onclick="switchPanel('email')"><span class="nav-item-icon">📧</span>Email Members</div>
+          <div class="nav-item" onclick="switchPanel('text')"><span class="nav-item-icon">📱</span>Text Members</div>
           <div class="nav-item" onclick="switchPanel('members')" id="nav-members"><span class="nav-item-icon">👥</span>Members</div>
           <div class="nav-item" onclick="switchPanel('access')" id="nav-access"><span class="nav-item-icon">🔐</span>Access Control</div>
         </nav>
@@ -687,6 +688,65 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   </div>
 </div>
 
+<div class="panel" id="panel-text">
+  <div class="panel-header"><div class="panel-title">📱 Text Members</div></div>
+
+  <div style="padding:2rem;max-width:800px;">
+
+    <!-- RECIPIENT SELECTOR -->
+    <div class="dash-section" style="margin-bottom:2rem;">
+      <div class="section-title">👥 Who to Text</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1rem;">
+        <button class="btn btn-ghost" id="tg-all" onclick="setTextGroup('all')">🌐 All w/ Phone</button>
+        <button class="btn btn-ghost" id="tg-optedin" onclick="setTextGroup('optedin')">✅ Opted-In Only</button>
+        <button class="btn btn-ghost" id="tg-praise" onclick="setTextGroup('praise')">🎵 Praise Team</button>
+        <button class="btn btn-ghost" id="tg-prayer" onclick="setTextGroup('prayer')">🙏 Intercessory Prayer</button>
+        <button class="btn btn-ghost" id="tg-women" onclick="setTextGroup('women')">👩 Women of Purpose</button>
+        <button class="btn btn-ghost" id="tg-leaders" onclick="setTextGroup('leaders')">✝️ Church Leaders</button>
+        <button class="btn btn-ghost" id="tg-individual" onclick="setTextGroup('individual')">👤 Individual</button>
+      </div>
+
+      <!-- Individual search -->
+      <div id="text-individual-wrap" style="display:none;margin-bottom:1rem;">
+        <input class="f-input" id="text-member-search" type="text" placeholder="Search member by name or phone..." oninput="searchTextMember(this.value)"/>
+        <div id="text-member-results" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);max-height:200px;overflow-y:auto;margin-top:0.3rem;display:none;"></div>
+      </div>
+
+      <div id="text-recipients-display" style="font-size:0.85rem;color:#F1C40F;padding:0.5rem 0;font-weight:500;"></div>
+    </div>
+
+    <!-- COMPOSE -->
+    <div class="dash-section" style="margin-bottom:2rem;">
+      <div class="section-title">💬 Compose</div>
+      <div class="f-group">
+        <label class="f-label">Message *</label>
+        <textarea class="f-textarea" id="text-body" rows="5" maxlength="1000" placeholder="Purpose Church: Reminder — Wednesday Bible Study is at 7pm tonight. See you there!" oninput="updateSmsCounter()"></textarea>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem;">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.9);cursor:pointer;">
+          <input type="checkbox" id="text-optout" checked style="accent-color:var(--b);" onchange="updateSmsCounter()"> Add "Reply STOP to opt out"
+        </label>
+        <div id="sms-counter" style="font-size:0.78rem;color:rgba(255,255,255,0.6);"></div>
+      </div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.5rem;line-height:1.5;">
+        💡 Tip: start with "Purpose Church:" so people know who's texting. Only members with a phone number on file will receive a text.
+      </div>
+    </div>
+
+    <!-- SEND -->
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <button class="btn btn-burg" id="text-send-btn" onclick="sendMemberText()">📱 Send Text Now</button>
+    </div>
+
+    <!-- SEND HISTORY -->
+    <div class="dash-section">
+      <div class="section-title">📋 Text History</div>
+      <div id="text-history-list" style="font-size:0.85rem;color:rgba(255,255,255,0.6);">No texts sent yet.</div>
+    </div>
+
+  </div>
+</div>
+
 <div class="panel" id="panel-members">
   <div class="dash-card">
     <div class="dash-card-title">👤 Add New Member</div>
@@ -1077,7 +1137,7 @@ function doLogout() {
 }
 
 // ── NAVIGATION ──
-const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',members:'Member Directory',access:'Access Control'};
+const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',text:'Text Members',members:'Member Directory',access:'Access Control'};
 
 function switchPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1087,6 +1147,7 @@ function switchPanel(id) {
   document.getElementById('dash-title').textContent = panelTitles[id];
   document.getElementById('sidebar').classList.remove('open');
   if (id === 'events') setTimeout(() => renderCalendar(), 50);
+  if (id === 'text') { setTextGroup('all'); renderTextHistory(); }
 }
 
 // ── TOAST ──
@@ -3173,9 +3234,189 @@ function renderEmailHistory() {
   }).join('');
 }
 
-// Initialize email group on load
+// ══════════ TEXT MEMBERS (Twilio SMS) ══════════
+const SMS_ENDPOINT = '/api/send-sms';
+// If you set DASHBOARD_SMS_SECRET in Vercel, paste the same value here.
+// (Soft gate only — it is visible in page source. Real protection is a
+//  Twilio spending limit + keeping the Auth Token server-side.)
+const SMS_SECRET = '';
+const SMS_CHUNK = 25;            // recipients per request to the serverless function
+const SMS_COST_PER_SEG = 0.012;  // rough estimate: Twilio + carrier fee per segment
+
+let textGroupSelected = 'all';
+let textIndividuals = [];
+
+function setTextGroup(group) {
+  textGroupSelected = group;
+  textIndividuals = [];
+  ['all','optedin','praise','prayer','women','leaders','individual'].forEach(function(g) {
+    const btn = document.getElementById('tg-' + g);
+    if (btn) btn.className = g === group ? 'btn btn-burg' : 'btn btn-ghost';
+  });
+  const wrap = document.getElementById('text-individual-wrap');
+  if (wrap) wrap.style.display = group === 'individual' ? 'block' : 'none';
+  updateTextRecipientsDisplay();
+}
+
+function getTextRecipients() {
+  if (textGroupSelected === 'individual') return textIndividuals;
+  return DB.members.filter(function(m) {
+    if (!m.phone) return false;
+    if (textGroupSelected === 'optedin') return m.notif !== 'none';
+    if (textGroupSelected === 'praise')  return (m.roles||[]).includes('Praise Team');
+    if (textGroupSelected === 'prayer')  return (m.roles||[]).includes('Intercessory Prayer');
+    if (textGroupSelected === 'women')   return (m.roles||[]).includes('Women of Purpose');
+    if (textGroupSelected === 'leaders') return (m.roles||[]).includes('Church Leader');
+    return true; // all (with phone)
+  });
+}
+
+function updateTextRecipientsDisplay() {
+  const el = document.getElementById('text-recipients-display');
+  if (!el) return;
+  if (textGroupSelected === 'individual') {
+    el.textContent = textIndividuals.length > 0
+      ? '📱 Texting: ' + textIndividuals.map(function(m){return m.name;}).join(', ')
+      : 'Search and select a member above';
+  } else {
+    const n = getTextRecipients().length;
+    el.textContent = '📱 ' + n + ' recipient' + (n !== 1 ? 's' : '') + ' with a phone number';
+  }
+  updateSmsCounter();
+}
+
+function searchTextMember(query) {
+  const results = document.getElementById('text-member-results');
+  if (!query || query.length < 2) { results.style.display = 'none'; return; }
+  const q = query.toLowerCase();
+  const matches = DB.members.filter(function(m) {
+    return m.phone && ((m.name||'').toLowerCase().includes(q) || (m.phone||'').includes(query));
+  });
+  if (!matches.length) { results.style.display = 'none'; return; }
+  results.style.display = 'block';
+  results.innerHTML = matches.map(function(m) {
+    return '<div style="padding:0.6rem 1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;" ' +
+      'onmouseover="this.style.background=\'rgba(255,255,255,0.08)\'" ' +
+      'onmouseout="this.style.background=\'transparent\'" ' +
+      'onclick="selectTextMember(' + m.id + ')">' +
+      '<strong>' + m.name + '</strong> <span style="color:rgba(255,255,255,0.5);">' + (m.phone||'') + '</span></div>';
+  }).join('');
+}
+
+function selectTextMember(id) {
+  const m = DB.members.find(function(m){ return m.id === id; });
+  if (!m) return;
+  if (!textIndividuals.find(function(e){ return e.id === id; })) textIndividuals.push(m);
+  document.getElementById('text-member-search').value = '';
+  document.getElementById('text-member-results').style.display = 'none';
+  updateTextRecipientsDisplay();
+}
+
+function buildSmsBody() {
+  let body = document.getElementById('text-body').value.trim();
+  const optout = document.getElementById('text-optout');
+  if (optout && optout.checked && body) body += ' Reply STOP to opt out.';
+  return body;
+}
+
+function updateSmsCounter() {
+  const el = document.getElementById('sms-counter');
+  if (!el) return;
+  const body = buildSmsBody();
+  const len = body.length;
+  const unicode = /[^\u0000-\u007F]/.test(body);   // emoji/accents shrink segments
+  const per = unicode ? 70 : 160, perMulti = unicode ? 67 : 153;
+  let segs = 0;
+  if (len > 0) segs = len <= per ? 1 : Math.ceil(len / perMulti);
+  const recips = getTextRecipients().length;
+  const est = segs * recips * SMS_COST_PER_SEG;
+  el.textContent = len + ' chars · ' + segs + ' segment' + (segs !== 1 ? 's' : '') +
+    (recips ? ' × ' + recips + ' ≈ $' + est.toFixed(2) : '');
+}
+
+function sendMemberText() {
+  const body = buildSmsBody();
+  if (!body) return toast('Please write a message first.', 'error');
+  const recipients = getTextRecipients();
+  if (!recipients.length) return toast('No recipients with a phone number selected.', 'error');
+  if (!confirm('Send this text to ' + recipients.length + ' recipient(s)?')) return;
+
+  const btn = document.getElementById('text-send-btn');
+  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+
+  const phones = recipients.map(function(m){ return m.phone; });
+  const chunks = [];
+  for (let i = 0; i < phones.length; i += SMS_CHUNK) chunks.push(phones.slice(i, i + SMS_CHUNK));
+
+  let sent = 0, failed = 0, done = 0;
+  const total = phones.length;
+
+  function sendChunk(idx) {
+    if (idx >= chunks.length) { finishTextSending(sent, failed, total, btn); return; }
+    const headers = { 'Content-Type': 'application/json' };
+    if (SMS_SECRET) headers['x-dashboard-secret'] = SMS_SECRET;
+    fetch(SMS_ENDPOINT, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ to: chunks[idx], message: body })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.ok) { sent += data.sent || 0; failed += data.failed || 0; }
+      else { failed += chunks[idx].length; if (data && data.error) toast(data.error, 'error'); }
+      done += chunks[idx].length;
+      if (btn) btn.textContent = 'Sending ' + Math.min(done, total) + '/' + total + '...';
+      setTimeout(function(){ sendChunk(idx + 1); }, 300);
+    })
+    .catch(function(){
+      failed += chunks[idx].length;
+      done += chunks[idx].length;
+      setTimeout(function(){ sendChunk(idx + 1); }, 300);
+    });
+  }
+  sendChunk(0);
+}
+
+function finishTextSending(sent, failed, total, btn) {
+  if (btn) { btn.textContent = '📱 Send Text Now'; btn.disabled = false; }
+  if (sent > 0) {
+    toast('✅ Text sent to ' + sent + ' of ' + total + ' members!');
+    const entry = {
+      date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+      preview: document.getElementById('text-body').value.trim().slice(0, 60),
+      count: sent,
+      group: textGroupSelected
+    };
+    if (!DB.textHistory) DB.textHistory = [];
+    DB.textHistory.unshift(entry);
+    saveDB();
+    renderTextHistory();
+    document.getElementById('text-body').value = '';
+    updateSmsCounter();
+  }
+  if (failed > 0) toast('⚠️ ' + failed + ' text(s) failed or were invalid.', 'error');
+}
+
+function renderTextHistory() {
+  const el = document.getElementById('text-history-list');
+  if (!el) return;
+  if (!DB.textHistory || !DB.textHistory.length) {
+    el.innerHTML = '<span style="color:rgba(255,255,255,0.5);">No texts sent yet.</span>';
+    return;
+  }
+  el.innerHTML = DB.textHistory.slice(0, 10).map(function(e) {
+    return '<div style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">' +
+      '<div style="font-weight:500;color:#fff;">' + (e.preview || '(message)') + '…</div>' +
+      '<div style="font-size:0.78rem;color:rgba(255,255,255,0.5);">' + e.date + ' · ' + e.count + ' recipients · ' + e.group + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+// Initialize email + text groups on load
 document.addEventListener('DOMContentLoaded', function() {
   setEmailGroup('all');
+  setTextGroup('all');
+  renderTextHistory();
 });
 
 
