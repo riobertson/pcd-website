@@ -2722,53 +2722,66 @@ function saveEditEvent() {
   const updateWebsite = document.getElementById('edit-ev-post-website').checked;
   const resendEmail = document.getElementById('edit-ev-resend-email').checked;
 
-  // Update on Firebase (website)
+  // Update on Firebase (website) — PATCH the existing doc in place so edits never create duplicates
   if (updateWebsite) {
     var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
     var project = "purposechurchdenton";
+    var eventFields = {
+      title: updatedEvent.title || '',
+      type: updatedEvent.type || '',
+      date: updatedEvent.date || '',
+      rawDate: updatedEvent.rawDate || '',
+      endDate: updatedEvent.endDate || '',
+      rawEndDate: updatedEvent.rawEndDate || '',
+      startTime: updatedEvent.startTime || '',
+      endTime: updatedEvent.endTime || '',
+      location: updatedEvent.location || '',
+      desc: updatedEvent.desc || '',
+      image: updatedEvent.image || '',
+      active: 'true'
+    };
 
-    function updateFBDoc(docId) {
-      // Delete old and add new
-      fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events/" + docId + "?key=" + apiKey, {method: "DELETE"})
+    function patchFBDoc(docId) {
+      var fields = {};
+      var mask = '';
+      Object.keys(eventFields).forEach(function(k) {
+        fields[k] = { stringValue: String(eventFields[k]) };
+        mask += '&updateMask.fieldPaths=' + k;
+      });
+      fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events/" + docId + "?key=" + apiKey + mask, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: fields })
+      })
+        .then(function(r){ return r.json(); })
         .then(function() {
-          return window.saveToFirebase('events', {
-            title: updatedEvent.title || '',
-            type: updatedEvent.type || '',
-            date: updatedEvent.date || '',
-            rawDate: updatedEvent.rawDate || '',
-            endDate: updatedEvent.endDate || '',
-            rawEndDate: updatedEvent.rawEndDate || '',
-            startTime: updatedEvent.startTime || '',
-            endTime: updatedEvent.endTime || '',
-            location: updatedEvent.location || '',
-            desc: updatedEvent.desc || '',
-            image: updatedEvent.image || '',
-            active: 'true'
-          });
-        })
-        .then(function(newFbId) {
-          if (newFbId) {
-            DB.events[evIdx].firebaseId = newFbId;
-            saveDB();
-          }
+          DB.events[evIdx].firebaseId = docId;
+          saveDB();
           toast('✅ Event updated on website!');
-        });
+        })
+        .catch(function(e){ console.error(e); toast('Could not update event on website.', 'error'); });
     }
 
     if (firebaseId) {
-      updateFBDoc(firebaseId);
+      patchFBDoc(firebaseId);
     } else {
-      // Search by old title/date
-      fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events?key=" + apiKey + "&pageSize=100")
+      // No stored ID — find the existing doc by title and update it; only create if none exists
+      fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/events?key=" + apiKey + "&pageSize=100&mask.fieldPaths=title")
         .then(function(r){ return r.json(); })
         .then(function(data){
+          var match = null;
           if (data.documents) {
-            data.documents.forEach(function(doc) {
-              var fields = doc.fields || {};
-              var fbTitle = fields.title ? fields.title.stringValue : '';
-              if (fbTitle === DB.events[evIdx].title) {
-                updateFBDoc(doc.name.split('/').pop());
-              }
+            match = data.documents.find(function(doc) {
+              var f = doc.fields || {};
+              return (f.title ? f.title.stringValue : '') === DB.events[evIdx].title;
+            });
+          }
+          if (match) {
+            patchFBDoc(match.name.split('/').pop());
+          } else {
+            window.saveToFirebase('events', eventFields).then(function(newFbId) {
+              if (newFbId) { DB.events[evIdx].firebaseId = newFbId; saveDB(); }
+              toast('✅ Event added to website!');
             });
           }
         });
