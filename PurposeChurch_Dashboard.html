@@ -2667,7 +2667,7 @@ function previewEditImg(url) {
 }
 
 function saveEditEvent() {
-  const id = parseInt(document.getElementById('edit-ev-id').value);
+  const id = document.getElementById('edit-ev-id').value;
   const firebaseId = document.getElementById('edit-ev-firebase-id').value;
   const title = document.getElementById('edit-ev-title').value.trim();
   const date = document.getElementById('edit-ev-date').value;
@@ -2693,8 +2693,8 @@ function saveEditEvent() {
     return (hr === 0 ? 12 : hr > 12 ? hr-12 : hr) + ':' + m + ' ' + (hr >= 12 ? 'PM' : 'AM');
   }
 
-  const evIdx = DB.events.findIndex(e => e.id === id);
-  if (evIdx < 0) return;
+  const evIdx = DB.events.findIndex(e => String(e.id) === String(id));
+  if (evIdx < 0) return toast('Could not find that event to update. Please refresh and try again.', 'error');
 
   const updatedEvent = Object.assign({}, DB.events[evIdx], {
     title,
