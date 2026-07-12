@@ -514,8 +514,10 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       <div class="f-group"><label class="f-label">Send To</label>
         <select class="f-select" id="nl-send-to">
           <option value="all">All Opted-In Members</option>
-          <option value="email">Email Subscribers Only</option>
-          <option value="specific">Specific Group</option>
+          <option value="praise">Praise Team</option>
+          <option value="prayer">Intercessory Prayer</option>
+          <option value="women">Women of Purpose</option>
+          <option value="leaders">Church Leaders</option>
         </select>
       </div>
     </div>
@@ -2071,7 +2073,8 @@ function loadNLImage(file) {
     nlImageData = e.target.result;
     nlImageName = file.name;
     document.getElementById('nl-img-preview').src = nlImageData;
-    document.getElementById('nl-img-name').textContent = file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+    var nameEl = document.getElementById('nl-img-name');
+    if (nameEl) nameEl.textContent = file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
     document.getElementById('nl-img-placeholder').style.display = 'none';
     document.getElementById('nl-img-preview-wrap').style.display = 'block';
   };
@@ -2260,7 +2263,15 @@ function sendNewsletter() {
   var urlOption = document.querySelector('input[name="nl-img-option"]:checked');
   if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) { nlImageData = urlInput.value; }
 
-  var recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
+  var group = (document.getElementById('nl-send-to')||{}).value || 'all';
+  var recipients = DB.members.filter(function(m){
+    if (!m.email || m.notif === 'none') return false;
+    if (group === 'praise')  return (m.roles||[]).includes('Praise Team');
+    if (group === 'prayer')  return (m.roles||[]).includes('Intercessory Prayer');
+    if (group === 'women')   return (m.roles||[]).includes('Women of Purpose');
+    if (group === 'leaders') return (m.roles||[]).includes('Church Leader');
+    return true;
+  });
   if (!recipients.length) return toast('No opted-in members with an email address.', 'error');
 
   var html = buildNewsletterHTML();
