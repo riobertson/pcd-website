@@ -2926,7 +2926,7 @@ function closeEditMemberModal() {
 }
 
 function saveEditMember() {
-  const id = parseInt(document.getElementById('edit-member-id').value);
+  const id = document.getElementById('edit-member-id').value;
   const first = document.getElementById('edit-m-first').value.trim();
   const last = document.getElementById('edit-m-last').value.trim();
   if (!first || !last) return toast('Please enter first and last name.', 'error');
@@ -2936,8 +2936,8 @@ function saveEditMember() {
     roles.push(cb.value);
   });
 
-  const mIdx = DB.members.findIndex(m => m.id === id);
-  if (mIdx < 0) return;
+  const mIdx = DB.members.findIndex(m => String(m.id) === String(id));
+  if (mIdx < 0) return toast('Could not find that member to save.', 'error');
 
   DB.members[mIdx] = Object.assign({}, DB.members[mIdx], {
     first,
@@ -2959,6 +2959,66 @@ function saveEditMember() {
   updateStats();
   closeEditMemberModal();
   toast('✅ Member info updated!');
+
+  // Persist the edit to Firebase so it survives a reload and syncs across devices
+  var apiKey = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+  var project = "purposechurchdenton";
+  var mem = DB.members[mIdx];
+  var memFields = {
+    name:     { stringValue: mem.name || '' },
+    first:    { stringValue: mem.first || '' },
+    last:     { stringValue: mem.last || '' },
+    email:    { stringValue: mem.email || '' },
+    phone:    { stringValue: mem.phone || '' },
+    birthday: { stringValue: mem.birthday || '' },
+    street:   { stringValue: mem.street || '' },
+    city:     { stringValue: mem.city || '' },
+    state:    { stringValue: mem.state || '' },
+    zip:      { stringValue: mem.zip || '' },
+    roles:    { stringValue: (mem.roles || []).join('|') },
+    notif:    { stringValue: mem.notif || 'opted-in' }
+  };
+
+  function patchMember(fbId) {
+    fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/members/" + fbId + "?key=" + apiKey, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fields: memFields })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(){ console.log("Member updated in Firebase:", fbId); })
+    .catch(function(e){ console.error("Member Firebase update failed:", e); });
+  }
+
+  if (mem.firebaseId) {
+    patchMember(mem.firebaseId);
+  } else {
+    // No stored Firebase ID yet: find the doc by email, otherwise create it
+    fetch("https://firestore.googleapis.com/v1/projects/" + project + "/databases/(default)/documents/members?key=" + apiKey + "&pageSize=300&mask.fieldPaths=email")
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var match = null;
+        if (data.documents && mem.email) {
+          match = data.documents.find(function(doc){
+            var f = doc.fields || {};
+            return (f.email ? f.email.stringValue : '').toLowerCase() === mem.email.toLowerCase();
+          });
+        }
+        if (match) {
+          var fbId = match.name.split('/').pop();
+          mem.firebaseId = fbId; saveDB();
+          patchMember(fbId);
+        } else if (window.saveToFirebase) {
+          window.saveToFirebase('members', {
+            name: mem.name || '', first: mem.first || '', last: mem.last || '',
+            email: mem.email || '', phone: mem.phone || '', birthday: mem.birthday || '',
+            street: mem.street || '', city: mem.city || '', state: mem.state || '',
+            zip: mem.zip || '', roles: (mem.roles||[]).join('|'), notif: mem.notif || 'opted-in'
+          }).then(function(newId){ if (newId) { mem.firebaseId = newId; saveDB(); } });
+        }
+      })
+      .catch(function(e){ console.error(e); });
+  }
 }
 
 // Close member modal when clicking outside
