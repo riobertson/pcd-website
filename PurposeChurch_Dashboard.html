@@ -2237,6 +2237,19 @@ function downloadNewsletter() {
   toast('⬇ Newsletter HTML downloaded.');
 }
 
+function nlLiveRefresh() {
+  var p = document.getElementById('nl-preview');
+  if (p && p.style.display !== 'none') {
+    document.getElementById('nl-preview-frame').srcdoc = buildNewsletterHTML();
+  }
+}
+function nlBindLive() {
+  var panel = document.getElementById('panel-newsletter');
+  if (!panel || panel.dataset.liveBound) return;
+  panel.dataset.liveBound = '1';
+  panel.addEventListener('input', nlLiveRefresh);
+  panel.addEventListener('change', nlLiveRefresh);
+}
 function initNewsletterDefaults() {
   var set = function(id,val){ var el=document.getElementById(id); if(el && !el.value) el.value=val; };
   set('nl-eyebrow','PURPOSE CHURCH');
@@ -2250,6 +2263,8 @@ function initNewsletterDefaults() {
     var mo={month:'long',day:'numeric'};
     dr.value = a.toLocaleDateString('en-US',mo) + ' – ' + b.toLocaleDateString('en-US',mo) + ', ' + b.getFullYear();
   }
+  nlBindLive();
+  previewNewsletter();
 }
 
 function sendNewsletter() {
