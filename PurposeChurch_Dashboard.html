@@ -2899,8 +2899,10 @@ function editMember(id) {
   if (!m) return;
 
   document.getElementById('edit-member-id').value = id;
-  document.getElementById('edit-m-first').value = m.first || '';
-  document.getElementById('edit-m-last').value = m.last || '';
+  // Members added via the form store a combined name; fall back to splitting it.
+  var nameParts = (m.name || '').trim().split(/\s+/);
+  document.getElementById('edit-m-first').value = m.first || nameParts[0] || '';
+  document.getElementById('edit-m-last').value = m.last || nameParts.slice(1).join(' ') || '';
   document.getElementById('edit-m-email').value = m.email || '';
   document.getElementById('edit-m-phone').value = m.phone || '';
   document.getElementById('edit-m-birthday').value = m.birthday || '';
@@ -3699,4 +3701,53 @@ function refreshAll() {
     <input type="hidden" id="edit-member-id"/>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">Fi
+      <div class="f-group"><label class="f-label">First Name *</label><input class="f-input" id="edit-m-first" type="text" placeholder="First name"/></div>
+      <div class="f-group"><label class="f-label">Last Name *</label><input class="f-input" id="edit-m-last" type="text" placeholder="Last name"/></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">Email</label><input class="f-input" id="edit-m-email" type="email" placeholder="email@example.com"/></div>
+      <div class="f-group"><label class="f-label">Phone</label><input class="f-input" id="edit-m-phone" type="tel" placeholder="(555) 000-0000"/></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">Birthday</label><input class="f-input" id="edit-m-birthday" type="date"/></div>
+      <div class="f-group"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">Street Address</label><input class="f-input" id="edit-m-street" type="text" placeholder="123 Main St"/></div>
+      <div class="f-group"><label class="f-label">City</label><input class="f-input" id="edit-m-city" type="text" placeholder="Denton"/></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div class="f-group"><label class="f-label">State</label><input class="f-input" id="edit-m-state" type="text" placeholder="TX"/></div>
+      <div class="f-group"><label class="f-label">ZIP</label><input class="f-input" id="edit-m-zip" type="text" placeholder="76208"/></div>
+    </div>
+
+    <div class="f-group" style="margin-bottom:1rem;">
+      <label class="f-label">Roles</label>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.4rem;">
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Member" style="accent-color:var(--b)"> Member</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Church Leader" style="accent-color:var(--b)"> Church Leader</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Praise Team" style="accent-color:var(--b)"> Praise Team</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Intercessory Prayer" style="accent-color:var(--b)"> Intercessory Prayer</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Women of Purpose" style="accent-color:var(--b)"> Women of Purpose</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Sound Team" style="accent-color:var(--b)"> Sound Team</label>
+        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Volunteer" style="accent-color:var(--b)"> Volunteer</label>
+      </div>
+    </div>
+
+    <div class="f-group" style="margin-bottom:1.5rem;">
+      <label class="f-label">Email Notifications</label>
+      <select class="f-select" id="edit-m-notif">
+        <option value="opted-in">Opted In — receives all emails</option>
+        <option value="events-only">Events Only</option>
+        <option value="none">None — no emails</option>
+      </select>
+    </div>
+
+    <div style="display:flex;gap:0.8rem;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeEditMemberModal()">Cancel</button>
+      <button class="btn btn-burg" onclick="saveEditMember()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
