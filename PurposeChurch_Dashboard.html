@@ -322,6 +322,11 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
                 <div class="dash-card-title">📅 Upcoming Events</div>
                 <div id="overview-events" style="font-size:0.85rem;color:rgba(255,255,255,0.85);">No upcoming events.</div>
               </div>
+
+              <div class="dash-card">
+                <div class="dash-card-title">🎂 Upcoming Birthdays</div>
+                <div id="overview-birthdays" style="font-size:0.85rem;color:rgba(255,255,255,0.85);">No birthdays in the next 30 days.</div>
+              </div>
             </div>
             <div class="dash-card">
               <div class="dash-card-title">⚡ Quick Actions</div>
@@ -761,6 +766,10 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       <div class="f-group"><label class="f-label">Email Address</label><input class="f-input" id="m-email" type="email" placeholder="email@example.com"/></div>
       <div class="f-group"><label class="f-label">Phone (optional)</label><input class="f-input" id="m-phone" placeholder="(555) 000-0000"/></div>
     </div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">Birthday (optional)</label><input class="f-input" id="m-birthday" type="date"/></div>
+      <div class="f-group"></div>
+    </div>
 
     <!-- Address -->
     <div class="f-group"><label class="f-label">Street Address</label><input class="f-input" id="m-street" placeholder="123 Main Street"/></div>
@@ -842,6 +851,10 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
         <option value="Praise Team">Praise Team</option>
         <option value="Sound Team">Sound Team</option>
       </select>
+      <select class="f-select" id="member-sort" style="width:180px;padding:0.45rem 0.8rem;font-size:0.82rem;" onchange="renderMembersTable()">
+        <option value="name">Sort: Name (A–Z)</option>
+        <option value="birthday">Sort: Upcoming Birthday</option>
+      </select>
       <div id="member-count" style="font-size:0.75rem;color:rgba(255,255,255,0.8);white-space:nowrap;"></div>
     </div>
     <div style="overflow-x:auto;">
@@ -851,6 +864,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Birthday</th>
             <th>Address</th>
             <th>Roles</th>
             <th>Notifications</th>
@@ -858,7 +872,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           </tr>
         </thead>
         <tbody id="members-table-body">
-          <tr><td colspan="7" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No members yet. Add your first member above.</td></tr>
+          <tr><td colspan="8" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">No members yet. Add your first member above.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1589,6 +1603,7 @@ function addMember() {
     name: first + ' ' + last,
     email,
     phone: document.getElementById('m-phone').value.trim(),
+    birthday: document.getElementById('m-birthday').value.trim(),
     street: document.getElementById('m-street').value.trim(),
     city: document.getElementById('m-city').value.trim(),
     state: document.getElementById('m-state').value.trim(),
@@ -1607,6 +1622,7 @@ function addMember() {
       last: last || '',
       email: member.email || '',
       phone: member.phone || '',
+      birthday: member.birthday || '',
       street: member.street || '',
       city: member.city || '',
       state: member.state || '',
@@ -1618,7 +1634,7 @@ function addMember() {
 
   renderMembersTable();
   updateStats();
-  ['m-first','m-last','m-email','m-phone','m-street','m-city','m-state','m-zip'].forEach(id => document.getElementById(id).value = '');
+  ['m-first','m-last','m-email','m-phone','m-birthday','m-street','m-city','m-state','m-zip'].forEach(id => document.getElementById(id).value = '');
   document.querySelectorAll('.m-role-cb').forEach(cb => cb.checked = false);
   document.getElementById('m-role-custom-cb').checked = false;
   customRoles = [];
@@ -1680,18 +1696,39 @@ function renderMembersTable() {
     });
   }
 
+  // Sort
+  const sortBy = document.getElementById('member-sort')?.value || 'name';
+  if (sortBy === 'birthday') {
+    members = members.slice().sort((a, b) => {
+      const da = daysUntilBirthday(a.birthday), db = daysUntilBirthday(b.birthday);
+      if (da === null && db === null) return (a.name || '').localeCompare(b.name || '');
+      if (da === null) return 1;
+      if (db === null) return -1;
+      return da - db;
+    });
+  } else {
+    members = members.slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  }
+
   // Update count
   const countEl = document.getElementById('member-count');
   if (countEl) countEl.textContent = members.length + ' of ' + DB.members.length + ' member' + (DB.members.length !== 1 ? 's' : '');
 
   if (!members.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">${DB.members.length === 0 ? 'No members yet. Add your first member above.' : 'No members match your search.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="color:rgba(255,255,255,0.7);text-align:center;padding:2rem;">${DB.members.length === 0 ? 'No members yet. Add your first member above.' : 'No members match your search.'}</td></tr>`;
     return;
   }
 
   const formatAddress = m => {
     const parts = [m.street, m.city, m.state ? m.state + (m.zip ? ' ' + m.zip : '') : m.zip].filter(Boolean);
     return parts.length ? parts.join(', ') : '—';
+  };
+
+  const formatBirthday = m => {
+    if (!m.birthday) return '—';
+    const d = new Date(m.birthday + 'T00:00:00');
+    if (isNaN(d)) return m.birthday;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   tbody.innerHTML = members.map(m => {
@@ -1702,6 +1739,7 @@ function renderMembersTable() {
       <td style="font-weight:500;">${m.name}</td>
       <td style="color:rgba(255,255,255,0.9);font-size:0.82rem;">${m.email}</td>
       <td style="color:rgba(255,255,255,0.85);font-size:0.82rem;">${m.phone || '—'}</td>
+      <td style="color:rgba(255,255,255,0.85);font-size:0.82rem;white-space:nowrap;">${formatBirthday(m)}</td>
       <td style="color:rgba(255,255,255,0.85);font-size:0.8rem;max-width:160px;">${formatAddress(m)}</td>
       <td style="max-width:180px;">${roleBadges}</td>
       <td>
@@ -1842,7 +1880,46 @@ function updateOverviewAnnouncements() {
   if (!el) return; // Element removed - skip
 }
 
+// Days until a member's next birthday (0 = today). Returns null if no/invalid birthday.
+function daysUntilBirthday(birthday, from) {
+  if (!birthday) return null;
+  const b = new Date(birthday + 'T00:00:00');
+  if (isNaN(b)) return null;
+  const now = from || new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let next = new Date(today.getFullYear(), b.getMonth(), b.getDate());
+  if (next < today) next = new Date(today.getFullYear() + 1, b.getMonth(), b.getDate());
+  return Math.round((next - today) / 86400000);
+}
+
+function renderUpcomingBirthdays() {
+  const el = document.getElementById('overview-birthdays');
+  if (!el) return;
+  const upcoming = DB.members
+    .filter(m => m.birthday)
+    .map(m => ({ m, days: daysUntilBirthday(m.birthday) }))
+    .filter(x => x.days !== null && x.days <= 30)
+    .sort((a, b) => a.days - b.days);
+
+  if (!upcoming.length) {
+    el.innerHTML = '<span style="color:rgba(255,255,255,0.7)">No birthdays in the next 30 days.</span>';
+    return;
+  }
+
+  el.innerHTML = upcoming.map(({ m, days }) => {
+    const b = new Date(m.birthday + 'T00:00:00');
+    const dateLabel = b.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const when = days === 0 ? '🎉 Today!' : days === 1 ? 'Tomorrow' : 'in ' + days + ' days';
+    return `<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:0.8rem;align-items:center;">
+      <div style="background:var(--g);padding:0.3rem 0.6rem;font-size:0.72rem;font-weight:600;white-space:nowrap;color:#0d1420;">${dateLabel}</div>
+      <div style="font-size:0.85rem;color:#fff;flex:1;">${m.name}</div>
+      <div style="font-size:0.72rem;color:${days === 0 ? 'var(--g)' : 'rgba(255,255,255,0.7)'};white-space:nowrap;">${when}</div>
+    </div>`;
+  }).join('');
+}
+
 function updateOverviewEvents() {
+  renderUpcomingBirthdays();
   const el = document.getElementById('overview-events');
   if (!DB.events.length) { el.innerHTML = '<span style="color:rgba(255,255,255,0.7)">No upcoming events.</span>'; return; }
   el.innerHTML = DB.events.slice(0, 3).map(e =>
@@ -2084,7 +2161,7 @@ function refreshCalendar() {
 
 // ── TEMPLATE COLUMNS ──
 const MEMBER_COLUMNS = [
-  'First Name', 'Last Name', 'Email', 'Phone',
+  'First Name', 'Last Name', 'Email', 'Phone', 'Birthday',
   'Street Address', 'City', 'State', 'ZIP',
   'Roles (separate multiple with |)',
   'Notifications (opted-in or opted-out)'
@@ -2094,12 +2171,12 @@ const MEMBER_COLUMNS = [
 function downloadTemplate() {
   const header = MEMBER_COLUMNS.join(',');
   const example = [
-    'John','Doe','john@example.com','(555) 123-4567',
+    'John','Doe','john@example.com','(555) 123-4567','1985-04-12',
     '123 Main St','Denton','TX','76208',
     'Member|Praise Team','opted-in'
   ].join(',');
   const example2 = [
-    'Jane','Smith','jane@example.com','(555) 987-6543',
+    'Jane','Smith','jane@example.com','(555) 987-6543','1990-09-30',
     '456 Oak Ave','Denton','TX','76201',
     'Member','opted-out'
   ].join(',');
@@ -2122,6 +2199,7 @@ function exportMembers() {
       csvEscape(m.name?.split(' ').slice(1).join(' ') || ''),
       csvEscape(m.email || ''),
       csvEscape(m.phone || ''),
+      csvEscape(m.birthday || ''),
       csvEscape(m.street || ''),
       csvEscape(m.city || ''),
       csvEscape(m.state || ''),
@@ -2182,6 +2260,7 @@ function importMembers(event) {
         lastName: findCol(headers, ['last name', 'lastname', 'last']),
         email: findCol(headers, ['email', 'email address']),
         phone: findCol(headers, ['phone', 'phone number', 'mobile']),
+        birthday: findCol(headers, ['birthday', 'birth date', 'birthdate', 'dob', 'date of birth']),
         street: findCol(headers, ['street address', 'street', 'address']),
         city: findCol(headers, ['city']),
         state: findCol(headers, ['state']),
@@ -2223,6 +2302,7 @@ function importMembers(event) {
           name: [firstName, lastName].filter(Boolean).join(' '),
           email: email || '',
           phone: get(colMap.phone),
+          birthday: get(colMap.birthday),
           street: get(colMap.street),
           city: get(colMap.city),
           state: get(colMap.state),
@@ -2823,6 +2903,7 @@ function editMember(id) {
   document.getElementById('edit-m-last').value = m.last || '';
   document.getElementById('edit-m-email').value = m.email || '';
   document.getElementById('edit-m-phone').value = m.phone || '';
+  document.getElementById('edit-m-birthday').value = m.birthday || '';
   document.getElementById('edit-m-street').value = m.street || '';
   document.getElementById('edit-m-city').value = m.city || '';
   document.getElementById('edit-m-state').value = m.state || '';
@@ -2862,6 +2943,7 @@ function saveEditMember() {
     name: first + ' ' + last,
     email: document.getElementById('edit-m-email').value.trim(),
     phone: document.getElementById('edit-m-phone').value.trim(),
+    birthday: document.getElementById('edit-m-birthday').value.trim(),
     street: document.getElementById('edit-m-street').value.trim(),
     city: document.getElementById('edit-m-city').value.trim(),
     state: document.getElementById('edit-m-state').value.trim(),
@@ -2871,7 +2953,7 @@ function saveEditMember() {
   });
 
   saveDB();
-  renderMembers();
+  renderMembersTable();
   updateStats();
   closeEditMemberModal();
   toast('✅ Member info updated!');
@@ -3617,49 +3699,4 @@ function refreshAll() {
     <input type="hidden" id="edit-member-id"/>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">First Name *</label><input class="f-input" id="edit-m-first" type="text" placeholder="First name"/></div>
-      <div class="f-group"><label class="f-label">Last Name *</label><input class="f-input" id="edit-m-last" type="text" placeholder="Last name"/></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">Email</label><input class="f-input" id="edit-m-email" type="email" placeholder="email@example.com"/></div>
-      <div class="f-group"><label class="f-label">Phone</label><input class="f-input" id="edit-m-phone" type="tel" placeholder="(555) 000-0000"/></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">Street Address</label><input class="f-input" id="edit-m-street" type="text" placeholder="123 Main St"/></div>
-      <div class="f-group"><label class="f-label">City</label><input class="f-input" id="edit-m-city" type="text" placeholder="Denton"/></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-      <div class="f-group"><label class="f-label">State</label><input class="f-input" id="edit-m-state" type="text" placeholder="TX"/></div>
-      <div class="f-group"><label class="f-label">ZIP</label><input class="f-input" id="edit-m-zip" type="text" placeholder="76208"/></div>
-    </div>
-
-    <div class="f-group" style="margin-bottom:1rem;">
-      <label class="f-label">Roles</label>
-      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.4rem;">
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Member" style="accent-color:var(--b)"> Member</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Church Leader" style="accent-color:var(--b)"> Church Leader</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Praise Team" style="accent-color:var(--b)"> Praise Team</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Intercessory Prayer" style="accent-color:var(--b)"> Intercessory Prayer</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Women of Purpose" style="accent-color:var(--b)"> Women of Purpose</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Sound Team" style="accent-color:var(--b)"> Sound Team</label>
-        <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;"><input type="checkbox" class="edit-m-role" value="Volunteer" style="accent-color:var(--b)"> Volunteer</label>
-      </div>
-    </div>
-
-    <div class="f-group" style="margin-bottom:1.5rem;">
-      <label class="f-label">Email Notifications</label>
-      <select class="f-select" id="edit-m-notif">
-        <option value="opted-in">Opted In — receives all emails</option>
-        <option value="events-only">Events Only</option>
-        <option value="none">None — no emails</option>
-      </select>
-    </div>
-
-    <div style="display:flex;gap:0.8rem;justify-content:flex-end;">
-      <button class="btn btn-ghost" onclick="closeEditMemberModal()">Cancel</button>
-      <button class="btn btn-burg" onclick="saveEditMember()">💾 Save Changes</button>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+      <div class="f-group"><label class="f-label">Fi
