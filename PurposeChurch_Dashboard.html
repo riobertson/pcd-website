@@ -2288,7 +2288,8 @@ function sendNewsletter() {
   });
   if (!recipients.length) return toast('No opted-in members with an email address.', 'error');
 
-  var html = buildNewsletterHTML();
+  var fullHtml = buildNewsletterHTML();
+  var html = fullHtml.replace(/^[\s\S]*?<body[^>]*>/i,'').replace(/<\/body>[\s\S]*$/i,'');
   if (!confirm('Send this newsletter to ' + recipients.length + ' member' + (recipients.length!==1?'s':'') + '?')) return;
 
   var btn = document.querySelector('#panel-newsletter .btn-gold');
@@ -2313,7 +2314,7 @@ function sendNewsletter() {
   function sendNext(i) {
     if (i >= recipients.length) return;
     var m = recipients[i];
-    emailjs.send('service_gkq31qg','template_oxjkvex',{
+    emailjs.send('service_gkq31qg','template_wqlzt2v',{
       to_email: m.email, to_name: m.name || m.email,
       subject: subject, message: html, from_name: 'Purpose Church of Denton'
     }).then(function(){
