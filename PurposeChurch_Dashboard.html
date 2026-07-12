@@ -509,18 +509,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 <div class="panel" id="panel-newsletter">
   <div class="dash-card">
     <div class="dash-card-title">✉️ Send Newsletter / Message</div>
-    <div class="f-row">
-      <div class="f-group"><label class="f-label">Subject Line</label><input class="f-input" id="nl-subject" placeholder="e.g. This Sunday at Purpose Church!"/></div>
-      <div class="f-group"><label class="f-label">Send To</label>
-        <select class="f-select" id="nl-send-to">
-          <option value="all">All Opted-In Members</option>
-          <option value="praise">Praise Team</option>
-          <option value="prayer">Intercessory Prayer</option>
-          <option value="women">Women of Purpose</option>
-          <option value="leaders">Church Leaders</option>
-        </select>
-      </div>
-    </div>
+    <div class="f-group"><label class="f-label">Subject Line <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(email subject — not shown inside the newsletter)</span></label><input class="f-input" id="nl-subject" placeholder="e.g. This Sunday at Purpose Church!"/></div>
 
     <div class="f-row">
       <div class="f-group"><label class="f-label">Top Label</label><input class="f-input" id="nl-eyebrow" placeholder="PURPOSE CHURCH"/></div>
@@ -607,6 +596,16 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
     <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:1rem;margin-bottom:1.2rem;font-size:0.8rem;color:rgba(255,255,255,0.85);line-height:1.7;">
       ℹ️ All messages automatically include an <strong style="color:var(--g);">unsubscribe / opt-out link</strong> at the bottom.
+    </div>
+
+    <div class="f-group" style="max-width:340px;"><label class="f-label">Send To <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(recipients — not part of the newsletter)</span></label>
+      <select class="f-select" id="nl-send-to">
+        <option value="all">All Opted-In Members</option>
+        <option value="praise">Praise Team</option>
+        <option value="prayer">Intercessory Prayer</option>
+        <option value="women">Women of Purpose</option>
+        <option value="leaders">Church Leaders</option>
+      </select>
     </div>
 
     <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
