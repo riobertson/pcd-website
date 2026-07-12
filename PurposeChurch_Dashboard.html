@@ -520,6 +520,15 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       </div>
     </div>
 
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">Top Label</label><input class="f-input" id="nl-eyebrow" placeholder="PURPOSE CHURCH"/></div>
+      <div class="f-group"><label class="f-label">Big Title</label><input class="f-input" id="nl-title" placeholder="NEWSLETTER"/></div>
+    </div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">Date Range</label><input class="f-input" id="nl-daterange" placeholder="July 12 – 19, 2026"/></div>
+      <div class="f-group"><label class="f-label">Main Story Headline</label><input class="f-input" id="nl-main-head" placeholder="What's New"/></div>
+    </div>
+
     <!-- IMAGE UPLOAD -->
     <div class="f-group">
       <label class="f-label">Header Image <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — appears at top of email)</span></label>
@@ -572,6 +581,20 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
         <div class="f-group"><label class="f-label">Message</label><textarea class="f-textarea" id="nl-body" rows="8" placeholder="Write your newsletter or message here...&#10;&#10;You can include:&#10;• This Sunday's sermon topic&#10;• Upcoming events&#10;• Prayer requests&#10;• General announcements"></textarea></div>
 
+    <div class="f-group"><label class="f-label">Pastor's Corner — Heading</label><input class="f-input" id="nl-corner-head" placeholder="Pastor's Corner"/></div>
+    <div class="f-group"><label class="f-label">Pastor's Corner — Message <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional)</span></label><textarea class="f-textarea" id="nl-corner-body" rows="4" placeholder="A short word from the pastor..."></textarea></div>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1.2rem;">
+      <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:0.6rem;font-weight:600;">Auto-Filled Sections</div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="nl-inc-sermon" checked style="accent-color:var(--b);"> 📖 This Week's Message — latest sermon title &amp; scripture</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="nl-inc-events" checked style="accent-color:var(--b);"> 📅 Mark Your Calendars — upcoming events</label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:rgba(255,255,255,0.9);cursor:pointer;"><input type="checkbox" id="nl-inc-birthdays" checked style="accent-color:var(--b);"> 🎂 Upcoming Birthdays — next 30 days</label>
+      </div>
+    </div>
+
+    <div class="f-group"><label class="f-label">Footer Website</label><input class="f-input" id="nl-footer-url" placeholder="www.purposechurchofdenton.com"/></div>
+
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1.2rem;">
       <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:0.6rem;font-weight:600;">Delivery Channels</div>
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
@@ -586,28 +609,14 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 
     <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
       <button class="btn btn-gold" onclick="sendNewsletter()">✉️ Send Now</button>
-      <button class="btn btn-ghost" onclick="previewNewsletter()">Preview Email</button>
+      <button class="btn btn-ghost" onclick="previewNewsletter()">👁 Preview Newsletter</button>
+      <button class="btn btn-ghost" onclick="downloadNewsletter()">⬇ Download HTML</button>
     </div>
 
-    <!-- EMAIL PREVIEW -->
+    <!-- NEWSLETTER PREVIEW -->
     <div id="nl-preview" style="display:none;margin-top:1.2rem;">
-      <div class="email-preview">
-        <div class="email-preview-label">Email Preview:</div>
-        <!-- Image preview in email -->
-        <div id="nl-preview-img-wrap" style="display:none;margin-bottom:1rem;">
-          <img id="nl-preview-img" style="width:100%;max-height:220px;object-fit:cover;display:block;"/>
-        </div>
-        <div style="border-bottom:2px solid var(--b);padding-bottom:0.8rem;margin-bottom:0.8rem;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--g);">Purpose Church of Denton</div>
-          <div style="font-size:0.72rem;color:rgba(255,255,255,0.7);letter-spacing:0.1em;">Empowering People for Purpose</div>
-        </div>
-        <div style="font-weight:600;margin-bottom:0.5rem;" id="nl-preview-subject"></div>
-        <div style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.8;white-space:pre-wrap;" id="nl-preview-body"></div>
-        <div style="margin-top:1.2rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.65);">
-          Purpose Church of Denton · 3401 E University Dr #101, Denton TX 76208<br>
-          <span style="color:rgba(201,168,76,0.4);">Unsubscribe | Manage Preferences</span>
-        </div>
-      </div>
+      <div class="email-preview-label" style="margin-bottom:0.6rem;">Newsletter Preview (this is exactly what gets emailed):</div>
+      <iframe id="nl-preview-frame" title="Newsletter preview" style="width:100%;max-width:640px;height:1000px;border:1px solid rgba(255,255,255,0.15);background:#fff;display:block;"></iframe>
     </div>
   </div>
 
@@ -1162,6 +1171,7 @@ function switchPanel(id) {
   document.getElementById('dash-title').textContent = panelTitles[id];
   document.getElementById('sidebar').classList.remove('open');
   if (id === 'events') setTimeout(() => renderCalendar(), 50);
+  if (id === 'newsletter') setTimeout(initNewsletterDefaults, 30);
   if (id === 'text') { setTextGroup('all'); renderTextHistory(); }
 }
 
@@ -2078,54 +2088,218 @@ function removeNLImage() {
 }
 
 // Override previewNewsletter to include image
-function previewNewsletter() {
-  document.getElementById('nl-preview-subject').textContent = document.getElementById('nl-subject').value || 'Subject';
-  document.getElementById('nl-preview-body').textContent = document.getElementById('nl-body').value || 'Message body...';
-  // Check URL option
-  const urlInput = document.getElementById('nl-img-url');
-  const urlOption = document.querySelector('input[name="nl-img-option"]:checked');
-  const imgSrc = (urlOption && urlOption.value === 'url' && urlInput && urlInput.value) ? urlInput.value : nlImageData;
-  if (imgSrc) {
-    document.getElementById('nl-preview-img').src = imgSrc;
-    document.getElementById('nl-preview-img-wrap').style.display = 'block';
-  } else {
-    document.getElementById('nl-preview-img-wrap').style.display = 'none';
+function getNLImageSrc() {
+  var urlInput = document.getElementById('nl-img-url');
+  var urlOption = document.querySelector('input[name="nl-img-option"]:checked');
+  return (urlOption && urlOption.value === 'url' && urlInput && urlInput.value) ? urlInput.value.trim() : (nlImageData || '');
+}
+
+function nlEsc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nlParas(t) {
+  var esc = nlEsc(t).trim();
+  if (!esc) return '';
+  return esc.split(/\n\s*\n/).map(function(p){
+    return '<p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#333;">' + p.replace(/\n/g,'<br>') + '</p>';
+  }).join('');
+}
+function nlUpcomingBirthdays(days) {
+  days = days || 30;
+  return DB.members
+    .filter(function(m){ return m.birthday; })
+    .map(function(m){ return { m:m, d: daysUntilBirthday(m.birthday) }; })
+    .filter(function(x){ return x.d !== null && x.d <= days; })
+    .sort(function(a,b){ return a.d - b.d; });
+}
+function nlUpcomingEvents(count) {
+  count = count || 6;
+  var today = new Date(); today.setHours(0,0,0,0);
+  return DB.events.filter(function(e){
+    if (!e.rawDate) return true;
+    var d = new Date(e.rawDate + 'T00:00:00');
+    return isNaN(d) ? true : d >= today;
+  }).slice(0, count);
+}
+
+function buildNewsletterHTML() {
+  var C = { blue:'#45459c', navy:'#16163f', green:'#7fb541', greenBox:'#e7efc8', greenText:'#5f8a2a', gold:'#e8a33d' };
+  var eyebrow   = (document.getElementById('nl-eyebrow').value || 'PURPOSE CHURCH').trim();
+  var title     = (document.getElementById('nl-title').value || 'NEWSLETTER').trim();
+  var dateRange = (document.getElementById('nl-daterange').value || '').trim();
+  var mainHead  = (document.getElementById('nl-main-head').value || "What's New").trim();
+  var mainBody  = document.getElementById('nl-body').value || '';
+  var cornerHead= (document.getElementById('nl-corner-head').value || '').trim();
+  var cornerBody= document.getElementById('nl-corner-body').value || '';
+  var footerUrl = (document.getElementById('nl-footer-url').value || 'www.purposechurchofdenton.com').trim();
+  var img = getNLImageSrc();
+  var incSermon = document.getElementById('nl-inc-sermon').checked;
+  var incEvents = document.getElementById('nl-inc-events').checked;
+  var incBdays  = document.getElementById('nl-inc-birthdays').checked;
+
+  var imgHtml = img ? '<tr><td style="padding:0;"><img src="'+nlEsc(img)+'" alt="" width="600" style="display:block;width:100%;max-width:600px;height:auto;"></td></tr>' : '';
+
+  var mainHtml = '<tr><td style="padding:22px 26px 6px;">'
+    + '<h2 style="margin:0 0 10px;font-size:24px;line-height:1.15;color:'+C.greenText+';font-weight:800;">'+nlEsc(mainHead)+'</h2>'
+    + (nlParas(mainBody) || '<p style="margin:0;color:#777;font-style:italic;">(Add your main story in the Message box.)</p>')
+    + '</td></tr>';
+
+  var sermonHtml = '';
+  if (incSermon && DB.sermons && DB.sermons.length) {
+    var sm = DB.sermons[0];
+    sermonHtml = '<tr><td style="padding:6px 26px 14px;">'
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:'+C.navy+';border-radius:6px;"><tr><td style="padding:16px 18px;">'
+      + '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:'+C.gold+';font-weight:700;margin-bottom:6px;">This Week&rsquo;s Message</div>'
+      + '<div style="font-size:18px;color:#ffffff;font-weight:700;line-height:1.25;">'+nlEsc(sm.title||'')+'</div>'
+      + (sm.scripture ? '<div style="font-size:14px;color:#c7d0e8;margin-top:5px;">'+nlEsc(sm.scripture)+'</div>' : '')
+      + '</td></tr></table></td></tr>';
   }
+
+  var cornerHtml = '';
+  if (cornerHead || nlEsc(cornerBody).trim()) {
+    cornerHtml = '<tr><td style="padding:6px 26px 14px;">'
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e6;border-radius:4px;"><tr><td style="padding:14px 18px;border-left:4px solid '+C.gold+';">'
+      + '<div style="font-size:15px;letter-spacing:1px;text-transform:uppercase;color:'+C.gold+';font-weight:800;margin-bottom:6px;">'+nlEsc(cornerHead||"Pastor's Corner")+'</div>'
+      + (nlParas(cornerBody)||'')
+      + '</td></tr></table></td></tr>';
+  }
+
+  var eventsHtml = '';
+  if (incEvents) {
+    var evs = nlUpcomingEvents(6);
+    var rows = evs.map(function(e){
+      var when = nlEsc(e.date||'') + (e.endDate ? ' &ndash; ' + nlEsc(e.endDate) : '');
+      var meta = [ e.startTime ? nlEsc(e.startTime)+(e.endTime?' &ndash; '+nlEsc(e.endTime):'') : '', e.location ? nlEsc(e.location) : '' ].filter(Boolean).join(' &middot; ');
+      return '<tr><td style="padding:8px 0;border-bottom:1px solid #cdd8ab;">'
+        + '<div style="font-size:15px;color:#2a2a2a;font-weight:700;">'+nlEsc(e.title||'')+'</div>'
+        + '<div style="font-size:13px;color:'+C.greenText+';font-weight:600;">'+when+(meta?' &middot; '+meta:'')+'</div>'
+        + '</td></tr>';
+    }).join('');
+    if (!rows) rows = '<tr><td style="padding:8px 0;font-size:14px;color:#777;font-style:italic;">No upcoming events.</td></tr>';
+    eventsHtml = '<tr><td style="padding:6px 26px 14px;">'
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:'+C.greenBox+';border-radius:6px;"><tr><td style="padding:16px 18px;">'
+      + '<div style="font-size:18px;color:'+C.greenText+';font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Mark Your Calendars</div>'
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">'+rows+'</table>'
+      + '</td></tr></table></td></tr>';
+  }
+
+  var bdayHtml = '';
+  if (incBdays) {
+    var bs = nlUpcomingBirthdays(30);
+    var brows = bs.map(function(x){
+      var b = new Date(x.m.birthday+'T00:00:00');
+      var lbl = isNaN(b) ? nlEsc(x.m.birthday) : b.toLocaleDateString('en-US',{month:'long',day:'numeric'});
+      var when = x.d === 0 ? 'Today!' : (x.d === 1 ? 'Tomorrow' : 'in '+x.d+' days');
+      return '<tr><td style="padding:7px 0;border-bottom:1px solid #d7c7e2;">'
+        + '<span style="font-size:15px;color:#2a2a2a;font-weight:700;">'+nlEsc(x.m.name||'')+'</span>'
+        + '<span style="font-size:13px;color:#7a5a97;font-weight:600;"> &mdash; '+lbl+' ('+when+')</span>'
+        + '</td></tr>';
+    }).join('');
+    if (brows) {
+      bdayHtml = '<tr><td style="padding:6px 26px 18px;">'
+        + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#efe6f5;border-radius:6px;"><tr><td style="padding:16px 18px;">'
+        + '<div style="font-size:18px;color:#6a3f95;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Upcoming Birthdays</div>'
+        + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">'+brows+'</table>'
+        + '</td></tr></table></td></tr>';
+    }
+  }
+
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+    + '<body style="margin:0;padding:0;background:#e9e9ee;">'
+    + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#e9e9ee;"><tr><td align="center" style="padding:18px 10px;">'
+    + '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;border:6px solid '+C.blue+';">'
+    + '<tr><td style="background:'+C.blue+';padding:22px 26px 18px;">'
+    + '<div style="font-size:20px;letter-spacing:3px;color:'+C.green+';font-weight:700;text-transform:uppercase;">'+nlEsc(eyebrow)+'</div>'
+    + '<div style="font-size:44px;line-height:1;color:#ffffff;font-weight:800;letter-spacing:2px;text-transform:uppercase;">'+nlEsc(title)+'</div>'
+    + '</td></tr>'
+    + (dateRange ? '<tr><td style="background:'+C.navy+';padding:8px 26px;text-align:right;"><span style="font-size:13px;letter-spacing:2px;color:'+C.gold+';font-weight:700;text-transform:uppercase;">'+nlEsc(dateRange)+'</span></td></tr>' : '')
+    + imgHtml + mainHtml + sermonHtml + cornerHtml + eventsHtml + bdayHtml
+    + '<tr><td style="background:'+C.navy+';padding:16px 26px;text-align:center;">'
+    + '<div style="font-size:15px;color:#ffffff;font-weight:700;letter-spacing:1px;">'+nlEsc(footerUrl)+'</div>'
+    + '<div style="font-size:12px;color:#aab0d0;margin-top:4px;">Purpose Church of Denton &middot; Empowering People for Purpose</div>'
+    + '</td></tr></table></td></tr></table></body></html>';
+}
+
+function previewNewsletter() {
+  document.getElementById('nl-preview-frame').srcdoc = buildNewsletterHTML();
   document.getElementById('nl-preview').style.display = 'block';
 }
 
-// Override sendNewsletter to track image
+function downloadNewsletter() {
+  var blob = new Blob([buildNewsletterHTML()], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'PurposeChurch_Newsletter_' + new Date().toISOString().split('T')[0] + '.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast('⬇ Newsletter HTML downloaded.');
+}
+
+function initNewsletterDefaults() {
+  var set = function(id,val){ var el=document.getElementById(id); if(el && !el.value) el.value=val; };
+  set('nl-eyebrow','PURPOSE CHURCH');
+  set('nl-title','NEWSLETTER');
+  set('nl-main-head',"What's New");
+  set('nl-corner-head',"Pastor's Corner");
+  set('nl-footer-url','www.purposechurchofdenton.com');
+  var dr=document.getElementById('nl-daterange');
+  if (dr && !dr.value) {
+    var a=new Date(), b=new Date(); b.setDate(b.getDate()+7);
+    var mo={month:'long',day:'numeric'};
+    dr.value = a.toLocaleDateString('en-US',mo) + ' – ' + b.toLocaleDateString('en-US',mo) + ', ' + b.getFullYear();
+  }
+}
+
 function sendNewsletter() {
-  const subject = document.getElementById('nl-subject').value.trim();
-  const body = document.getElementById('nl-body').value.trim();
-  if (!subject || !body) return toast('Please fill in Subject and Message.', 'error');
-  const sendTo = document.getElementById('nl-send-to').value;
-  let count = 0;
-  if (sendTo === 'all' || sendTo === 'email') {
-    count = DB.members.filter(m => m.notif !== 'none').length;
+  var subject = document.getElementById('nl-subject').value.trim();
+  var mainBody = document.getElementById('nl-body').value.trim();
+  if (!subject) return toast('Please add a Subject Line (the email subject).', 'error');
+  if (!mainBody) return toast('Please add your Main Story message.', 'error');
+
+  var urlInput = document.getElementById('nl-img-url');
+  var urlOption = document.querySelector('input[name="nl-img-option"]:checked');
+  if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) { nlImageData = urlInput.value; }
+
+  var recipients = DB.members.filter(function(m){ return m.notif !== 'none' && m.email; });
+  if (!recipients.length) return toast('No opted-in members with an email address.', 'error');
+
+  var html = buildNewsletterHTML();
+  if (!confirm('Send this newsletter to ' + recipients.length + ' member' + (recipients.length!==1?'s':'') + '?')) return;
+
+  var btn = document.querySelector('#panel-newsletter .btn-gold');
+  if (btn){ btn.disabled = true; }
+  var sent=0, failed=0, total=recipients.length;
+
+  function finish() {
+    if (btn){ btn.textContent='✉️ Send Now'; btn.disabled=false; }
+    if (sent>0) {
+      DB.newsletter_history.unshift({
+        id: Date.now(),
+        date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+        subject: subject, recipients: sent, hasImage: !!getNLImageSrc(), channel: 'Email'
+      });
+      saveDB(); renderNLHistory();
+      toast('✅ Newsletter emailed to ' + sent + ' of ' + total + ' members!');
+    }
+    if (failed>0) toast('⚠️ ' + failed + ' failed to send.', 'error');
+    document.getElementById('nl-preview').style.display = 'none';
   }
-  // Check if using URL option
-  const urlInput = document.getElementById('nl-img-url');
-  const urlOption = document.querySelector('input[name="nl-img-option"]:checked');
-  if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) {
-    nlImageData = urlInput.value; // treat URL as image source
+
+  function sendNext(i) {
+    if (i >= recipients.length) return;
+    var m = recipients[i];
+    emailjs.send('service_gkq31qg','template_oxjkvex',{
+      to_email: m.email, to_name: m.name || m.email,
+      subject: subject, message: html, from_name: 'Purpose Church of Denton'
+    }).then(function(){
+      sent++; if (btn) btn.textContent='Sending '+sent+'/'+total+'...';
+      if (sent+failed===total) finish(); else setTimeout(function(){ sendNext(i+1); },500);
+    }).catch(function(err){
+      if (err && err.status===429){ setTimeout(function(){ sendNext(i); },2000); return; }
+      failed++; if (sent+failed===total) finish(); else setTimeout(function(){ sendNext(i+1); },500);
+    });
   }
-  const entry = {
-    id: Date.now(),
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-    subject,
-    recipients: count,
-    hasImage: !!nlImageData,
-    channel: 'Email',
-  };
-  DB.newsletter_history.unshift(entry);
-  saveDB();
-  renderNLHistory();
-  document.getElementById('nl-subject').value = '';
-  document.getElementById('nl-body').value = '';
-  document.getElementById('nl-preview').style.display = 'none';
-  removeNLImage();
-  toast(`✅ Newsletter sent to ${count} opted-in member${count !== 1 ? 's' : ''}!`);
+  sendNext(0);
 }
 
 // Override renderNLHistory to show image column
