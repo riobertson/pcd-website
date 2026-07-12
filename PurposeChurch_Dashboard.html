@@ -599,13 +599,19 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     </div>
 
     <div class="f-group" style="max-width:340px;"><label class="f-label">Send To <span style="color:rgba(255,255,255,0.7);font-size:0.62rem;text-transform:none;letter-spacing:0;">(recipients — not part of the newsletter)</span></label>
-      <select class="f-select" id="nl-send-to">
+      <select class="f-select" id="nl-send-to" onchange="nlOnSendToChange()">
         <option value="all">All Opted-In Members</option>
         <option value="praise">Praise Team</option>
         <option value="prayer">Intercessory Prayer</option>
         <option value="women">Women of Purpose</option>
         <option value="leaders">Church Leaders</option>
+        <option value="individual">Individual Member(s)</option>
       </select>
+    </div>
+    <div id="nl-individual-wrap" style="display:none;max-width:480px;margin-bottom:1rem;">
+      <input class="f-input" id="nl-member-search" type="text" placeholder="Search a member by name or email..." oninput="searchNLMember(this.value)"/>
+      <div id="nl-member-results" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);max-height:200px;overflow-y:auto;margin-top:0.3rem;display:none;"></div>
+      <div id="nl-individual-display" style="margin-top:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.85);"></div>
     </div>
 
     <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
@@ -2223,6 +2229,60 @@ function buildNewsletterHTML() {
     + '</td></tr></table></td></tr></table></body></html>';
 }
 
+var nlIndividuals = [];
+
+function nlOnSendToChange() {
+  var wrap = document.getElementById('nl-individual-wrap');
+  if (!wrap) return;
+  var isInd = document.getElementById('nl-send-to').value === 'individual';
+  wrap.style.display = isInd ? 'block' : 'none';
+  if (isInd) updateNLRecipientsDisplay();
+}
+
+function searchNLMember(query) {
+  var results = document.getElementById('nl-member-results');
+  if (!query || query.length < 2) { results.style.display = 'none'; return; }
+  var q = query.toLowerCase();
+  var matches = DB.members.filter(function(m){
+    return (m.name||'').toLowerCase().includes(q) || (m.email||'').toLowerCase().includes(q);
+  });
+  if (!matches.length) { results.style.display = 'none'; return; }
+  results.style.display = 'block';
+  results.innerHTML = matches.map(function(m){
+    return '<div style="padding:0.6rem 1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;" '
+      + 'onmouseover="this.style.background=\'rgba(255,255,255,0.08)\'" '
+      + 'onmouseout="this.style.background=\'transparent\'" '
+      + 'onclick="selectNLMember(\'' + m.id + '\')">'
+      + '<strong>' + (m.name||'(no name)') + '</strong> <span style="color:rgba(255,255,255,0.5);">' + (m.email||'no email') + '</span>'
+      + '</div>';
+  }).join('');
+}
+
+function selectNLMember(id) {
+  var m = DB.members.find(function(x){ return String(x.id) === String(id); });
+  if (!m) return;
+  if (!m.email) { toast('That member has no email address.', 'error'); return; }
+  if (!nlIndividuals.find(function(e){ return String(e.id) === String(id); })) nlIndividuals.push(m);
+  document.getElementById('nl-member-search').value = '';
+  document.getElementById('nl-member-results').style.display = 'none';
+  updateNLRecipientsDisplay();
+}
+
+function removeNLMember(id) {
+  nlIndividuals = nlIndividuals.filter(function(e){ return String(e.id) !== String(id); });
+  updateNLRecipientsDisplay();
+}
+
+function updateNLRecipientsDisplay() {
+  var el = document.getElementById('nl-individual-display');
+  if (!el) return;
+  if (!nlIndividuals.length) { el.innerHTML = '<span style="color:rgba(255,255,255,0.55);">No members selected yet.</span>'; return; }
+  el.innerHTML = 'Sending to: ' + nlIndividuals.map(function(m){
+    return '<span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);padding:2px 8px;margin:2px;border-radius:3px;">'
+      + (m.name||m.email) + ' <span style="cursor:pointer;color:#e88;" onclick="removeNLMember(\'' + m.id + '\')">✕</span></span>';
+  }).join(' ');
+}
+
 function previewNewsletter() {
   document.getElementById('nl-preview-frame').srcdoc = buildNewsletterHTML();
   document.getElementById('nl-preview').style.display = 'block';
@@ -2278,14 +2338,20 @@ function sendNewsletter() {
   if (urlInput && urlOption && urlOption.value === 'url' && urlInput.value) { nlImageData = urlInput.value; }
 
   var group = (document.getElementById('nl-send-to')||{}).value || 'all';
-  var recipients = DB.members.filter(function(m){
-    if (!m.email || m.notif === 'none') return false;
-    if (group === 'praise')  return (m.roles||[]).includes('Praise Team');
-    if (group === 'prayer')  return (m.roles||[]).includes('Intercessory Prayer');
-    if (group === 'women')   return (m.roles||[]).includes('Women of Purpose');
-    if (group === 'leaders') return (m.roles||[]).includes('Church Leader');
-    return true;
-  });
+  var recipients;
+  if (group === 'individual') {
+    recipients = nlIndividuals.filter(function(m){ return m.email; });
+    if (!recipients.length) return toast('Add at least one individual member with an email.', 'error');
+  } else {
+    recipients = DB.members.filter(function(m){
+      if (!m.email || m.notif === 'none') return false;
+      if (group === 'praise')  return (m.roles||[]).includes('Praise Team');
+      if (group === 'prayer')  return (m.roles||[]).includes('Intercessory Prayer');
+      if (group === 'women')   return (m.roles||[]).includes('Women of Purpose');
+      if (group === 'leaders') return (m.roles||[]).includes('Church Leader');
+      return true;
+    });
+  }
   if (!recipients.length) return toast('No opted-in members with an email address.', 'error');
 
   var fullHtml = buildNewsletterHTML();
