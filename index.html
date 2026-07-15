@@ -984,6 +984,12 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
                 <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--tl);font-weight:600;display:block;margin-bottom:0.4rem;">Phone (optional)</label>
                 <input id="cf-phone" type="tel" placeholder="(555) 000-0000" style="width:100%;padding:0.7rem 0.9rem;border:1px solid #ddd;font-family:Jost,sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--b)'" onblur="this.style.borderColor='#ddd'"/>
               </div>
+              <div style="margin-bottom:1rem;background:#faf7f8;border:1px solid #ece4e7;border-radius:4px;padding:0.9rem 1rem;">
+                <label style="display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;font-size:0.78rem;color:#444;line-height:1.55;font-weight:300;">
+                  <input id="cf-sms-consent" type="checkbox" style="margin-top:0.15rem;flex-shrink:0;width:16px;height:16px;accent-color:var(--b);cursor:pointer;"/>
+                  <span>Yes, I want to receive text message updates from Purpose Church of Denton at the phone number provided — including event reminders, service updates, and announcements. Consent is not a condition of any purchase. Message frequency varies. Message &amp; data rates may apply. Reply <strong>STOP</strong> to opt out or <strong>HELP</strong> for help. See our <a href="privacy.html" target="_blank" style="color:var(--b);text-decoration:underline;">Privacy Policy</a> and <a href="terms.html" target="_blank" style="color:var(--b);text-decoration:underline;">SMS Terms &amp; Conditions</a>.</span>
+                </label>
+              </div>
               <div style="margin-bottom:1rem;">
                 <label style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--tl);font-weight:600;display:block;margin-bottom:0.4rem;">Reason for Contact</label>
                 <select id="cf-reason" style="width:100%;padding:0.7rem 0.9rem;border:1px solid #ddd;font-family:Jost,sans-serif;font-size:0.88rem;outline:none;background:#fff;color:var(--td);transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--b)'" onblur="this.style.borderColor='#ddd'">
@@ -1144,6 +1150,7 @@ function showPage(id) {
   document.getElementById("mobMenu").classList.remove("open");
   document.getElementById("hamburger").classList.remove("open");
   window.scrollTo(0,0);
+  try { history.replaceState(null, '', '#' + id); } catch(e) {}
 }
 
 function toggleMenu() {
@@ -1346,6 +1353,9 @@ function loadAnnouncementsFromDash() {
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(loadDashboardData, 100);
   setInterval(loadDashboardData, 5000);
+  // Deep-link support: open the page named in the URL hash (e.g. #contact)
+  var h = (window.location.hash || '').replace('#','');
+  if (h && pages.indexOf(h) !== -1) { showPage(h); }
 });
 
 
@@ -1405,7 +1415,8 @@ function submitContactForm() {
     email,
     phone: document.getElementById('cf-phone').value.trim(),
     reason: document.getElementById('cf-reason').value,
-    message
+    message,
+    smsConsent: document.getElementById('cf-sms-consent').checked
   };
 
   // Show sending state
@@ -1422,6 +1433,7 @@ function submitContactForm() {
       phone: contactFormData.phone || 'Not provided',
       reason: contactFormData.reason || 'General Inquiry',
       message: contactFormData.message,
+      sms_consent: contactFormData.smsConsent ? 'YES — opted in to SMS at ' + new Date().toISOString() : 'No',
       _subject: 'New Contact Form — Purpose Church of Denton',
     })
   })
@@ -1515,6 +1527,7 @@ function botComplete() {
       name: contactFormData.name || 'Unknown',
       email: contactFormData.email || 'Unknown',
       phone: contactFormData.phone || 'Not provided',
+      sms_consent: contactFormData.smsConsent ? 'YES — opted in to SMS' : 'No',
       '--- Bot Question 1 (Visited Before)': botAnswers.visited || 'No answer',
       '--- Bot Question 2 (How They Heard)': botAnswers.how_heard || 'No answer',
       '--- Bot Question 3 (Looking For)': botAnswers.looking_for || 'No answer',
@@ -1574,6 +1587,8 @@ function restartContactForm() {
     if (el) el.value = '';
   });
   document.getElementById('cf-reason').value = '';
+  var smsBox = document.getElementById('cf-sms-consent');
+  if (smsBox) smsBox.checked = false;
 }
 
 function addBotMessage(text) {
