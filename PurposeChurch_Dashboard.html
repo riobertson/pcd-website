@@ -976,10 +976,27 @@ let currentUser = JSON.parse(sessionStorage.getItem('pcd_current_user') || 'null
 let emailChips = [];
 
 function saveDB() {
-  // Save to both path-specific and global keys so all URLs share data
   Object.keys(DB).forEach(k => {
-    localStorage.setItem('pcd_' + k, JSON.stringify(DB[k]));
-    localStorage.setItem('pcd_global_' + k, JSON.stringify(DB[k]));
+    // Strip base64 image data before saving — data: URLs are too large for localStorage
+    let val = DB[k];
+    if (k === 'events' && Array.isArray(val)) {
+      val = val.map(function(ev) {
+        if (ev.image && ev.image.startsWith('data:')) {
+          return Object.assign({}, ev, { image: '' });
+        }
+        return ev;
+      });
+    }
+    const serialized = JSON.stringify(val);
+    try {
+      localStorage.setItem('pcd_' + k, serialized);
+      localStorage.setItem('pcd_global_' + k, serialized);
+    } catch(e) {
+      if (e.name === 'QuotaExceededError') {
+        console.warn('localStorage quota exceeded for key:', k, '— skipping save for this key.');
+        toast('⚠️ Storage full — clear old data or use URL-hosted images.', 'error');
+      }
+    }
   });
 }
 
@@ -1280,7 +1297,7 @@ function addEvent() {
     desc: document.getElementById('e-desc').value.trim(),
     emails: [...emailChips],
     notifyMembers: document.getElementById('e-notify-members').checked,
-    image: document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : '',
+    image: (function(){ const v = document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : ''; return v.startsWith('data:') ? '' : v; })()
   };
 
   DB.events.unshift(event);
@@ -3364,11 +3381,13 @@ function uploadToImgBB(file, urlFieldId, previewWrapId, previewImgId, placeholde
 }
 
 function useLocalPreview(file, urlFieldId, previewWrapId, previewImgId, placeholderId) {
+  // Show a local preview so the user can see the image, but do NOT store the
+  // base64 data URL in the field — it is far too large for localStorage.
   const reader = new FileReader();
   reader.onload = function(e) {
-    const urlField = document.getElementById(urlFieldId);
-    if (urlField) urlField.value = e.target.result;
     showImgPreview(e.target.result, previewWrapId, previewImgId, placeholderId);
+    // Leave the URL field empty and warn the user to paste a hosted URL instead
+    toast('⚠️ Image upload failed. Paste a hosted image URL (Imgur, Cloudinary, etc.) to save with this event.', 'error');
   };
   reader.readAsDataURL(file);
 }
