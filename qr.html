@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purpose Church of Denton</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--b:#6B1F3A;--bm:#8B2848;--g:#C9A84C;--gl:#E8D49A;--n:#0E1B2E;--nm:#1A2D48;--w:#fff;}
+body{font-family:Jost,sans-serif;background:var(--n);color:var(--w);min-height:100vh;}
+
+.header{background:rgba(107,31,58,0.15);border-bottom:1px solid rgba(201,168,76,0.2);padding:1.4rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.3rem;text-align:center;}
+.header-cross{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--g);}
+.header-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gl);letter-spacing:0.06em;}
+.header-sub{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:0.2rem;}
+
+.section{max-width:520px;margin:0 auto;padding:2rem 1.2rem 0;}
+
+.section-label{font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.8rem;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,168,76,0.2);}
+
+/* SERMON */
+.sermon-card{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--b);padding:1.4rem;}
+.sermon-date{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.3rem;}
+.sermon-series{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.5rem;}
+.sermon-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;line-height:1.2;color:var(--w);margin-bottom:0.5rem;}
+.sermon-scripture{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--gl);}
+.notes-wrap{margin-top:1rem;border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem;}
+.notes-label{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.6rem;}
+.note-item{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.88rem;color:rgba(255,255,255,0.75);line-height:1.55;}
+.note-bullet{color:var(--g);font-size:0.65rem;margin-top:0.3rem;flex-shrink:0;}
+
+/* EVENTS */
+.event-card{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--b);padding:1.2rem 1.2rem 1.2rem 1.4rem;margin-bottom:0.75rem;}
+.event-type{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.2rem;}
+.event-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--w);line-height:1.2;margin-bottom:0.45rem;}
+.event-meta{font-size:0.76rem;color:rgba(255,255,255,0.45);display:flex;flex-direction:column;gap:0.18rem;}
+.event-desc{font-size:0.82rem;color:rgba(255,255,255,0.6);margin-top:0.5rem;line-height:1.6;}
+
+/* GIVE */
+.give-btn{display:block;width:100%;background:var(--b);color:var(--w);text-decoration:none;text-align:center;padding:1rem 1.5rem;font-family:Jost,sans-serif;font-size:0.88rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.75rem;transition:background 0.2s;}
+.give-btn:hover{background:var(--bm);}
+.give-btn.ghost{background:transparent;border:1px solid rgba(201,168,76,0.35);color:var(--gl);}
+.give-verse{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:rgba(232,212,154,0.6);text-align:center;margin:1.2rem 0;line-height:1.65;}
+.method-row{display:flex;align-items:center;gap:0.9rem;padding:0.9rem 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.method-icon{width:36px;height:36px;background:rgba(107,31,58,0.2);border:1px solid rgba(107,31,58,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+.method-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.15rem;}
+.method-value{font-size:0.88rem;color:rgba(255,255,255,0.75);}
+
+.loading{text-align:center;padding:2rem;color:rgba(255,255,255,0.35);font-size:0.88rem;}
+.empty{text-align:center;padding:1.5rem;color:rgba(255,255,255,0.3);font-size:0.85rem;}
+
+.footer{max-width:520px;margin:2rem auto 0;padding:1.5rem 1.2rem;text-align:center;border-top:1px solid rgba(255,255,255,0.06);}
+.footer a{color:var(--g);font-size:0.72rem;letter-spacing:0.1em;text-decoration:none;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-cross">✝</div>
+  <div class="header-name">Purpose Church of Denton</div>
+  <div class="header-sub">Scan · Connect · Worship</div>
+</div>
+
+<!-- SERMON -->
+<div class="section">
+  <div class="section-label">📖 This Week's Message</div>
+  <div id="sermon-content"><div class="loading">Loading sermon…</div></div>
+</div>
+
+<!-- EVENTS -->
+<div class="section" style="padding-top:2rem;">
+  <div class="section-label">📅 Upcoming Events</div>
+  <div id="events-content"><div class="loading">Loading events…</div></div>
+</div>
+
+<!-- GIVE -->
+<div class="section" style="padding-top:2rem;padding-bottom:2rem;">
+  <div class="section-label">🙌 Give</div>
+  <div class="give-verse">"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion." — 2 Corinthians 9:7</div>
+  <a class="give-btn" href="https://onrealm.org/PurposeChurchofD/-/give/now" target="_blank">Give Online ♥</a>
+  <div class="method-row">
+    <div class="method-icon">📱</div>
+    <div><div class="method-label">Text to Give</div><div class="method-value">Text <strong>GIVE</strong> to <strong>(940) 441-1951</strong></div></div>
+  </div>
+  <div class="method-row">
+    <div class="method-icon">💵</div>
+    <div><div class="method-label">In Person</div><div class="method-value">Offering during Sunday service</div></div>
+  </div>
+  <div class="method-row">
+    <div class="method-icon">✉️</div>
+    <div><div class="method-label">Mail a Check</div><div class="method-value">Purpose Church of Denton<br>Denton, TX</div></div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://purposechurchofdenton.com">purposechurchofdenton.com</a>
+</div>
+
+<script>
+var PROJECT = "purposechurchdenton";
+var API_KEY = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+
+function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+
+// Sermon
+fetch("https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/sermons?key=" + API_KEY + "&pageSize=20&orderBy=createTime+desc")
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var docs = (data.documents||[]).map(function(doc){
+      var f=doc.fields||{};
+      var get=function(k){ return f[k]?(f[k].stringValue||''):''; };
+      return {title:get('title'),scripture:get('scripture'),date:get('date'),series:get('series'),notes:get('notes')};
+    }).filter(function(s){ return s.title; });
+    docs.sort(function(a,b){ return new Date(b.date||0)-new Date(a.date||0); });
+    renderSermon(docs[0]||null);
+  })
+  .catch(function(){ renderSermon(null); });
+
+function renderSermon(s) {
+  var el=document.getElementById('sermon-content');
+  if (!s) { el.innerHTML='<div class="empty">No sermon posted yet — check back soon.</div>'; return; }
+  var notes='';
+  if (s.notes) {
+    var lines=s.notes.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+    if (lines.length) notes='<div class="notes-wrap"><div class="notes-label">Key Points</div>'+lines.map(function(l){ return '<div class="note-item"><span class="note-bullet">◆</span><span>'+esc(l)+'</span></div>'; }).join('')+'</div>';
+  }
+  el.innerHTML='<div class="sermon-card">'+(s.date?'<div class="sermon-date">'+esc(s.date)+'</div>':'')+(s.series?'<div class="sermon-series">'+esc(s.series)+'</div>':'')+'<div class="sermon-title">'+esc(s.title)+'</div>'+(s.scripture?'<div class="sermon-scripture">'+esc(s.scripture)+'</div>':'')+notes+'</div>';
+}
+
+// Events
+fetch("https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/events?key=" + API_KEY + "&pageSize=20")
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    var today=new Date(); today.setHours(0,0,0,0);
+    var docs=(data.documents||[]).map(function(doc){
+      var f=doc.fields||{};
+      var get=function(k){ return f[k]?(f[k].stringValue||''):''; };
+      return {title:get('title'),type:get('type'),date:get('date'),rawDate:get('rawDate'),startTime:get('startTime'),endTime:get('endTime'),location:get('location'),desc:get('desc')};
+    }).filter(function(e){
+      if (!e.title) return false;
+      if (!e.rawDate) return true;
+      return new Date(e.rawDate)>=today;
+    });
+    docs.sort(function(a,b){ return new Date(a.rawDate||0)-new Date(b.rawDate||0); });
+    renderEvents(docs.slice(0,6));
+  })
+  .catch(function(){ renderEvents([]); });
+
+function renderEvents(evts) {
+  var el=document.getElementById('events-content');
+  if (!evts.length) { el.innerHTML='<div class="empty">No upcoming events posted yet — check back soon.</div>'; return; }
+  el.innerHTML=evts.map(function(e){
+    var meta=[];
+    if (e.date) meta.push('📅 '+e.date);
+    if (e.startTime) meta.push('🕐 '+e.startTime+(e.endTime?' – '+e.endTime:''));
+    if (e.location) meta.push('📍 '+e.location);
+    return '<div class="event-card">'+(e.type?'<div class="event-type">'+esc(e.type)+'</div>':'')+'<div class="event-title">'+esc(e.title)+'</div>'+(meta.length?'<div class="event-meta">'+meta.map(function(m){ return '<span>'+esc(m)+'</span>'; }).join('')+'</div>':'')+(e.desc?'<div class="event-desc">'+esc(e.desc)+'</div>':'')+'</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>
