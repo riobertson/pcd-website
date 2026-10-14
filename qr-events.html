@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upcoming Events — Purpose Church of Denton</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--b:#6B1F3A;--g:#C9A84C;--gl:#E8D49A;--n:#0E1B2E;--nm:#1A2D48;--c:#FAF7F2;--w:#fff;}
+body{font-family:Jost,sans-serif;background:var(--n);color:var(--w);min-height:100vh;}
+
+.header{background:rgba(107,31,58,0.15);border-bottom:1px solid rgba(201,168,76,0.2);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:center;gap:0.8rem;}
+.header-cross{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--g);}
+.header-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gl);letter-spacing:0.05em;}
+
+.hero{padding:2rem 1.5rem 1.2rem;text-align:center;}
+.eyebrow{font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.8rem;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400;color:var(--w);line-height:1.2;}
+
+.events{padding:0 1.2rem 2rem;max-width:520px;margin:0 auto;}
+
+.event-card{background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);border-left:3px solid var(--b);margin-bottom:1rem;padding:1.2rem 1.2rem 1.2rem 1.4rem;}
+.event-type{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.25rem;}
+.event-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--w);line-height:1.2;margin-bottom:0.5rem;}
+.event-meta{font-size:0.78rem;color:rgba(255,255,255,0.5);display:flex;flex-direction:column;gap:0.2rem;}
+.event-desc{font-size:0.85rem;color:rgba(255,255,255,0.65);margin-top:0.6rem;line-height:1.6;}
+
+.loading{text-align:center;padding:3rem;color:rgba(255,255,255,0.4);font-size:0.9rem;}
+.empty{text-align:center;padding:3rem;}
+.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:0.3;}
+.empty-text{color:rgba(255,255,255,0.35);font-size:0.88rem;line-height:1.7;}
+
+.footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(255,255,255,0.06);}
+.footer a{color:var(--g);font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-cross">✝</span>
+  <span class="header-name">Purpose Church of Denton</span>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">What's Coming Up</div>
+  <h1>Upcoming Events</h1>
+</div>
+
+<div class="events" id="content">
+  <div class="loading">Loading events…</div>
+</div>
+
+<div class="footer">
+  <a href="https://purposechurchofdenton.com">purposechurchofdenton.com</a>
+</div>
+
+<script>
+var PROJECT = "purposechurchdenton";
+var API_KEY = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
+
+function fetchEvents() {
+  var url = "https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/events?key=" + API_KEY + "&pageSize=20";
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var today = new Date(); today.setHours(0,0,0,0);
+      var docs = (data.documents || []).map(function(doc){
+        var f = doc.fields || {};
+        var get = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
+        return { title:get('title'), type:get('type'), date:get('date'), rawDate:get('rawDate'), startTime:get('startTime'), endTime:get('endTime'), location:get('location'), desc:get('desc') };
+      }).filter(function(e){
+        if (!e.title) return false;
+        if (!e.rawDate) return true;
+        return new Date(e.rawDate) >= today;
+      });
+      docs.sort(function(a,b){ return new Date(a.rawDate||0)-new Date(b.rawDate||0); });
+      render(docs.slice(0,8));
+    })
+    .catch(function(){ render([]); });
+}
+
+function render(events) {
+  var el = document.getElementById('content');
+  if (!events.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">No upcoming events posted yet.<br>Check back soon.</div></div>';
+    return;
+  }
+  el.innerHTML = events.map(function(e){
+    var meta = [];
+    if (e.date) meta.push('📅 ' + e.date);
+    if (e.startTime) meta.push('🕐 ' + e.startTime + (e.endTime ? ' – ' + e.endTime : ''));
+    if (e.location) meta.push('📍 ' + e.location);
+    return '<div class="event-card">' +
+      (e.type ? '<div class="event-type">' + esc(e.type) + '</div>' : '') +
+      '<div class="event-title">' + esc(e.title) + '</div>' +
+      (meta.length ? '<div class="event-meta">' + meta.map(function(m){ return '<span>'+esc(m)+'</span>'; }).join('') + '</div>' : '') +
+      (e.desc ? '<div class="event-desc">' + esc(e.desc) + '</div>' : '') +
+      '</div>';
+  }).join('');
+}
+
+function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+
+fetchEvents();
+</script>
+</body>
+</html>

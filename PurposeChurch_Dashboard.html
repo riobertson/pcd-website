@@ -237,6 +237,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>emailjs.init("W9m4Fw2tQ5BzNVbNI");</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✝</text></svg>"/>
 </head>
 <body>
@@ -289,6 +290,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           
           <div class="nav-item" onclick="switchPanel('newsletter')"><span class="nav-item-icon">✉️</span>Newsletter</div>
           <div class="nav-item" onclick="switchPanel('email')"><span class="nav-item-icon">📧</span>Email Members</div>
+          <div class="nav-item" onclick="switchPanel('qrcodes')"><span class="nav-item-icon">📲</span>QR Codes</div>
           <div class="nav-item" onclick="switchPanel('members')" id="nav-members"><span class="nav-item-icon">👥</span>Members</div>
           <div class="nav-item" onclick="switchPanel('access')" id="nav-access"><span class="nav-item-icon">🔐</span>Access Control</div>
         </nav>
@@ -709,6 +711,60 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════ -->
+<!-- QR CODES PANEL                            -->
+<!-- ══════════════════════════════════════════ -->
+<div class="panel" id="panel-qrcodes">
+  <div style="padding:2rem;max-width:900px;">
+
+    <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:2rem;padding:1rem 1.2rem;background:rgba(201,168,76,0.06);border-left:3px solid var(--g);">
+      📲 These QR codes are permanent — print once and the content updates automatically whenever you add a sermon or event in the dashboard.
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
+
+      <!-- SERMON QR -->
+      <div class="dash-card" style="padding:1.8rem;display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div class="dash-card-title" style="text-align:center;">📖 This Week's Sermon</div>
+        <div id="qr-sermon-preview" style="font-size:0.82rem;color:rgba(255,255,255,0.5);text-align:center;min-height:40px;line-height:1.6;"></div>
+        <div id="qr-sermon-canvas" style="background:#fff;padding:10px;border-radius:4px;"></div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;">purposechurchofdenton.com/qr/sermons</div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-burg" onclick="downloadQR('qr-sermon-canvas','sermon-qr')">⬇ Download QR</button>
+          <button class="btn btn-ghost" onclick="printFlyer('sermons')">🖨 Print Flyer</button>
+        </div>
+      </div>
+
+      <!-- EVENTS QR -->
+      <div class="dash-card" style="padding:1.8rem;display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div class="dash-card-title" style="text-align:center;">📅 Upcoming Events</div>
+        <div id="qr-events-preview" style="font-size:0.82rem;color:rgba(255,255,255,0.5);text-align:center;min-height:40px;line-height:1.6;"></div>
+        <div id="qr-events-canvas" style="background:#fff;padding:10px;border-radius:4px;"></div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;">purposechurchofdenton.com/qr/events</div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-burg" onclick="downloadQR('qr-events-canvas','events-qr')">⬇ Download QR</button>
+          <button class="btn btn-ghost" onclick="printFlyer('events')">🖨 Print Flyer</button>
+        </div>
+      </div>
+
+      <!-- GIVE QR -->
+      <div class="dash-card" style="padding:1.8rem;display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div class="dash-card-title" style="text-align:center;">🙌 Give / Offering</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);text-align:center;min-height:40px;line-height:1.6;">Online · Text · In Person</div>
+        <div id="qr-give-canvas" style="background:#fff;padding:10px;border-radius:4px;"></div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;">purposechurchofdenton.com/qr/give</div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-burg" onclick="downloadQR('qr-give-canvas','give-qr')">⬇ Download QR</button>
+          <button class="btn btn-ghost" onclick="printFlyer('give')">🖨 Print Flyer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Print flyer iframe (hidden) -->
+<iframe id="print-frame" style="display:none;"></iframe>
 
 <div class="panel" id="panel-members">
   <div class="dash-card">
@@ -1126,7 +1182,7 @@ function doLogout() {
 }
 
 // ── NAVIGATION ──
-const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',members:'Member Directory',access:'Access Control'};
+const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',qrcodes:'QR Codes',members:'Member Directory',access:'Access Control'};
 
 function switchPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -3878,5 +3934,134 @@ function refreshAll() {
     </div>
   </div>
 </div>
+
+<script>
+// ══════════════════════════════════════════
+// QR CODES
+// ══════════════════════════════════════════
+const QR_URLS = {
+  sermons: 'https://purposechurchofdenton.com/qr/sermons',
+  events:  'https://purposechurchofdenton.com/qr/events',
+  give:    'https://purposechurchofdenton.com/qr/give'
+};
+
+function initQRCodes() {
+  ['sermon','events','give'].forEach(function(key) {
+    var containerId = 'qr-' + key + '-canvas';
+    var el = document.getElementById(containerId);
+    if (!el || el.dataset.qrDone) return;
+    el.dataset.qrDone = '1';
+    var url = key === 'sermon' ? QR_URLS.sermons : QR_URLS[key];
+    new QRCode(el, {
+      text: url,
+      width: 180,
+      height: 180,
+      colorDark: '#6B1F3A',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  });
+  updateQRPreviews();
+}
+
+function updateQRPreviews() {
+  // Sermon preview
+  var el = document.getElementById('qr-sermon-preview');
+  if (el) {
+    var s = DB.sermons && DB.sermons[0];
+    if (s && s.title) {
+      el.innerHTML = '<strong style="color:#fff;">' + esc(s.title) + '</strong>' +
+        (s.scripture ? '<br><em style="color:rgba(232,212,154,0.8);">' + esc(s.scripture) + '</em>' : '');
+    } else {
+      el.textContent = 'No sermon added yet';
+    }
+  }
+  // Events preview
+  var ee = document.getElementById('qr-events-preview');
+  if (ee) {
+    var today = new Date(); today.setHours(0,0,0,0);
+    var upcoming = (DB.events || []).filter(function(e){
+      return !e.rawDate || new Date(e.rawDate) >= today;
+    }).slice(0,2);
+    if (upcoming.length) {
+      ee.innerHTML = upcoming.map(function(ev){ return '<span style="color:#fff;">' + esc(ev.title) + '</span> <span style="color:rgba(255,255,255,0.4);">' + (ev.date||'') + '</span>'; }).join('<br>');
+    } else {
+      ee.textContent = 'No upcoming events';
+    }
+  }
+}
+
+function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+function downloadQR(containerId, filename) {
+  var el = document.getElementById(containerId);
+  var img = el && el.querySelector('img');
+  var canvas = el && el.querySelector('canvas');
+  var src = '';
+  if (canvas) { src = canvas.toDataURL('image/png'); }
+  else if (img) { src = img.src; }
+  if (!src) return toast('QR code not ready yet.', 'error');
+  var a = document.createElement('a');
+  a.href = src;
+  a.download = filename + '.png';
+  a.click();
+}
+
+function printFlyer(type) {
+  var titles = { sermons:'This Week\'s Message', events:'Upcoming Events', give:'Give to Purpose Church' };
+  var urls = { sermons: QR_URLS.sermons, events: QR_URLS.events, give: QR_URLS.give };
+  var canvasId = type === 'sermons' ? 'qr-sermon-canvas' : 'qr-' + type + '-canvas';
+  var el = document.getElementById(canvasId);
+  var canvas = el && el.querySelector('canvas');
+  var img = el && el.querySelector('img');
+  var qrSrc = canvas ? canvas.toDataURL('image/png') : (img ? img.src : '');
+
+  var subtitle = '';
+  if (type === 'sermons') {
+    var s = DB.sermons && DB.sermons[0];
+    if (s && s.title) subtitle = '<div style="font-size:1.4rem;font-weight:400;margin-bottom:0.3rem;">' + s.title + '</div>' + (s.scripture ? '<div style="font-style:italic;color:#8B2848;font-size:1.1rem;">' + s.scripture + '</div>' : '');
+  } else if (type === 'events') {
+    var today2 = new Date(); today2.setHours(0,0,0,0);
+    var ev = (DB.events||[]).filter(function(e){ return !e.rawDate||new Date(e.rawDate)>=today2; }).slice(0,3);
+    subtitle = ev.map(function(e){ return '<div style="font-size:0.95rem;margin-bottom:0.3rem;"><strong>' + e.title + '</strong> — ' + (e.date||'') + '</div>'; }).join('');
+  } else {
+    subtitle = '<div style="font-size:0.95rem;color:#4A1228;">Online · Text · In Person</div>';
+  }
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
+    'body{font-family:Georgia,serif;text-align:center;padding:2in 1in;color:#1A1410;margin:0;}' +
+    'h1{font-size:1rem;letter-spacing:0.25em;text-transform:uppercase;color:#6B1F3A;margin-bottom:0.3in;}' +
+    'h2{font-size:2rem;font-weight:400;margin-bottom:0.15in;color:#0E1B2E;}' +
+    '.sub{margin-bottom:0.3in;line-height:1.6;}' +
+    'img{width:1.8in;height:1.8in;margin:0.2in auto;display:block;}' +
+    '.url{font-size:0.7rem;letter-spacing:0.12em;color:#888;margin-top:0.15in;}' +
+    '.church{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#6B1F3A;margin-top:0.4in;}' +
+    '@media print{body{padding:0.5in;}}' +
+    '</style></head><body>' +
+    '<div class="church">Purpose Church of Denton</div>' +
+    '<h1>' + titles[type] + '</h1>' +
+    '<div class="sub">' + subtitle + '</div>' +
+    (qrSrc ? '<img src="' + qrSrc + '" alt="QR Code"/>' : '') +
+    '<div class="url">Scan or visit: ' + urls[type].replace('https://','') + '</div>' +
+    '</body></html>';
+
+  var frame = document.getElementById('print-frame');
+  frame.style.display = 'block';
+  frame.style.position = 'fixed';
+  frame.style.top = '-9999px';
+  frame.contentDocument.open();
+  frame.contentDocument.write(html);
+  frame.contentDocument.close();
+  setTimeout(function(){ frame.contentWindow.print(); }, 300);
+}
+
+// Init QR codes when the panel is opened
+var _origSwitchPanel = switchPanel;
+switchPanel = function(id) {
+  _origSwitchPanel(id);
+  if (id === 'qrcodes') { setTimeout(function(){ if(typeof QRCode !== 'undefined') initQRCodes(); }, 100); }
+};
+</script>
+
 </body>
 </html>

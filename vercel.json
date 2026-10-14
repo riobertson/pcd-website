@@ -10,6 +10,9 @@
     }
   ],
   "rewrites": [
-    { "source": "/dashboard",     "destination": "/PurposeChurch_Dashboard.html" }
+    { "source": "/dashboard",   "destination": "/PurposeChurch_Dashboard.html" },
+    { "source": "/qr/sermons",  "destination": "/qr-sermons.html" },
+    { "source": "/qr/events",   "destination": "/qr-events.html" },
+    { "source": "/qr/give",     "destination": "/qr-give.html" }
   ]
 }
