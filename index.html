@@ -339,6 +339,36 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     </div>
   </section>
 
+  <!-- FEATURED EVENT (dynamic — set from dashboard) -->
+  <div id="featured-event-section" style="display:none;">
+    <section class="section" style="background:linear-gradient(135deg,var(--n) 0%,var(--bd) 100%);padding:4rem 0;">
+      <div class="container">
+        <p class="sec-label light" id="fe-eyebrow">Featured Event</p>
+        <div style="max-width:780px;margin:0 auto;border:1px solid rgba(201,168,76,0.25);border-top:4px solid var(--g);padding:2.5rem;background:rgba(255,255,255,0.04);">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;flex-wrap:wrap;">
+            <div>
+              <div id="fe-type" style="font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.6rem;"></div>
+              <h2 id="fe-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;"></h2>
+              <div id="fe-desc" style="font-size:0.95rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.75;margin-bottom:1.4rem;max-width:520px;"></div>
+              <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.6rem;">
+                <div id="fe-date-row" style="display:none;font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📅</span><span id="fe-date"></span></div>
+                <div id="fe-loc-row" style="display:none;font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span id="fe-loc"></span></div>
+              </div>
+              <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">
+                <a id="fe-register-btn" href="#" style="display:none;background:var(--b);color:#fff;padding:0.85rem 2rem;font-family:Jost,sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='var(--bm)'" onmouseout="this.style.background='var(--b)'">Register Now →</a>
+                <button class="btn-ghost" onclick="showPage('events')">View All Events</button>
+              </div>
+            </div>
+            <div id="fe-price-block" style="display:none;text-align:center;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:1.2rem 1.6rem;flex-shrink:0;">
+              <div id="fe-price" style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;color:var(--g);line-height:1;"></div>
+              <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Per Person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <section class="section cream-bg">
     <div class="container">
       <p class="sec-label">Explore Our Church</p>
@@ -1769,8 +1799,57 @@ function loadFromFirebase() {
 // Load on page ready and refresh every 30 seconds
 window.addEventListener("load", function() {
   loadFromFirebase();
+  loadFeaturedEvent();
   setInterval(loadFromFirebase, 30000);
 });
+
+// Featured event on home page
+function loadFeaturedEvent() {
+  var API_KEY = 'AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w';
+  fetch('https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/events?key=' + API_KEY + '&pageSize=20')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var docs = (data.documents || []).map(function(doc){
+        var f = doc.fields || {};
+        var g = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
+        return {
+          title: g('title'), type: g('type'), date: g('date'), rawDate: g('rawDate'),
+          endDate: g('endDate'), location: g('location'), desc: g('desc'),
+          featured: g('featured'), registrationLink: g('registrationLink'), price: g('price')
+        };
+      }).filter(function(e){ return e.featured === 'true' && e.title; });
+
+      // Pick the soonest featured event
+      docs.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
+      var ev = docs[0] || null;
+      renderFeaturedEvent(ev);
+    })
+    .catch(function(){ renderFeaturedEvent(null); });
+}
+
+function renderFeaturedEvent(ev) {
+  var sec = document.getElementById('featured-event-section');
+  if (!sec) return;
+  if (!ev) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  document.getElementById('fe-eyebrow').textContent = ev.type || 'Featured Event';
+  document.getElementById('fe-title').textContent = ev.title;
+  document.getElementById('fe-desc').textContent = ev.desc || '';
+  // Date
+  var dateStr = ev.date || '';
+  if (ev.endDate) dateStr += ' – ' + ev.endDate;
+  var dateRow = document.getElementById('fe-date-row');
+  if (dateStr) { document.getElementById('fe-date').textContent = dateStr; dateRow.style.display = 'flex'; }
+  // Location
+  var locRow = document.getElementById('fe-loc-row');
+  if (ev.location) { document.getElementById('fe-loc').textContent = ev.location; locRow.style.display = 'flex'; }
+  // Price
+  var priceBlock = document.getElementById('fe-price-block');
+  if (ev.price) { document.getElementById('fe-price').textContent = ev.price; priceBlock.style.display = 'block'; }
+  // Register button
+  var btn = document.getElementById('fe-register-btn');
+  if (ev.registrationLink) { btn.href = ev.registrationLink; btn.style.display = 'inline-block'; }
+}
 </script>
 </body>
 </html>

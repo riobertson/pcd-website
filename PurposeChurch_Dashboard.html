@@ -467,6 +467,19 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
       </label>
     </div>
 
+    <!-- REGISTRATION & FEATURE -->
+    <div class="f-row" style="margin-top:0.8rem;">
+      <div class="f-group"><label class="f-label">Registration Link <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — Realm or external)</span></label><input class="f-input" id="e-reg-link" type="url" placeholder="https://onrealm.org/..."/></div>
+      <div class="f-group"><label class="f-label">Price <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — e.g. $150)</span></label><input class="f-input" id="e-price" placeholder="e.g. $150"/></div>
+    </div>
+    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:1rem 1.2rem;margin-top:0.5rem;margin-bottom:0.5rem;display:flex;align-items:flex-start;gap:0.8rem;">
+      <input type="checkbox" id="e-featured" style="accent-color:var(--g);margin-top:0.2rem;flex-shrink:0;">
+      <div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--gl);">⭐ Feature on Home Page</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.2rem;">Displays a highlighted banner for this event on the church website's home page. Only one event is featured at a time — the soonest upcoming featured event shows.</div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:0.8rem;margin-top:1.2rem;flex-wrap:wrap;">
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:0.8rem;">
         <div style="font-size:0.67rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.8);font-weight:600;margin-bottom:0.7rem;">Post Options</div>
@@ -1327,7 +1340,10 @@ function addEvent() {
     desc: document.getElementById('e-desc').value.trim(),
     emails: [...emailChips],
     notifyMembers: document.getElementById('e-notify-members').checked,
-    image: (function(){ const v = document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : ''; return v.startsWith('data:') ? '' : v; })()
+    image: (function(){ const v = document.getElementById('e-img-url') ? document.getElementById('e-img-url').value.trim() : ''; return v.startsWith('data:') ? '' : v; })(),
+    featured: document.getElementById('e-featured').checked ? 'true' : 'false',
+    registrationLink: document.getElementById('e-reg-link').value.trim(),
+    price: document.getElementById('e-price').value.trim()
   };
 
   DB.events.unshift(event);
@@ -1355,6 +1371,9 @@ function addEvent() {
       location: event.location || '',
       desc: event.desc || '',
       image: event.image || '',
+      featured: event.featured || 'false',
+      registrationLink: event.registrationLink || '',
+      price: event.price || '',
       active: 'true'
     }).then(function(fbId) {
       if (fbId) {
