@@ -339,32 +339,22 @@ body{font-family:Jost,sans-serif;background:var(--c);color:var(--td);line-height
     </div>
   </section>
 
-  <!-- FEATURED EVENT (dynamic — set from dashboard) -->
+  <!-- FEATURED EVENTS CAROUSEL (dynamic — set from dashboard) -->
   <div id="featured-event-section" style="display:none;">
-    <section class="section" style="background:linear-gradient(135deg,var(--n) 0%,var(--bd) 100%);padding:4rem 0;">
+    <section class="section" style="background:linear-gradient(135deg,var(--n) 0%,var(--bd) 100%);padding:4rem 0;position:relative;overflow:hidden;">
       <div class="container">
-        <p class="sec-label light" id="fe-eyebrow">Featured Event</p>
-        <div style="max-width:780px;margin:0 auto;border:1px solid rgba(201,168,76,0.25);border-top:4px solid var(--g);padding:2.5rem;background:rgba(255,255,255,0.04);">
-          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;flex-wrap:wrap;">
-            <div>
-              <div id="fe-type" style="font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.6rem;"></div>
-              <h2 id="fe-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;"></h2>
-              <div id="fe-desc" style="font-size:0.95rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.75;margin-bottom:1.4rem;max-width:520px;"></div>
-              <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.6rem;">
-                <div id="fe-date-row" style="display:none;font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📅</span><span id="fe-date"></span></div>
-                <div id="fe-loc-row" style="display:none;font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span id="fe-loc"></span></div>
-              </div>
-              <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">
-                <a id="fe-register-btn" href="#" style="display:none;background:var(--b);color:#fff;padding:0.85rem 2rem;font-family:Jost,sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='var(--bm)'" onmouseout="this.style.background='var(--b)'">Register Now →</a>
-                <button class="btn-ghost" onclick="showPage('events')">View All Events</button>
-              </div>
-            </div>
-            <div id="fe-price-block" style="display:none;text-align:center;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:1.2rem 1.6rem;flex-shrink:0;">
-              <div id="fe-price" style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;color:var(--g);line-height:1;"></div>
-              <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Per Person</div>
-            </div>
+        <p class="sec-label light">Featured Events</p>
+        <!-- carousel track -->
+        <div style="position:relative;max-width:780px;margin:0 auto;">
+          <div id="fe-track" style="overflow:hidden;">
+            <div id="fe-slides" style="display:flex;transition:transform 0.45s cubic-bezier(.4,0,.2,1);will-change:transform;"></div>
           </div>
+          <!-- arrows -->
+          <button id="fe-prev" onclick="feMove(-1)" style="display:none;position:absolute;left:-20px;top:50%;transform:translateY(-50%);background:rgba(107,31,58,0.7);border:1px solid rgba(201,168,76,0.3);color:var(--gl);width:40px;height:40px;font-size:1.2rem;cursor:pointer;z-index:2;">‹</button>
+          <button id="fe-next" onclick="feMove(1)"  style="display:none;position:absolute;right:-20px;top:50%;transform:translateY(-50%);background:rgba(107,31,58,0.7);border:1px solid rgba(201,168,76,0.3);color:var(--gl);width:40px;height:40px;font-size:1.2rem;cursor:pointer;z-index:2;">›</button>
         </div>
+        <!-- dots -->
+        <div id="fe-dots" style="display:flex;justify-content:center;gap:0.5rem;margin-top:1.2rem;"></div>
       </div>
     </section>
   </div>
@@ -1803,7 +1793,9 @@ window.addEventListener("load", function() {
   setInterval(loadFromFirebase, 30000);
 });
 
-// Featured event on home page
+// Featured events carousel
+var feEvents = [], feIndex = 0, feTimer = null;
+
 function loadFeaturedEvent() {
   var API_KEY = 'AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w';
   fetch('https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/events?key=' + API_KEY + '&pageSize=20')
@@ -1812,43 +1804,73 @@ function loadFeaturedEvent() {
       var docs = (data.documents || []).map(function(doc){
         var f = doc.fields || {};
         var g = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
-        return {
-          title: g('title'), type: g('type'), date: g('date'), rawDate: g('rawDate'),
-          endDate: g('endDate'), location: g('location'), desc: g('desc'),
-          featured: g('featured'), registrationLink: g('registrationLink'), price: g('price')
-        };
+        return { title:g('title'), type:g('type'), date:g('date'), rawDate:g('rawDate'),
+          endDate:g('endDate'), location:g('location'), desc:g('desc'),
+          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price') };
       }).filter(function(e){ return e.featured === 'true' && e.title; });
-
-      // Pick the soonest featured event
       docs.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
-      var ev = docs[0] || null;
-      renderFeaturedEvent(ev);
+      feEvents = docs;
+      renderFeaturedCarousel();
     })
-    .catch(function(){ renderFeaturedEvent(null); });
+    .catch(function(){ document.getElementById('featured-event-section').style.display = 'none'; });
 }
 
-function renderFeaturedEvent(ev) {
-  var sec = document.getElementById('featured-event-section');
-  if (!sec) return;
-  if (!ev) { sec.style.display = 'none'; return; }
-  sec.style.display = 'block';
-  document.getElementById('fe-eyebrow').textContent = ev.type || 'Featured Event';
-  document.getElementById('fe-title').textContent = ev.title;
-  document.getElementById('fe-desc').textContent = ev.desc || '';
-  // Date
+function feSlideHTML(ev) {
   var dateStr = ev.date || '';
   if (ev.endDate) dateStr += ' – ' + ev.endDate;
-  var dateRow = document.getElementById('fe-date-row');
-  if (dateStr) { document.getElementById('fe-date').textContent = dateStr; dateRow.style.display = 'flex'; }
-  // Location
-  var locRow = document.getElementById('fe-loc-row');
-  if (ev.location) { document.getElementById('fe-loc').textContent = ev.location; locRow.style.display = 'flex'; }
-  // Price
-  var priceBlock = document.getElementById('fe-price-block');
-  if (ev.price) { document.getElementById('fe-price').textContent = ev.price; priceBlock.style.display = 'block'; }
-  // Register button
-  var btn = document.getElementById('fe-register-btn');
-  if (ev.registrationLink) { btn.href = ev.registrationLink; btn.style.display = 'inline-block'; }
+  return '<div style="min-width:100%;border:1px solid rgba(201,168,76,0.25);border-top:4px solid var(--g);padding:2.5rem;background:rgba(255,255,255,0.04);">' +
+    '<div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;">' +
+    '<div>' +
+    (ev.type ? '<div style="font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.6rem;">' + ev.type + '</div>' : '') +
+    '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;">' + ev.title + '</h2>' +
+    (ev.desc ? '<div style="font-size:0.95rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.75;margin-bottom:1.4rem;max-width:520px;">' + ev.desc + '</div>' : '') +
+    '<div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.6rem;">' +
+    (dateStr ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📅</span><span>' + dateStr + '</span></div>' : '') +
+    (ev.location ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span>' + ev.location + '</span></div>' : '') +
+    '</div>' +
+    '<div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">' +
+    (ev.registrationLink ? '<a href="' + ev.registrationLink + '" target="_blank" style="background:var(--b);color:#fff;padding:0.85rem 2rem;font-family:Jost,sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;">Register Now →</a>' : '') +
+    '<button class="btn-ghost" onclick="showPage(\'events\')">View All Events</button>' +
+    '</div></div>' +
+    (ev.price ? '<div style="text-align:center;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:1.2rem 1.6rem;flex-shrink:0;align-self:start;"><div style="font-family:\'Cormorant Garamond\',serif;font-size:3rem;font-weight:400;color:var(--g);line-height:1;">' + ev.price + '</div><div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Per Person</div></div>' : '<div></div>') +
+    '</div></div>';
+}
+
+function renderFeaturedCarousel() {
+  var sec = document.getElementById('featured-event-section');
+  if (!sec) return;
+  if (!feEvents.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  var slides = document.getElementById('fe-slides');
+  slides.innerHTML = feEvents.map(feSlideHTML).join('');
+  // arrows
+  var prev = document.getElementById('fe-prev'), next = document.getElementById('fe-next');
+  if (feEvents.length > 1) { prev.style.display = 'block'; next.style.display = 'block'; }
+  // dots
+  var dots = document.getElementById('fe-dots');
+  dots.innerHTML = feEvents.map(function(_,i){
+    return '<button onclick="feGoTo(' + i + ')" style="width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;background:' + (i===0?'var(--g)':'rgba(255,255,255,0.2)') + ';padding:0;" id="fe-dot-' + i + '"></button>';
+  }).join('');
+  feGoTo(0);
+  // auto-advance every 5s when multiple events
+  if (feEvents.length > 1) {
+    if (feTimer) clearInterval(feTimer);
+    feTimer = setInterval(function(){ feMove(1); }, 5000);
+  }
+}
+
+function feGoTo(idx) {
+  feIndex = (idx + feEvents.length) % feEvents.length;
+  document.getElementById('fe-slides').style.transform = 'translateX(-' + (feIndex * 100) + '%)';
+  document.querySelectorAll('[id^="fe-dot-"]').forEach(function(d,i){
+    d.style.background = i === feIndex ? 'var(--g)' : 'rgba(255,255,255,0.2)';
+  });
+}
+
+function feMove(dir) {
+  if (feTimer) clearInterval(feTimer);
+  feGoTo(feIndex + dir);
+  if (feEvents.length > 1) feTimer = setInterval(function(){ feMove(1); }, 5000);
 }
 </script>
 </body>
