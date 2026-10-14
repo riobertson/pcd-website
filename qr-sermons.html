@@ -59,7 +59,7 @@ var PROJECT = "purposechurchdenton";
 var API_KEY = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
 
 function fetchSermons() {
-  var url = "https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/sermons?key=" + API_KEY + "&pageSize=20&orderBy=createTime+desc";
+  var url = "https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/sermons?key=" + API_KEY + "&pageSize=20";
   fetch(url)
     .then(function(r){ return r.json(); })
     .then(function(data){

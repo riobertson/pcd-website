@@ -103,7 +103,7 @@ var API_KEY = "AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w";
 function esc(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
 
 // Sermon
-fetch("https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/sermons?key=" + API_KEY + "&pageSize=20&orderBy=createTime+desc")
+fetch("https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/sermons?key=" + API_KEY + "&pageSize=20")
   .then(function(r){ return r.json(); })
   .then(function(data){
     var docs = (data.documents||[]).map(function(doc){
