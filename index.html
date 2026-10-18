@@ -1733,6 +1733,7 @@ function loadFromFirebase() {
       html += "<div><div class=\"event-type\">" + (ev.type||"") + "</div><div class=\"event-title\">" + (ev.title||"") + "</div></div>";
       html += "</div>";
       if (ev.desc) html += "<p class=\"event-desc\">" + ev.desc + "</p>";
+      if (ev.videoUrl) html += "<video src=\"" + ev.videoUrl + "\" controls playsinline style=\"width:100%;margin-top:0.8rem;display:block;\"></video>";
       html += "<div class=\"event-meta\">";
       if (ev.startTime) html += "<div class=\"event-row\">&#9200; " + ev.startTime + (ev.endTime ? " - " + ev.endTime : "") + "</div>";
       if (ev.location) html += "<div class=\"event-row\">&#128205; " + ev.location + "</div>";
@@ -1821,7 +1822,7 @@ function loadFeaturedEvent() {
         var g = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
         return { title:g('title'), type:g('type'), date:g('date'), rawDate:g('rawDate'),
           endDate:g('endDate'), location:g('location'), desc:g('desc'),
-          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price') };
+          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price'), videoUrl:g('videoUrl') };
       }).filter(function(e){ return e.featured === 'true' && e.title; });
       docs.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       feEvents = docs;
@@ -1839,6 +1840,7 @@ function feSlideHTML(ev) {
     (ev.type ? '<div style="font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.6rem;">' + ev.type + '</div>' : '') +
     '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(1.6rem,5vw,2.8rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;">' + ev.title + '</h2>' +
     (ev.desc ? '<div style="font-size:0.92rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.75;margin-bottom:1.4rem;">' + ev.desc + '</div>' : '') +
+    (ev.videoUrl ? '<video src="' + ev.videoUrl + '" autoplay muted loop playsinline controls style="width:100%;max-height:260px;object-fit:cover;margin-bottom:1.4rem;border:1px solid rgba(201,168,76,0.2);"></video>' : '') +
     '<div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.4rem;">' +
     (dateStr ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📅</span><span>' + dateStr + '</span></div>' : '') +
     (ev.location ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span>' + ev.location + '</span></div>' : '') +
