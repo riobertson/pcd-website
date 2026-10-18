@@ -1288,6 +1288,9 @@ function renderFirebaseEvents(events, grid) {
     var descHtml = (ev.desc || ev.description)
       ? '<p class="event-desc">' + (ev.desc || ev.description) + '</p>'
       : '';
+    var videoHtml = ev.videoUrl
+      ? '<video src="' + ev.videoUrl + '" controls playsinline style="width:100%;margin-top:0.8rem;display:block;"></video>'
+      : '';
     var timeHtml = (ev.startTime || ev.time)
       ? '<div class="event-row">&#9200; ' + (ev.startTime || ev.time) + (ev.endTime ? ' – ' + ev.endTime : '') + '</div>'
       : '';
@@ -1302,6 +1305,7 @@ function renderFirebaseEvents(events, grid) {
       + '<div><div class="event-type">' + (ev.type || '') + '</div><div class="event-title">' + (ev.title || '') + '</div></div>'
       + '</div>'
       + descHtml
+      + videoHtml
       + '<div class="event-meta">' + timeHtml + locHtml + '</div>'
       + '</div></div>';
   }).join('');
