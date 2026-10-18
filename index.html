@@ -1833,7 +1833,6 @@ function loadFeaturedEvent() {
 
 function feSlideHTML(ev) {
   var dateStr = ev.date || '';
-  if (ev.endDate) dateStr += ' – ' + ev.endDate;
   return '<div class="fe-slide-card" onclick="showPage(\'events\')">' +
     '<div class="fe-slide-inner">' +
     '<div>' +
