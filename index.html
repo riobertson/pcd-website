@@ -1857,9 +1857,9 @@ function feSlideHTML(ev) {
     (ev.location ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span>' + ev.location + '</span></div>' : '') +
     '</div>' +
     (ev.packingList ? '<div style="background:rgba(255,255,255,0.06);border-left:3px solid var(--g);padding:0.75rem 1rem;margin-bottom:1.2rem;font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.7;"><strong style="display:block;margin-bottom:0.2rem;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--g);">What to Bring</strong>' + ev.packingList + '</div>' : '') +
+    (ev.formUrl ? '<div onclick="event.stopPropagation()" style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.35);padding:0.9rem 1rem;margin-bottom:1rem;"><div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:0.5rem;">&#9888; Required After Registering</div><a href="' + ev.formUrl + '" target="_blank" onclick="event.stopPropagation()" style="color:var(--gl);font-size:0.85rem;font-weight:500;text-decoration:underline;">Complete the Retreat Registration Form &#8594;</a></div>' : '') +
     '<div class="fe-btns">' +
     (ev.registrationLink ? '<a href="' + ev.registrationLink + '" target="_blank" onclick="event.stopPropagation()" class="fe-reg-btn">Register Now →</a>' : '') +
-    (ev.formUrl ? '<a href="' + ev.formUrl + '" target="_blank" onclick="event.stopPropagation()" class="fe-reg-btn" style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gl);">⚠ Required: Complete Registration Form →</a>' : '') +
     '<button class="btn-ghost" onclick="event.stopPropagation();showPage(\'events\')">View All Events</button>' +
     '</div></div>' +
     (ev.price ? '<div class="fe-price-box"><div style="font-family:\'Cormorant Garamond\',serif;font-size:3rem;font-weight:400;color:var(--g);line-height:1;">' + ev.price + '</div><div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Per Person</div></div>' : '') +
