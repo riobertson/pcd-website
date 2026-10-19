@@ -1291,6 +1291,12 @@ function renderFirebaseEvents(events, grid) {
     var videoHtml = ev.videoUrl
       ? '<video src="' + ev.videoUrl + '" controls playsinline style="width:100%;margin-top:0.8rem;display:block;"></video>'
       : '';
+    var packingHtml = ev.packingList
+      ? '<div style="background:#f7f3ee;border-left:3px solid #6B1F3A;padding:0.85rem 1rem;margin-top:0.8rem;font-size:0.82rem;color:#4A4036;line-height:1.7;"><strong style="display:block;margin-bottom:0.25rem;text-transform:uppercase;font-size:0.65rem;letter-spacing:0.15em;color:#6B1F3A;">What to Bring</strong>' + ev.packingList + '</div>'
+      : '';
+    var formHtml = ev.formUrl
+      ? '<a href="' + ev.formUrl + '" target="_blank" style="display:inline-block;margin-top:0.9rem;background:#6B1F3A;color:#fff;padding:0.75rem 1.5rem;font-family:Jost,sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;">Complete Registration Form →</a>'
+      : '';
     var timeHtml = (ev.startTime || ev.time)
       ? '<div class="event-row">&#9200; ' + (ev.startTime || ev.time) + (ev.endTime ? ' – ' + ev.endTime : '') + '</div>'
       : '';
@@ -1306,6 +1312,8 @@ function renderFirebaseEvents(events, grid) {
       + '</div>'
       + descHtml
       + videoHtml
+      + packingHtml
+      + formHtml
       + '<div class="event-meta">' + timeHtml + locHtml + '</div>'
       + '</div></div>';
   }).join('');
@@ -1826,7 +1834,7 @@ function loadFeaturedEvent() {
         var g = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
         return { title:g('title'), type:g('type'), date:g('date'), rawDate:g('rawDate'),
           endDate:g('endDate'), location:g('location'), desc:g('desc'),
-          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price'), videoUrl:g('videoUrl') };
+          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price'), videoUrl:g('videoUrl'), formUrl:g('formUrl'), packingList:g('packingList') };
       }).filter(function(e){ return e.featured === 'true' && e.title; });
       docs.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       feEvents = docs;
@@ -1848,8 +1856,10 @@ function feSlideHTML(ev) {
     (dateStr ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📅</span><span>' + dateStr + '</span></div>' : '') +
     (ev.location ? '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--g);">📍</span><span>' + ev.location + '</span></div>' : '') +
     '</div>' +
+    (ev.packingList ? '<div style="background:rgba(255,255,255,0.06);border-left:3px solid var(--g);padding:0.75rem 1rem;margin-bottom:1.2rem;font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.7;"><strong style="display:block;margin-bottom:0.2rem;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--g);">What to Bring</strong>' + ev.packingList + '</div>' : '') +
     '<div class="fe-btns">' +
     (ev.registrationLink ? '<a href="' + ev.registrationLink + '" target="_blank" onclick="event.stopPropagation()" class="fe-reg-btn">Register Now →</a>' : '') +
+    (ev.formUrl ? '<a href="' + ev.formUrl + '" target="_blank" onclick="event.stopPropagation()" class="fe-reg-btn" style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gl);">Complete Registration Form →</a>' : '') +
     '<button class="btn-ghost" onclick="event.stopPropagation();showPage(\'events\')">View All Events</button>' +
     '</div></div>' +
     (ev.price ? '<div class="fe-price-box"><div style="font-family:\'Cormorant Garamond\',serif;font-size:3rem;font-weight:400;color:var(--g);line-height:1;">' + ev.price + '</div><div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Per Person</div></div>' : '') +
