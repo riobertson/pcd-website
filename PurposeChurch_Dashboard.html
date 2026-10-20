@@ -975,8 +975,9 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             <th>T-Shirt</th>
             <th>Dietary</th>
             <th>Bunkmate</th>
+            <th>How Did You Hear</th>
+            <th>Panel Question</th>
             <th>Submitted</th>
-            <th>Notes</th>
           </tr>
         </thead>
         <tbody id="reg-tbody"></tbody>
@@ -4220,8 +4221,6 @@ function renderRegistrations(subs) {
       : '<span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);padding:0.2rem 0.6rem;font-size:0.7rem;border-radius:2px;cursor:pointer;" onclick="setPaymentStatus(\''+s._id+'\',\'confirmed\')">Pending</span>';
     var date = s._date ? new Date(s._date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
     var dietary = [s.dietary_restrictions, s.dietary_preference].filter(function(v){ return v && v !== 'None' && v !== 'No Special Preferences'; }).join(' · ') || '—';
-    var notes = [s.how_did_you_hear, s.panel_question].filter(Boolean).map(function(v){ return v.length > 40 ? v.slice(0,40)+'…' : v; }).join(' | ') || '';
-
     return '<tr>'
       + '<td style="color:rgba(255,255,255,0.35);">' + (i+1) + '</td>'
       + '<td style="white-space:nowrap;font-weight:500;">' + (s.first_name||'') + ' ' + (s.last_name||'') + '</td>'
@@ -4232,12 +4231,13 @@ function renderRegistrations(subs) {
       + '<td style="text-align:center;">' + (s.tshirt_size||'—') + '</td>'
       + '<td style="font-size:0.78rem;max-width:140px;">' + dietary + '</td>'
       + '<td style="font-size:0.78rem;">' + (s.bunkmate_preference||'—') + '</td>'
+      + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.55);max-width:160px;">' + (s.how_did_you_hear||'—') + '</td>'
+      + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.55);max-width:180px;">' + (s.panel_question||'—') + '</td>'
       + '<td style="white-space:nowrap;font-size:0.78rem;color:rgba(255,255,255,0.45);">' + date + '</td>'
-      + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.45);max-width:160px;">' + notes + '</td>'
       + '</tr>';
   }).join('');
 
-  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="11" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
+  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="12" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
   document.getElementById('reg-stats-row').style.display = 'grid';
   document.getElementById('reg-tshirt-card').style.display = 'block';
   document.getElementById('reg-table-card').style.display = 'block';
