@@ -14,7 +14,6 @@
     { "source": "/qr",          "destination": "/qr.html" },
     { "source": "/qr/sermons",  "destination": "/qr-sermons.html" },
     { "source": "/qr/events",   "destination": "/qr-events.html" },
-    { "source": "/qr/give",          "destination": "/qr-give.html" },
-    { "source": "/women-of-purpose-retreat", "destination": "/women-of-purpose-retreat.html" }
+    { "source": "/qr/give",          "destination": "/qr-give.html" }
   ]
 }
