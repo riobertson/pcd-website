@@ -262,6 +262,21 @@ textarea{resize:vertical;min-height:80px;}
 }
 .deposit-tip strong{color:var(--g);font-weight:500;}
 
+/* ── INFO BOX (Important Information) ── */
+.info-box{
+  background:var(--bg);border:1px solid var(--border-g);
+  padding:1.2rem 1.4rem;font-size:0.85rem;color:var(--fg2);line-height:1.72;
+  border-left:3px solid var(--g);
+}
+.bring-list{margin:0.5rem 0 0 1.2rem;padding:0;display:flex;flex-direction:column;gap:0.3rem;}
+.bring-list li{font-size:0.84rem;color:var(--fg2);}
+
+/* Inline t-shirt size row */
+.check-list--inline{flex-direction:row;flex-wrap:wrap;gap:0.5rem 1rem;}
+.check-list--inline .ci{padding:0.35rem 0.7rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;}
+.check-list--inline .ci:has(input:checked){background:var(--b);border-color:var(--b);color:#fff;}
+.check-list--inline .ci:has(input:checked) span{color:#fff;}
+
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);padding:2rem 0;background:var(--bg);}
 footer .inner{display:flex;flex-direction:column;align-items:center;gap:0.35rem;text-align:center;}
@@ -277,6 +292,7 @@ footer a{color:var(--b);text-decoration:none;}
   .dc:last-child{border-bottom:none;}
   .sched-item{grid-template-columns:58px 1fr;gap:0.8rem;}
   .hero-flyer-placeholder h1{font-size:2.4rem;}
+  .check-list--inline{gap:0.4rem;}
 }
 </style>
 </head>
@@ -414,12 +430,31 @@ footer a{color:var(--b);text-decoration:none;}
           <input type="text" id="last_name" name="last_name" required placeholder="Last">
         </div>
         <div class="fg">
-          <label class="fl" for="email">Email Address<span class="req">*</span></label>
-          <input type="email" id="email" name="email" required placeholder="you@email.com">
-        </div>
-        <div class="fg">
           <label class="fl" for="phone">Phone Number<span class="req">*</span></label>
           <input type="tel" id="phone" name="phone" required placeholder="(000) 000-0000">
+        </div>
+        <div class="fg">
+          <label class="fl" for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com">
+        </div>
+        <div class="fg">
+          <label class="fl" for="birthdate">Birthdate<span class="req">*</span></label>
+          <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+      </div>
+
+      <!-- TEXT PERMISSION -->
+      <div class="fg" style="margin-top:0.5rem;">
+        <p class="fl" style="margin-bottom:0.6rem;">Do we have permission to text this number for reminders and updates?<span class="req">*</span></p>
+        <div class="check-list">
+          <label class="ci">
+            <input type="radio" name="text_permission" value="Yes, you have permission to text me" required>
+            <span>Yes, you have permission to text me</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="text_permission" value="No">
+            <span>No</span>
+          </label>
         </div>
       </div>
 
@@ -436,49 +471,99 @@ footer a{color:var(--b);text-decoration:none;}
         </div>
       </div>
 
-      <!-- ROOM PREFERENCES -->
-      <div class="fsec">Room Preferences</div>
-      <div class="fg">
-        <label class="fl" for="bunkmate">Bunkmate Preference</label>
-        <input type="text" id="bunkmate" name="bunkmate_preference" placeholder="Name of preferred bunkmate (optional)">
-      </div>
-
       <!-- HEALTH & DIETARY -->
       <div class="fsec">Health &amp; Dietary</div>
       <div class="fg">
-        <label class="fl" for="dietary">Dietary Restrictions / Allergies</label>
-        <textarea id="dietary" name="dietary_restrictions" placeholder="List any food allergies, dietary needs, or medical considerations. Leave blank if none."></textarea>
+        <label class="fl" for="dietary">Dietary Restrictions / Allergies (if so please specify)<span class="req">*</span></label>
+        <textarea id="dietary" name="dietary_restrictions" required placeholder="List any food allergies or dietary needs. Write 'None' if not applicable."></textarea>
       </div>
-
-      <!-- PACKING -->
-      <div class="fsec">Packing Acknowledgement</div>
-      <p style="font-size:0.83rem;color:var(--fg2);margin-bottom:1rem;line-height:1.6;">Camp Copass does not provide bedding. Please check each item below confirming you will bring:</p>
-      <div class="fg">
+      <div class="fg" style="margin-top:1rem;">
+        <p class="fl" style="margin-bottom:0.6rem;">Dietary Preferences</p>
         <div class="check-list">
           <label class="ci">
-            <input type="checkbox" name="bring_sheets" value="Yes" required>
-            <span>My own <strong>bed sheets</strong> (fitted + flat)</span>
+            <input type="radio" name="dietary_preference" value="No Special Preferences">
+            <span>No Special Preferences</span>
           </label>
           <label class="ci">
-            <input type="checkbox" name="bring_pillow" value="Yes" required>
-            <span>My own <strong>pillow</strong></span>
+            <input type="radio" name="dietary_preference" value="Vegan (No Meat or Dairy)">
+            <span>Vegan (No Meat or Dairy)</span>
           </label>
           <label class="ci">
-            <input type="checkbox" name="bring_comforter" value="Yes" required>
-            <span>My own <strong>comforter or blanket</strong></span>
-          </label>
-          <label class="ci">
-            <input type="checkbox" name="bring_toiletries" value="Yes" required>
-            <span>My own <strong>toiletries</strong> (toothbrush, shampoo, etc.)</span>
+            <input type="radio" name="dietary_preference" value="No Pork">
+            <span>No Pork</span>
           </label>
         </div>
       </div>
 
-      <!-- NOTES -->
-      <div class="fsec">Additional Notes</div>
+      <!-- T-SHIRT SIZE -->
+      <div class="fsec">T-Shirt Size</div>
       <div class="fg">
-        <label class="fl" for="notes">Anything Else We Should Know?</label>
-        <textarea id="notes" name="additional_notes" placeholder="Special needs, questions, or anything else for the retreat team."></textarea>
+        <p class="fl" style="margin-bottom:0.6rem;">Select your size<span class="req">*</span></p>
+        <div class="check-list check-list--inline">
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="S" required>
+            <span>S</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="M">
+            <span>M</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="L">
+            <span>L</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="XL">
+            <span>XL</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="2XL">
+            <span>2XL</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="3XL">
+            <span>3XL</span>
+          </label>
+          <label class="ci">
+            <input type="radio" name="tshirt_size" value="4XL">
+            <span>4XL</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- HOW DID YOU HEAR -->
+      <div class="fsec">How Did You Hear About the Retreat?</div>
+      <div class="fg">
+        <label class="fl" for="referral">Were you invited by a friend or committee person? If so, shout them out!</label>
+        <textarea id="referral" name="how_did_you_hear" placeholder="Tell us how you found out about the retreat!"></textarea>
+      </div>
+
+      <!-- ROOM PREFERENCES -->
+      <div class="fsec">Room Preferences</div>
+      <div class="fg">
+        <label class="fl" for="bunkmate">Bunkmate Preference (Is there someone specific you'd like to bunk with?)</label>
+        <input type="text" id="bunkmate" name="bunkmate_preference" placeholder="Name of preferred bunkmate (optional)">
+      </div>
+
+      <!-- PANEL QUESTION -->
+      <div class="fsec">Girl Talk Panel Question</div>
+      <div class="fg">
+        <label class="fl" for="panel_q">Is there a question you would like to be answered by the panel?<br><span style="font-weight:400;font-size:0.82rem;color:var(--fg3);">Write "Anonymous" at the end if you'd like your name kept private.</span></label>
+        <textarea id="panel_q" name="panel_question" placeholder="Your question for the panel (optional)"></textarea>
+      </div>
+
+      <!-- IMPORTANT INFORMATION -->
+      <div class="fsec">Important Information</div>
+      <div class="info-box">
+        <p>The conference is created to encourage, empower, and support you in a loving environment. We want you to feel welcomed and relaxed, so that you are ready to receive all the Lord has planned for this weekend. With that being said please understand the accommodations take place at a camp, so we will be comfortable indoors with beds and showers but you will need to provide your own bed linens and toiletries. The beds are bunk style but they are full size mattresses so you will still sleep comfortably. We will send out a more detailed information as the event gets closer!</p>
+        <p style="margin-top:0.85rem;font-weight:600;color:var(--fg);">Please bring the following:</p>
+        <ul class="bring-list">
+          <li>Bed sheets, Pillow and pillow case</li>
+          <li>Blanket or comforter</li>
+          <li>Travel toiletries (shampoo, soap, toothbrush, etc.)</li>
+          <li>Shower shoes</li>
+          <li>Comfortable tennis shoes</li>
+        </ul>
       </div>
 
       <button type="submit" class="submit-btn" id="submit-btn">
@@ -554,12 +639,16 @@ var btn = document.getElementById('submit-btn');
 form.addEventListener('submit', async function(e) {
   e.preventDefault();
   var ok = true;
-  form.querySelectorAll('[required]').forEach(function(el) {
-    if (el.type === 'checkbox' && !el.checked) ok = false;
-    else if (el.type !== 'checkbox' && !el.value.trim()) ok = false;
+  // Check text inputs / selects / textareas
+  form.querySelectorAll('input[required]:not([type=radio]), textarea[required]').forEach(function(el) {
+    if (!el.value.trim()) ok = false;
+  });
+  // Check required radio groups
+  ['text_permission', 'tshirt_size'].forEach(function(name) {
+    if (!form.querySelector('input[name="' + name + '"]:checked')) ok = false;
   });
   if (!ok) {
-    alert('Please fill in all required fields (*) and check all four packing items before submitting.');
+    alert('Please fill in all required fields (*) before submitting.');
     return;
   }
   btn.disabled = true;
