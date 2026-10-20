@@ -3021,6 +3021,8 @@ function editEvent(id) {
   document.getElementById('edit-ev-desc').value = ev.desc || '';
   document.getElementById('edit-ev-img').value = ev.image || '';
   previewEditImg(ev.image || '');
+  document.getElementById('edit-ev-reg-link').value = ev.registrationLink || '';
+  document.getElementById('edit-ev-featured').checked = (ev.featured === 'true');
 
   const modal = document.getElementById('edit-event-modal');
   modal.style.display = 'flex';
@@ -3085,6 +3087,8 @@ function saveEditEvent() {
     location: document.getElementById('edit-ev-loc').value.trim(),
     desc: document.getElementById('edit-ev-desc').value.trim(),
     image: document.getElementById('edit-ev-img').value.trim(),
+    registrationLink: document.getElementById('edit-ev-reg-link').value.trim(),
+    featured: document.getElementById('edit-ev-featured').checked ? 'true' : 'false',
   });
 
   DB.events[evIdx] = updatedEvent;
@@ -3113,6 +3117,8 @@ function saveEditEvent() {
       location: updatedEvent.location || '',
       desc: updatedEvent.desc || '',
       image: updatedEvent.image || '',
+      registrationLink: updatedEvent.registrationLink || '',
+      featured: updatedEvent.featured || 'false',
       active: 'true'
     };
 
@@ -3851,6 +3857,10 @@ function refreshAll() {
         <img id="edit-ev-img-img" style="max-width:100%;max-height:160px;object-fit:cover;display:block;"/>
       </div>
     </div>
+    <div class="f-group" style="margin-bottom:1rem;">
+      <label class="f-label">Registration Link <span style="color:rgba(255,255,255,0.4);font-size:0.62rem;text-transform:none;letter-spacing:0;">(optional — Realm or external)</span></label>
+      <input class="f-input" id="edit-ev-reg-link" type="url" placeholder="https://purposechurchofdenton.com/..."/>
+    </div>
 
     <!-- Post option -->
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:1rem;margin-bottom:1rem;">
@@ -3858,8 +3868,11 @@ function refreshAll() {
       <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;margin-bottom:0.5rem;">
         <input type="checkbox" id="edit-ev-post-website" checked style="accent-color:var(--b);"> Update on website too
       </label>
-      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;">
+      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;margin-bottom:0.5rem;">
         <input type="checkbox" id="edit-ev-resend-email" style="accent-color:var(--b);"> Resend email notification to members
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:rgba(255,255,255,0.7);cursor:pointer;">
+        <input type="checkbox" id="edit-ev-featured" style="accent-color:var(--b);"> ⭐ Feature on Home Page
       </label>
     </div>
 
