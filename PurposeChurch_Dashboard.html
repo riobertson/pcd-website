@@ -978,6 +978,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             <th>How Did You Hear</th>
             <th>Panel Question</th>
             <th>Submitted</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="reg-tbody"></tbody>
@@ -4234,16 +4235,36 @@ function renderRegistrations(subs) {
       + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.55);max-width:160px;">' + (s.how_did_you_hear||'—') + '</td>'
       + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.55);max-width:180px;">' + (s.panel_question||'—') + '</td>'
       + '<td style="white-space:nowrap;font-size:0.78rem;color:rgba(255,255,255,0.45);">' + date + '</td>'
+      + '<td style="text-align:center;"><button onclick="deleteRegistration(\''+s._id+'\')" style="background:none;border:none;cursor:pointer;color:rgba(255,80,80,0.5);font-size:1rem;padding:0.2rem 0.4rem;" title="Delete">✕</button></td>'
       + '</tr>';
   }).join('');
 
-  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="12" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
+  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="13" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
   document.getElementById('reg-stats-row').style.display = 'grid';
   document.getElementById('reg-tshirt-card').style.display = 'block';
   document.getElementById('reg-table-card').style.display = 'block';
 }
 
 function filterRegistrations() { if (_regData.length) renderRegistrations(_regData); }
+
+function deleteRegistration(docId) {
+  if (!confirm('Delete this registration? This cannot be undone.')) return;
+  var apiKey = 'AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w';
+  var project = 'purposechurchdenton';
+  fetch('https://firestore.googleapis.com/v1/projects/' + project + '/databases/(default)/documents/wop_registrations/' + docId + '?key=' + apiKey, {
+    method: 'DELETE'
+  })
+  .then(function(r) {
+    if (r.ok || r.status === 200) {
+      _regData = _regData.filter(function(s) { return s._id !== docId; });
+      renderRegistrations(_regData);
+      toast('Registration deleted.', 'success');
+    } else {
+      toast('Delete failed. Try again.', 'error');
+    }
+  })
+  .catch(function() { toast('Delete failed. Check your connection.', 'error'); });
+}
 
 function exportRegCSV() {
   if (!_regData.length) return;
