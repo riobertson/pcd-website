@@ -89,9 +89,9 @@ img{max-width:100%;}
 }
 .dc{padding:1.2rem 1rem;text-align:center;border-right:1px solid rgba(255,255,255,0.15);}
 .dc:last-child{border-right:none;}
-.dc-label{font-size:0.56rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.85);font-weight:600;margin-bottom:0.35rem;}
-.dc-val{font-family:var(--fw);font-size:1.05rem;color:#fff;line-height:1.25;}
-.dc-sub{font-size:0.7rem;color:rgba(255,255,255,0.55);font-weight:300;margin-top:0.2rem;}
+.dc-label{font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.85);font-weight:600;margin-bottom:0.35rem;}
+.dc-val{font-family:var(--fw);font-size:1.3rem;color:#fff;line-height:1.25;}
+.dc-sub{font-size:0.82rem;color:rgba(255,255,255,0.55);font-weight:300;margin-top:0.2rem;}
 
 /* ── SECTION SHARED ── */
 .eyebrow{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--b);font-weight:600;margin-bottom:0.6rem;}
@@ -340,7 +340,7 @@ footer a{color:var(--b);text-decoration:none;}
     <p>The Women of Purpose Conference is a transformative event set to unfold in January 2027 at Camp Copass in Denton, Texas. Nestled in serene surroundings, you'll have the opportunity to unwind by the lake and bask in the natural splendor, all while immersing yourself in learning and spiritual rejuvenation.</p>
     <p>Friday evening's <strong>Girl Talk</strong> session features a panel ready to address <em>your</em> questions. Saturday is packed with enjoyable activities and personalized breakout sessions. The retreat closes Sunday with a serene morning prayer and hearty breakfast before transitioning to worship at Purpose Church of Denton.</p>
     <div class="deposit-callout">
-      <strong>Spots are limited to 28.</strong> Secure yours now for <strong>$150</strong>, or hold your spot with a <strong>non-refundable $50 deposit</strong> due by November 1, 2026. Balance is collected at check-in.
+      <strong>Spots are limited to 28.</strong> Secure yours now for <strong>$150</strong>, or hold your spot with a <strong>non-refundable $50 deposit</strong> due by November 1, 2026. The remaining balance is due no later than <strong>January 8, 2027</strong>. We are not taking payments at the door.
     </div>
   </div>
 </section>
@@ -388,7 +388,7 @@ footer a{color:var(--b);text-decoration:none;}
     </div>
 
     <div class="notice-box">
-      <strong>Spots are limited to 28.</strong> Your registration is not confirmed until payment is received. A <strong>non-refundable $50 deposit</strong> must be paid by <strong>November 1, 2026</strong>. The remaining balance is due at check-in on January 22.
+      <strong>Spots are limited to 28.</strong> Your registration is not confirmed until payment is received. A <strong>non-refundable $50 deposit</strong> must be paid by <strong>November 1, 2026</strong>. The remaining balance is due no later than <strong>January 8, 2027</strong>. We are not taking payments at the door.
     </div>
 
     <!-- ⚠ TO ACTIVATE EMAIL NOTIFICATIONS:
@@ -410,10 +410,10 @@ footer a{color:var(--b);text-decoration:none;}
             <div class="rt-note">Full payment · Overnight Fri–Sun</div>
           </label>
           <label class="rt-opt" id="opt-dep">
-            <input type="radio" name="registration_type" value="Deposit Only — $50 non-refundable (balance due at check-in)">
+            <input type="radio" name="registration_type" value="Deposit Only — $50 non-refundable (balance due by January 8, 2027)">
             <div class="rt-name"><span class="rt-dot"></span>Deposit Only</div>
             <div class="rt-price">$50</div>
-            <div class="rt-note">Non-refundable · Balance due at check-in</div>
+            <div class="rt-note">Non-refundable · Balance due by Jan 8, 2027</div>
           </label>
         </div>
       </div>
@@ -601,7 +601,7 @@ footer a{color:var(--b);text-decoration:none;}
     </a>
     <p class="pay-secure">Secure payment powered by Realm · Purpose Church of Denton</p>
     <div class="deposit-tip">
-      <strong>Paying the $50 deposit?</strong> Enter $50 in the Realm payment form. Your remaining $100 balance will be collected at check-in on January 22. Deposits are non-refundable and must be received by November 1, 2026.
+      <strong>Paying the $50 deposit?</strong> Enter $50 in the Realm payment form. Your remaining $100 balance is due no later than <strong>January 8, 2027</strong>. We are not taking payments at the door. Deposits are non-refundable and must be received by November 1, 2026.
     </div>
   </div>
 </section>
@@ -626,7 +626,7 @@ document.querySelectorAll('.rt-opt').forEach(function(opt) {
     var isDeposit = radio.value.includes('$50');
     document.getElementById('amount-num').textContent = isDeposit ? '$50' : '$150';
     document.getElementById('amount-lbl').textContent = isDeposit
-      ? 'Deposit (non-refundable · balance $100 due at check-in)'
+      ? 'Deposit (non-refundable · balance $100 due by Jan 8, 2027)'
       : 'Full retreat registration';
   });
 });
