@@ -292,6 +292,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
           <div class="nav-item" onclick="switchPanel('email')"><span class="nav-item-icon">📧</span>Email Members</div>
           <div class="nav-item" onclick="switchPanel('qrcodes')"><span class="nav-item-icon">📲</span>QR Codes</div>
           <div class="nav-item" onclick="switchPanel('members')" id="nav-members"><span class="nav-item-icon">👥</span>Members</div>
+          <div class="nav-item" onclick="switchPanel('registrations')" id="nav-registrations"><span class="nav-item-icon">📋</span>Registrations</div>
           <div class="nav-item" onclick="switchPanel('access')" id="nav-access"><span class="nav-item-icon">🔐</span>Access Control</div>
         </nav>
         <div class="sidebar-footer">
@@ -912,6 +913,91 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             </div>
           </div>
 
+<!-- ══ REGISTRATIONS PANEL ══ -->
+<div class="panel" id="panel-registrations">
+
+  <!-- API KEY SETUP -->
+  <div class="dash-card" id="reg-api-setup">
+    <div class="dash-card-title">🔑 Connect Formspree</div>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);margin-bottom:1rem;font-weight:300;">Enter your Formspree API key once to load registrations. Get it from <strong style="color:var(--g);">formspree.io → Account → API Keys</strong>.</p>
+    <div style="display:flex;gap:0.8rem;align-items:center;">
+      <input class="f-input" id="reg-api-key-input" type="password" placeholder="Paste your Formspree API key here" style="flex:1;"/>
+      <button class="btn btn-burg" onclick="saveRegApiKey()">Save &amp; Load</button>
+    </div>
+    <p id="reg-api-status" style="font-size:0.75rem;margin-top:0.6rem;color:rgba(255,255,255,0.4);"></p>
+  </div>
+
+  <!-- SUMMARY STATS -->
+  <div id="reg-stats-row" style="display:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem;">
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--g);line-height:1;" id="stat-total">0</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Registered</div>
+    </div>
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:#4CAF50;line-height:1;" id="stat-full">0</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Full $150</div>
+    </div>
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--g);line-height:1;" id="stat-deposit">0</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Deposits $50</div>
+    </div>
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:#e57373;line-height:1;" id="stat-balance">$0</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Balance Owed</div>
+    </div>
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:#64B5F6;line-height:1;" id="stat-confirmed">0</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Confirmed Paid</div>
+    </div>
+    <div class="dash-card" style="text-align:center;padding:1.2rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.5;" id="stat-spots">28 spots total</div>
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.3rem;">Capacity</div>
+    </div>
+  </div>
+
+  <!-- T-SHIRT BREAKDOWN -->
+  <div class="dash-card" id="reg-tshirt-card" style="display:none;margin-bottom:1.5rem;">
+    <div class="dash-card-title">👕 T-Shirt Sizes</div>
+    <div id="reg-tshirt-counts" style="display:flex;flex-wrap:wrap;gap:0.7rem;margin-top:0.5rem;"></div>
+  </div>
+
+  <!-- REGISTRANT TABLE -->
+  <div class="dash-card" id="reg-table-card" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;">
+      <div class="dash-card-title" style="margin:0;">📋 All Registrants</div>
+      <div style="display:flex;gap:0.6rem;align-items:center;">
+        <input class="f-input" id="reg-search" type="text" placeholder="Search name…" oninput="filterRegistrations()" style="width:160px;padding:0.4rem 0.7rem;font-size:0.8rem;"/>
+        <button class="btn btn-ghost btn-sm" onclick="exportRegCSV()">⬇ Export CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadRegistrations()">↻ Refresh</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="dash-table" id="reg-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Registration</th>
+            <th>Payment</th>
+            <th>Balance</th>
+            <th>T-Shirt</th>
+            <th>Dietary</th>
+            <th>Bunkmate</th>
+            <th>Submitted</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="reg-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="reg-empty" style="display:none;text-align:center;padding:3rem;color:rgba(255,255,255,0.35);font-size:0.9rem;">No registrations yet.</div>
+  <div id="reg-loading" style="display:none;text-align:center;padding:3rem;color:rgba(255,255,255,0.35);">Loading registrations…</div>
+
+</div><!-- /panel-registrations -->
+
         </div><!-- /dash-content -->
       </div><!-- /dash-main -->
     </div><!-- /dash-layout -->
@@ -1169,7 +1255,7 @@ function doLogout() {
 }
 
 // ── NAVIGATION ──
-const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',qrcodes:'QR Codes',members:'Member Directory',access:'Access Control'};
+const panelTitles = {overview:'Overview',sermons:'Sermon Manager',events:'Calendar & Events',newsletter:'Newsletter',email:'Email Members',qrcodes:'QR Codes',members:'Member Directory',registrations:'WOP Retreat Registrations',access:'Access Control'};
 
 function switchPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -4032,7 +4118,180 @@ var _origSwitchPanel = switchPanel;
 switchPanel = function(id) {
   _origSwitchPanel(id);
   if (id === 'qrcodes') { setTimeout(function(){ if(typeof QRCode !== 'undefined') initQRCodes(); }, 100); }
+  if (id === 'registrations') { setTimeout(initRegistrationsPanel, 80); }
 };
+
+// ══════════════════════════════════════════
+// REGISTRATIONS — WOP RETREAT 2027
+// ══════════════════════════════════════════
+var _regData = []; // cached submissions
+
+function initRegistrationsPanel() {
+  var key = localStorage.getItem('pcd_formspree_key') || '';
+  if (key) {
+    document.getElementById('reg-api-setup').style.display = 'none';
+    loadRegistrations();
+  } else {
+    document.getElementById('reg-api-setup').style.display = 'block';
+  }
+}
+
+function saveRegApiKey() {
+  var key = document.getElementById('reg-api-key-input').value.trim();
+  if (!key) return;
+  localStorage.setItem('pcd_formspree_key', key);
+  document.getElementById('reg-api-status').textContent = 'Key saved. Loading…';
+  document.getElementById('reg-api-setup').style.display = 'none';
+  loadRegistrations();
+}
+
+function loadRegistrations() {
+  var key = localStorage.getItem('pcd_formspree_key');
+  if (!key) { document.getElementById('reg-api-setup').style.display = 'block'; return; }
+  document.getElementById('reg-loading').style.display = 'block';
+  document.getElementById('reg-table-card').style.display = 'none';
+  document.getElementById('reg-empty').style.display = 'none';
+
+  fetch('https://formspree.io/api/0/forms/moejowyw/submissions?page_size=100', {
+    headers: { 'Authorization': 'Bearer ' + key, 'Accept': 'application/json' }
+  })
+  .then(function(r) {
+    if (r.status === 401) throw new Error('auth');
+    return r.json();
+  })
+  .then(function(data) {
+    document.getElementById('reg-loading').style.display = 'none';
+    var subs = (data.submissions || []);
+    _regData = subs;
+    if (!subs.length) { document.getElementById('reg-empty').style.display = 'block'; return; }
+    renderRegistrations(subs);
+  })
+  .catch(function(err) {
+    document.getElementById('reg-loading').style.display = 'none';
+    if (err.message === 'auth') {
+      localStorage.removeItem('pcd_formspree_key');
+      document.getElementById('reg-api-setup').style.display = 'block';
+      document.getElementById('reg-api-status').textContent = 'Invalid key — please try again.';
+    } else {
+      toast('Could not load registrations. Check your connection.', 'error');
+    }
+  });
+}
+
+function getPaymentStatus(subId) {
+  var stored = JSON.parse(localStorage.getItem('pcd_reg_payments') || '{}');
+  return stored[subId] || 'pending';
+}
+
+function setPaymentStatus(subId, status) {
+  var stored = JSON.parse(localStorage.getItem('pcd_reg_payments') || '{}');
+  stored[subId] = status;
+  localStorage.setItem('pcd_reg_payments', JSON.stringify(stored));
+  renderRegistrations(_regData);
+}
+
+function renderRegistrations(subs) {
+  var search = (document.getElementById('reg-search') ? document.getElementById('reg-search').value : '').toLowerCase();
+  var filtered = subs.filter(function(s) {
+    var name = ((s.first_name || '') + ' ' + (s.last_name || '')).toLowerCase();
+    return !search || name.includes(search);
+  });
+
+  // Stats
+  var totalFull = 0, totalDeposit = 0, balanceOwed = 0, confirmed = 0;
+  var tshirts = {};
+  subs.forEach(function(s) {
+    var rt = s.registration_type || '';
+    var isDeposit = rt.includes('50') || rt.toLowerCase().includes('deposit');
+    if (isDeposit) { totalDeposit++; balanceOwed += 100; } else { totalFull++; }
+    var ps = getPaymentStatus(s._id);
+    if (ps === 'confirmed') confirmed++;
+    var sz = (s.tshirt_size || '').trim();
+    if (sz) tshirts[sz] = (tshirts[sz] || 0) + 1;
+  });
+  var spotsLeft = 28 - subs.length;
+  document.getElementById('stat-total').textContent = subs.length;
+  document.getElementById('stat-full').textContent = totalFull;
+  document.getElementById('stat-deposit').textContent = totalDeposit;
+  document.getElementById('stat-balance').textContent = '$' + balanceOwed;
+  document.getElementById('stat-confirmed').textContent = confirmed;
+  document.getElementById('stat-spots').textContent = spotsLeft > 0 ? spotsLeft + ' spots left' : 'FULL';
+  document.getElementById('stat-spots').style.color = spotsLeft <= 5 ? '#e57373' : 'rgba(255,255,255,0.6)';
+
+  // T-shirt counts
+  var szOrder = ['S','M','L','XL','2XL','3XL','4XL'];
+  var tHtml = szOrder.map(function(sz) {
+    var n = tshirts[sz] || 0;
+    return '<div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:0.5rem 0.9rem;text-align:center;min-width:60px;">'
+      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;color:var(--g);">' + n + '</div>'
+      + '<div style="font-size:0.6rem;letter-spacing:0.12em;color:rgba(255,255,255,0.45);">' + sz + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('reg-tshirt-counts').innerHTML = tHtml;
+
+  // Table rows
+  var rows = filtered.map(function(s, i) {
+    var rt = s.registration_type || '';
+    var isDeposit = rt.includes('50') || rt.toLowerCase().includes('deposit');
+    var regLabel = isDeposit
+      ? '<span style="color:var(--g);font-weight:500;">Deposit $50</span>'
+      : '<span style="color:#81C784;font-weight:500;">Full $150</span>';
+    var balance = isDeposit ? '$100' : '—';
+    var ps = getPaymentStatus(s._id);
+    var payBadge = ps === 'confirmed'
+      ? '<span style="background:rgba(76,175,80,0.2);color:#81C784;padding:0.2rem 0.6rem;font-size:0.7rem;border-radius:2px;cursor:pointer;" onclick="setPaymentStatus(\''+s._id+'\',\'pending\')">✓ Confirmed</span>'
+      : '<span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);padding:0.2rem 0.6rem;font-size:0.7rem;border-radius:2px;cursor:pointer;" onclick="setPaymentStatus(\''+s._id+'\',\'confirmed\')">Pending</span>';
+    var date = s._date ? new Date(s._date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    var dietary = [s.dietary_restrictions, s.dietary_preference].filter(function(v){ return v && v !== 'None' && v !== 'No Special Preferences'; }).join(' · ') || '—';
+    var notes = [s.how_did_you_hear, s.panel_question].filter(Boolean).map(function(v){ return v.length > 40 ? v.slice(0,40)+'…' : v; }).join(' | ') || '';
+
+    return '<tr>'
+      + '<td style="color:rgba(255,255,255,0.35);">' + (i+1) + '</td>'
+      + '<td style="white-space:nowrap;font-weight:500;">' + (s.first_name||'') + ' ' + (s.last_name||'') + '</td>'
+      + '<td style="white-space:nowrap;">' + (s.phone||'—') + '</td>'
+      + '<td>' + regLabel + '</td>'
+      + '<td>' + payBadge + '</td>'
+      + '<td style="color:#e57373;">' + balance + '</td>'
+      + '<td style="text-align:center;">' + (s.tshirt_size||'—') + '</td>'
+      + '<td style="font-size:0.78rem;max-width:140px;">' + dietary + '</td>'
+      + '<td style="font-size:0.78rem;">' + (s.bunkmate_preference||'—') + '</td>'
+      + '<td style="white-space:nowrap;font-size:0.78rem;color:rgba(255,255,255,0.45);">' + date + '</td>'
+      + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.45);max-width:160px;">' + notes + '</td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="11" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
+  document.getElementById('reg-stats-row').style.display = 'grid';
+  document.getElementById('reg-tshirt-card').style.display = 'block';
+  document.getElementById('reg-table-card').style.display = 'block';
+}
+
+function filterRegistrations() { if (_regData.length) renderRegistrations(_regData); }
+
+function exportRegCSV() {
+  if (!_regData.length) return;
+  var headers = ['#','First Name','Last Name','Phone','Email','Birthdate','Registration Type','Payment Status','Balance Owed','T-Shirt Size','Dietary Restrictions','Dietary Preference','Bunkmate','Text Permission','Emergency Contact','Emergency Phone','How Did You Hear','Panel Question','Date Submitted'];
+  var rows = _regData.map(function(s, i) {
+    var isDeposit = (s.registration_type||'').includes('50') || (s.registration_type||'').toLowerCase().includes('deposit');
+    var ps = getPaymentStatus(s._id);
+    var date = s._date ? new Date(s._date).toLocaleDateString('en-US') : '';
+    function q(v) { return '"' + (v||'').toString().replace(/"/g,'""') + '"'; }
+    return [
+      i+1, q(s.first_name), q(s.last_name), q(s.phone), q(s.email), q(s.birthdate),
+      q(s.registration_type), q(ps), isDeposit ? '$100' : '$0',
+      q(s.tshirt_size), q(s.dietary_restrictions), q(s.dietary_preference),
+      q(s.bunkmate_preference), q(s.text_permission),
+      q(s.emergency_contact_name), q(s.emergency_contact_phone),
+      q(s.how_did_you_hear), q(s.panel_question), q(date)
+    ].join(',');
+  });
+  var csv = [headers.join(',')].concat(rows).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'WOP-Retreat-2027-Registrations.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
 </script>
 
 </body>
