@@ -916,16 +916,7 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
 <!-- ══ REGISTRATIONS PANEL ══ -->
 <div class="panel" id="panel-registrations">
 
-  <!-- API KEY SETUP -->
-  <div class="dash-card" id="reg-api-setup">
-    <div class="dash-card-title">🔑 Connect Formspree</div>
-    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);margin-bottom:1rem;font-weight:300;">Enter your Formspree API key once to load registrations. Get it from <strong style="color:var(--g);">formspree.io → Account → API Keys</strong>.</p>
-    <div style="display:flex;gap:0.8rem;align-items:center;">
-      <input class="f-input" id="reg-api-key-input" type="password" placeholder="Paste your Formspree API key here" style="flex:1;"/>
-      <button class="btn btn-burg" onclick="saveRegApiKey()">Save &amp; Load</button>
-    </div>
-    <p id="reg-api-status" style="font-size:0.75rem;margin-top:0.6rem;color:rgba(255,255,255,0.4);"></p>
-  </div>
+  <div id="reg-api-setup" style="display:none;"></div>
 
   <!-- SUMMARY STATS -->
   <div id="reg-stats-row" style="display:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem;">
@@ -4127,54 +4118,40 @@ switchPanel = function(id) {
 var _regData = []; // cached submissions
 
 function initRegistrationsPanel() {
-  var key = localStorage.getItem('pcd_formspree_key') || '';
-  if (key) {
-    document.getElementById('reg-api-setup').style.display = 'none';
-    loadRegistrations();
-  } else {
-    document.getElementById('reg-api-setup').style.display = 'block';
-  }
-}
-
-function saveRegApiKey() {
-  var key = document.getElementById('reg-api-key-input').value.trim();
-  if (!key) return;
-  localStorage.setItem('pcd_formspree_key', key);
-  document.getElementById('reg-api-status').textContent = 'Key saved. Loading…';
   document.getElementById('reg-api-setup').style.display = 'none';
   loadRegistrations();
 }
 
+function saveRegApiKey() {}  // no longer needed
+
 function loadRegistrations() {
-  var key = localStorage.getItem('pcd_formspree_key');
-  if (!key) { document.getElementById('reg-api-setup').style.display = 'block'; return; }
   document.getElementById('reg-loading').style.display = 'block';
   document.getElementById('reg-table-card').style.display = 'none';
   document.getElementById('reg-empty').style.display = 'none';
 
-  fetch('https://formspree.io/api/0/forms/moejowyw/submissions?page_size=100', {
-    headers: { 'Authorization': 'Bearer ' + key, 'Accept': 'application/json' }
-  })
-  .then(function(r) {
-    if (r.status === 401) throw new Error('auth');
-    return r.json();
-  })
+  var apiKey = 'AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w';
+  var project = 'purposechurchdenton';
+  fetch('https://firestore.googleapis.com/v1/projects/' + project + '/databases/(default)/documents/wop_registrations?key=' + apiKey + '&pageSize=200')
+  .then(function(r) { return r.json(); })
   .then(function(data) {
     document.getElementById('reg-loading').style.display = 'none';
-    var subs = (data.submissions || []);
+    var docs = (data.documents || []);
+    var subs = docs.map(function(doc) {
+      var f = doc.fields || {};
+      var out = { _id: doc.name.split('/').pop() };
+      Object.keys(f).forEach(function(k) { out[k] = f[k].stringValue || ''; });
+      out._date = out.submitted_at || '';
+      return out;
+    });
+    // Sort newest first
+    subs.sort(function(a,b){ return new Date(b._date) - new Date(a._date); });
     _regData = subs;
     if (!subs.length) { document.getElementById('reg-empty').style.display = 'block'; return; }
     renderRegistrations(subs);
   })
-  .catch(function(err) {
+  .catch(function() {
     document.getElementById('reg-loading').style.display = 'none';
-    if (err.message === 'auth') {
-      localStorage.removeItem('pcd_formspree_key');
-      document.getElementById('reg-api-setup').style.display = 'block';
-      document.getElementById('reg-api-status').textContent = 'Invalid key — please try again.';
-    } else {
-      toast('Could not load registrations. Check your connection.', 'error');
-    }
+    toast('Could not load registrations. Check your connection.', 'error');
   });
 }
 

@@ -654,20 +654,32 @@ form.addEventListener('submit', async function(e) {
   btn.disabled = true;
   btn.textContent = 'Submitting…';
   try {
+    // Send to Formspree (email notification)
     var res = await fetch(form.action, {
       method: 'POST',
       body: new FormData(form),
       headers: { 'Accept': 'application/json' }
     });
-    if (res.ok) {
-      form.style.display = 'none';
-      successEl.style.display = 'block';
-      setTimeout(function() {
-        document.getElementById('payment').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 1500);
-    } else {
-      throw new Error('server');
-    }
+    if (!res.ok) throw new Error('server');
+
+    // Also save to Firebase so the dashboard can track registrations
+    var fd = new FormData(form);
+    var data = {};
+    fd.forEach(function(v, k) { data[k] = v; });
+    data.submitted_at = new Date().toISOString();
+    var fields = {};
+    Object.keys(data).forEach(function(k) { fields[k] = { stringValue: String(data[k]) }; });
+    fetch('https://firestore.googleapis.com/v1/projects/purposechurchdenton/databases/(default)/documents/wop_registrations?key=AIzaSyDpE_gUXCy12EO6qwcz2BuFMyiY1UcJc-w', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: fields })
+    }).catch(function(){});  // silent — Formspree already captured it
+
+    form.style.display = 'none';
+    successEl.style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('payment').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1500);
   } catch(err) {
     btn.disabled = false;
     btn.textContent = 'Submit My Information →';
