@@ -271,11 +271,6 @@ textarea{resize:vertical;min-height:80px;}
 .bring-list{margin:0.5rem 0 0 1.2rem;padding:0;display:flex;flex-direction:column;gap:0.3rem;}
 .bring-list li{font-size:0.84rem;color:var(--fg2);}
 
-/* Inline t-shirt size row */
-.check-list--inline{flex-direction:row;flex-wrap:wrap;gap:0.5rem 1rem;}
-.check-list--inline .ci{padding:0.35rem 0.7rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;}
-.check-list--inline .ci:has(input:checked){background:var(--b);border-color:var(--b);color:#fff;}
-.check-list--inline .ci:has(input:checked) span{color:#fff;}
 
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);padding:2rem 0;background:var(--bg);}
@@ -495,41 +490,6 @@ footer a{color:var(--b);text-decoration:none;}
         </div>
       </div>
 
-      <!-- T-SHIRT SIZE -->
-      <div class="fsec">T-Shirt Size</div>
-      <div class="fg">
-        <p class="fl" style="margin-bottom:0.6rem;">Select your size<span class="req">*</span></p>
-        <div class="check-list check-list--inline">
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="S" required>
-            <span>S</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="M">
-            <span>M</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="L">
-            <span>L</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="XL">
-            <span>XL</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="2XL">
-            <span>2XL</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="3XL">
-            <span>3XL</span>
-          </label>
-          <label class="ci">
-            <input type="radio" name="tshirt_size" value="4XL">
-            <span>4XL</span>
-          </label>
-        </div>
-      </div>
 
       <!-- HOW DID YOU HEAR -->
       <div class="fsec">How Did You Hear About the Retreat?</div>
@@ -644,7 +604,7 @@ form.addEventListener('submit', async function(e) {
     if (!el.value.trim()) ok = false;
   });
   // Check required radio groups
-  ['text_permission', 'tshirt_size'].forEach(function(name) {
+  ['text_permission'].forEach(function(name) {
     if (!form.querySelector('input[name="' + name + '"]:checked')) ok = false;
   });
   if (!ok) {

@@ -946,11 +946,6 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
     </div>
   </div>
 
-  <!-- T-SHIRT BREAKDOWN -->
-  <div class="dash-card" id="reg-tshirt-card" style="display:none;margin-bottom:1.5rem;">
-    <div class="dash-card-title">👕 T-Shirt Sizes</div>
-    <div id="reg-tshirt-counts" style="display:flex;flex-wrap:wrap;gap:0.7rem;margin-top:0.5rem;"></div>
-  </div>
 
   <!-- REGISTRANT TABLE -->
   <div class="dash-card" id="reg-table-card" style="display:none;">
@@ -972,7 +967,6 @@ html,body{height:100%;font-family:'Jost',sans-serif;background:var(--n);color:va
             <th>Registration</th>
             <th>Payment</th>
             <th>Balance</th>
-            <th>T-Shirt</th>
             <th>Dietary</th>
             <th>Bunkmate</th>
             <th>How Did You Hear</th>
@@ -4178,15 +4172,12 @@ function renderRegistrations(subs) {
 
   // Stats
   var totalFull = 0, totalDeposit = 0, balanceOwed = 0, confirmed = 0;
-  var tshirts = {};
   subs.forEach(function(s) {
     var rt = s.registration_type || '';
     var isDeposit = rt.includes('50') || rt.toLowerCase().includes('deposit');
     if (isDeposit) { totalDeposit++; balanceOwed += 100; } else { totalFull++; }
     var ps = getPaymentStatus(s._id);
     if (ps === 'confirmed') confirmed++;
-    var sz = (s.tshirt_size || '').trim();
-    if (sz) tshirts[sz] = (tshirts[sz] || 0) + 1;
   });
   var spotsLeft = 28 - subs.length;
   document.getElementById('stat-total').textContent = subs.length;
@@ -4196,17 +4187,6 @@ function renderRegistrations(subs) {
   document.getElementById('stat-confirmed').textContent = confirmed;
   document.getElementById('stat-spots').textContent = spotsLeft > 0 ? spotsLeft + ' spots left' : 'FULL';
   document.getElementById('stat-spots').style.color = spotsLeft <= 5 ? '#e57373' : 'rgba(255,255,255,0.6)';
-
-  // T-shirt counts
-  var szOrder = ['S','M','L','XL','2XL','3XL','4XL'];
-  var tHtml = szOrder.map(function(sz) {
-    var n = tshirts[sz] || 0;
-    return '<div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:0.5rem 0.9rem;text-align:center;min-width:60px;">'
-      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;color:var(--g);">' + n + '</div>'
-      + '<div style="font-size:0.6rem;letter-spacing:0.12em;color:rgba(255,255,255,0.45);">' + sz + '</div>'
-      + '</div>';
-  }).join('');
-  document.getElementById('reg-tshirt-counts').innerHTML = tHtml;
 
   // Table rows
   var rows = filtered.map(function(s, i) {
@@ -4229,7 +4209,6 @@ function renderRegistrations(subs) {
       + '<td>' + regLabel + '</td>'
       + '<td>' + payBadge + '</td>'
       + '<td style="color:#e57373;">' + balance + '</td>'
-      + '<td style="text-align:center;">' + (s.tshirt_size||'—') + '</td>'
       + '<td style="font-size:0.78rem;max-width:140px;">' + dietary + '</td>'
       + '<td style="font-size:0.78rem;">' + (s.bunkmate_preference||'—') + '</td>'
       + '<td style="font-size:0.72rem;color:rgba(255,255,255,0.55);max-width:160px;">' + (s.how_did_you_hear||'—') + '</td>'
@@ -4239,9 +4218,8 @@ function renderRegistrations(subs) {
       + '</tr>';
   }).join('');
 
-  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="13" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
+  document.getElementById('reg-tbody').innerHTML = rows || '<tr><td colspan="12" style="text-align:center;color:rgba(255,255,255,0.3);">No results match your search.</td></tr>';
   document.getElementById('reg-stats-row').style.display = 'grid';
-  document.getElementById('reg-tshirt-card').style.display = 'block';
   document.getElementById('reg-table-card').style.display = 'block';
 }
 
@@ -4268,7 +4246,7 @@ function deleteRegistration(docId) {
 
 function exportRegCSV() {
   if (!_regData.length) return;
-  var headers = ['#','First Name','Last Name','Phone','Email','Birthdate','Registration Type','Payment Status','Balance Owed','T-Shirt Size','Dietary Restrictions','Dietary Preference','Bunkmate','Text Permission','Emergency Contact','Emergency Phone','How Did You Hear','Panel Question','Date Submitted'];
+  var headers = ['#','First Name','Last Name','Phone','Email','Birthdate','Registration Type','Payment Status','Balance Owed','Dietary Restrictions','Dietary Preference','Bunkmate','Text Permission','Emergency Contact','Emergency Phone','How Did You Hear','Panel Question','Date Submitted'];
   var rows = _regData.map(function(s, i) {
     var isDeposit = (s.registration_type||'').includes('50') || (s.registration_type||'').toLowerCase().includes('deposit');
     var ps = getPaymentStatus(s._id);
@@ -4277,7 +4255,7 @@ function exportRegCSV() {
     return [
       i+1, q(s.first_name), q(s.last_name), q(s.phone), q(s.email), q(s.birthdate),
       q(s.registration_type), q(ps), isDeposit ? '$100' : '$0',
-      q(s.tshirt_size), q(s.dietary_restrictions), q(s.dietary_preference),
+      q(s.dietary_restrictions), q(s.dietary_preference),
       q(s.bunkmate_preference), q(s.text_permission),
       q(s.emergency_contact_name), q(s.emergency_contact_phone),
       q(s.how_did_you_hear), q(s.panel_question), q(date)
