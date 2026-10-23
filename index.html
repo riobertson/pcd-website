@@ -1836,7 +1836,7 @@ function loadFeaturedEvent() {
         var g = function(k){ return f[k] ? (f[k].stringValue || '') : ''; };
         return { title:g('title'), type:g('type'), date:g('date'), rawDate:g('rawDate'),
           endDate:g('endDate'), location:g('location'), desc:g('desc'),
-          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price'), videoUrl:g('videoUrl'), formUrl:g('formUrl'), packingList:g('packingList') };
+          featured:g('featured'), registrationLink:g('registrationLink'), price:g('price'), videoUrl:g('videoUrl'), formUrl:g('formUrl'), packingList:g('packingList'), image:g('image') };
       }).filter(function(e){ return e.featured === 'true' && e.title; });
       docs.sort(function(a,b){ return new Date(a.rawDate||0) - new Date(b.rawDate||0); });
       feEvents = docs;
