@@ -22,6 +22,10 @@ Every phase includes:
 
 ---
 
+## 📄 PDF Versions
+
+Every guide in `00-start-here/` and every phase in `phases/` also has a **PDF copy right next to the `.md` file**, with the same name. Open the PDFs to read or print. To rebuild them after editing a `.md` file, run `node sunday-school-curriculum/tools/build_pdfs.js`.
+
 ## 🚀 Start Here
 
 1. Read the **[Program Overview](00-start-here/program-overview.md)** (vision, age groups, schedule, staffing).
