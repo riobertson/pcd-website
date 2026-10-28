@@ -518,7 +518,13 @@ Use the End-of-Phase Review & Celebration plan below. Run the *Major Prophet Meg
 | **Ezekiel** | Go floppy like loose bones, then snap up straight and tall. |
 | **Daniel** | Open hands like a lion's jaws ("Roar!"), then clap them shut. |
 
-Review motions from previous phases: use the motions listed in the [Books of the Bible Memory System](../00-start-here/books-of-the-bible-memory-system.md).
+**Review motions for books learned earlier (1–22).** These match the motions used in earlier phases and the [Books of the Bible Memory System](../00-start-here/books-of-the-bible-memory-system.md):
+
+| Section | Book → motion |
+|---|---|
+| **Law** | Genesis: palms together like a book, open, sweep arms up (sunrise) · Exodus: walk two fingers across your palm and out the "door" · Leviticus: fold hands in prayer, then raise them high · Numbers: count 1-2-3-4 on fingers, then zig-zag your hand · Deuteronomy: two fingers up, tap your head, hand on heart |
+| **History** | Joshua: march with a fist-trumpet · Judges: pound a gavel on your palm, then draw a circle · Ruth: scoop grain, then hug yourself · 1 & 2 Samuel: hold up 1 or 2 fingers, then cup your ear (listening) · 1 & 2 Kings: 1 or 2 fingers, then crown on head · 1 & 2 Chronicles: 1 or 2 fingers, then unroll a scroll · Ezra: stack fists like bricks · Nehemiah: hammer + shield · Esther: crown, then "speak up" hands at mouth |
+| **Poetry / Wisdom** | Job: hands open up, then fold over heart · Psalms: strum a harp · Proverbs: tap your head with one finger · Ecclesiastes: blow a puff into your hand, then point up · Song of Songs: heart hands |
 
 ### 📣 Section Shout
 

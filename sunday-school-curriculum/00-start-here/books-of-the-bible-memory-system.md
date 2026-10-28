@@ -130,7 +130,7 @@ Use this table to make flashcards, check spelling, and teach pronunciation. **Sy
 
 ## 3. The Cumulative Song
 
-Each phase file contains its own verse, set to a familiar tune, with hand motions. Over the year, the verses join into **one big song**. Sing every verse learned so far at the start of each class.
+Each phase file has its own song, set to a familiar tune, with hand motions. **Every phase song is already cumulative**: it reviews all the books from earlier phases and then adds the new ones. Sing the current phase's song at the start of each class. The hand motions stay the same all year, even when the tune changes, so kids keep the same motion for each book from January to December.
 
 For a single song that covers all 66 books at once, many churches use a well-known "Books of the Bible" tune (several are free on YouTube). Search **@SharefaithKids** for "books of the Bible song," and preview it first. Use whichever version your church already knows. The phase verses still teach the motions and sections.
 

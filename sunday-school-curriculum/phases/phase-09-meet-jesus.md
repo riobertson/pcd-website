@@ -47,7 +47,7 @@ Remember the long, quiet bridge of 400 years? Now we've crossed it, and **Jesus 
 | **Key people** | Jesus, Mary, Joseph, the wise men (Magi), King Herod, John the Baptist, Peter and the twelve disciples |
 | **Key stories** | Jesus' family tree from Abraham and David (ch. 1); the wise men follow the star (ch. 2); the Sermon on the Mount, with the Beatitudes, "You are the light of the world," the Lord's Prayer, and the wise and foolish builders (ch. 5–7); Peter walks on water (ch. 14); Palm Sunday (ch. 21); the cross and the empty tomb (ch. 27–28); the Great Commission: "Go and make disciples of all nations" (28:18–20) |
 | **Where Jesus shows up** | Everywhere! Matthew says over and over, "This happened to fulfill what the Lord had said through the prophet…" Matthew begins with Jesus as **Immanuel, "God with us"** (1:23), and ends with Jesus saying, **"I am with you always"** (28:20). |
-| **Hand motion / symbol** | 👑 **Crown**: put both hands on your head like a crown: "Jesus is KING!" |
+| **Hand motion / symbol** | 👑 **Bow to the King**: kneel on one knee and bow your head like the wise men: "Jesus is KING!" |
 
 ### 2. Mark 🏃
 
@@ -92,16 +92,16 @@ Remember the long, quiet bridge of 400 years? Now we've crossed it, and **Jesus 
 | **Key people** | Jesus, John the Baptist, Nicodemus, the woman at the well, Mary, Martha and Lazarus, Thomas, Peter, Mary Magdalene |
 | **Key stories** | "In the beginning was the Word" (ch. 1); water into wine at a wedding (ch. 2); Nicodemus at night and John 3:16 (ch. 3); the woman at the well (ch. 4); feeding the 5,000 and "I am the bread of life" (ch. 6); the man born blind (ch. 9); the Good Shepherd (ch. 10); Lazarus raised from the dead (ch. 11); Jesus washes His disciples' feet (ch. 13); the cross: "It is finished" (ch. 19); Mary Magdalene and Thomas see the risen Jesus (ch. 20); breakfast on the beach (ch. 21) |
 | **Where Jesus shows up** | John is built around **7 signs** (miracles) and **7 "I AM" sayings**: "I am the bread of life," "the light of the world," "the gate," "the good shepherd," "the resurrection and the life," "the way and the truth and the life," and "the true vine." Thomas's words say it all: "My Lord and my God!" (20:28) |
-| **Hand motion / symbol** | ❤️ **Hand heart**: make a heart with your hands: "For God so LOVED the world!" |
+| **Hand motion / symbol** | 🌍 **World hug**: draw a big circle in the air (the world), then cross your arms over your heart: "For God so LOVED the world!" |
 
 ### Section summary: The Gospels (4)
 
 | # | Book | One word | Shows Jesus as… | Motion |
 |---|---|---|---|---|
-| 1 | Matthew | King | The promised King | Crown on head |
+| 1 | Matthew | King | The promised King | Kneel and bow like the wise men |
 | 2 | Mark | Servant | The Servant in action | Run in place, "Immediately!" |
 | 3 | Luke | Savior | The Savior for everyone | Open arms wide |
-| 4 | John | Believe | God's Son | Hand heart |
+| 4 | John | Believe | God's Son | Draw a big world, cross arms over heart |
 
 > **Fun teacher fact:** Since the early church, Christians have matched the Gospels with the four living creatures of Ezekiel 1 and Revelation 4 (human, lion, ox, eagle). The most common pairing (from Jerome) is Matthew = human, Mark = lion, Luke = ox, John = eagle. You'll see these symbols in old church art and stained glass. They're tradition, not Scripture, but they can be a fun "spot the symbol" activity!
 
@@ -506,10 +506,20 @@ Verses 1–4 use **"Ten Little Fingers,"** Verse 5 uses **"Yankee Doodle,"** and
 
 | Book | Motion |
 |---|---|
-| **Matthew** | Both hands on your head like a crown: "King!" |
+| **Matthew** | Kneel on one knee and bow your head like the wise men: "King!" |
 | **Mark** | Run in place, pumping your arms: "Immediately!" |
 | **Luke** | Open your arms wide: "For everyone!" |
-| **John** | Make a heart with your hands: "God so loved!" |
+| **John** | Draw a big circle in the air (the world), then cross your arms over your heart: "God so loved the world!" |
+
+**Review motions for books learned earlier (1–39).** These match the motions used in earlier phases and the [Books of the Bible Memory System](../00-start-here/books-of-the-bible-memory-system.md):
+
+| Section | Book → motion |
+|---|---|
+| **Law** | Genesis: palms together like a book, open, sweep arms up (sunrise) · Exodus: walk two fingers across your palm and out the "door" · Leviticus: fold hands in prayer, then raise them high · Numbers: count 1-2-3-4 on fingers, then zig-zag your hand · Deuteronomy: two fingers up, tap your head, hand on heart |
+| **History** | Joshua: march with a fist-trumpet · Judges: pound a gavel on your palm, then draw a circle · Ruth: scoop grain, then hug yourself · 1 & 2 Samuel: hold up 1 or 2 fingers, then cup your ear (listening) · 1 & 2 Kings: 1 or 2 fingers, then crown on head · 1 & 2 Chronicles: 1 or 2 fingers, then unroll a scroll · Ezra: stack fists like bricks · Nehemiah: hammer + shield · Esther: crown, then "speak up" hands at mouth |
+| **Poetry / Wisdom** | Job: hands open up, then fold over heart · Psalms: strum a harp · Proverbs: tap your head with one finger · Ecclesiastes: blow a puff into your hand, then point up · Song of Songs: heart hands |
+| **Major Prophets** | Isaiah: two fingers to lips, then hand up ("Send me!") · Jeremiah: shape clay in a circle · Lamentations: tears down cheeks, then arms up like a sunrise · Ezekiel: go floppy, then stand tall · Daniel: lion jaws snap shut |
+| **Minor Prophets** | Hosea: arms out, pull back in ("Come home!") · Joel: locust fingers · Amos: drop a plumb line · Obadiah: one finger · Jonah: fish-mouth gulp · Micah: tiny roof · Nahum: fist tower tumbles · Habakkuk: hand over eyes (watchtower) · Zephaniah: song floats from heart · Haggai: hammer, then roof over head · Zechariah: donkey ride · Malachi: hand at mouth, point ahead |
 
 ### 📣 Section Shout
 

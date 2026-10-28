@@ -48,7 +48,7 @@ The Minor Prophets are **twelve** messengers with **short** books. "Minor" means
 | **Key people** | Hosea, his wife Gomer, their children Jezreel, Lo-Ruhamah ("not loved") and Lo-Ammi ("not my people"), whose names God later turns around: "loved" and "my people" (2:23) |
 | **Key stories** | Hosea marries Gomer (ch. 1); God's promise to win back His people (ch. 2); Hosea buys Gomer back (ch. 3); "I desire mercy, not sacrifice" (6:6); "out of Egypt I called my son" (11:1); "Return, Israel, to the LORD your God" (ch. 14) |
 | **Where Jesus shows up** | Matthew 2:15 says Jesus coming back from Egypt fulfilled Hosea 11:1. Jesus quoted Hosea 6:6 twice (Matthew 9:13; 12:7). Like Hosea paying to buy back Gomer, Jesus paid to buy us back (redeem us). |
-| **Hand motion / symbol** | ❤️ **Big hug**: wrap your arms around yourself: "God's love won't quit!" |
+| **Hand motion / symbol** | ❤️ **"Come home!"**: stretch both arms out wide, then pull them back in to your chest like you're bringing someone home: "God's love won't quit!" |
 
 ### 2. Joel 🦗
 
@@ -183,7 +183,7 @@ The Minor Prophets are **twelve** messengers with **short** books. "Minor" means
 | **Key people** | Haggai, Zerubbabel the governor, Joshua the high priest (see Ezra 5:1) |
 | **Key stories** | "Is it a time for you yourselves to be living in your paneled houses, while this house remains a ruin?" (1:4); "Give careful thought to your ways" (1:5, 7); the people obey and start building (1:12–15); "The glory of this present house will be greater than the glory of the former house" (2:9); Zerubbabel like a signet ring (2:23) |
 | **Where Jesus shows up** | Zerubbabel is in Jesus' family line (Matthew 1:12). Jesus Himself came to the rebuilt temple, which made its glory "greater." Jesus called His body the true temple (John 2:19–21). |
-| **Hand motion / symbol** | 🔨 **Hammer**: pound one fist on the other: "Build God's house!" |
+| **Hand motion / symbol** | 🔨 **Hammer + roof**: pound one fist on the other palm twice, then make a roof over your head with both hands: "Build God's house!" |
 
 ### 11. Zechariah 🫏
 
@@ -219,7 +219,7 @@ The Minor Prophets are **twelve** messengers with **short** books. "Minor" means
 
 | # | Book | One word | Motion |
 |---|---|---|---|
-| 1 | Hosea | Faithful love | Big hug |
+| 1 | Hosea | Faithful love | Arms out, pull back in ("Come home!") |
 | 2 | Joel | Spirit | Locust fingers |
 | 3 | Amos | Justice | Plumb line |
 | 4 | Obadiah | Pride | One finger |
@@ -228,7 +228,7 @@ The Minor Prophets are **twelve** messengers with **short** books. "Minor" means
 | 7 | Nahum | Comfort | Tower tumbles |
 | 8 | Habakkuk | Trust | Watchtower |
 | 9 | Zephaniah | Singing | Song from the heart |
-| 10 | Haggai | Build | Hammer |
+| 10 | Haggai | Build | Hammer, then roof over head |
 | 11 | Zechariah | King on a donkey | Donkey ride |
 | 12 | Malachi | Messenger | Point ahead |
 
@@ -674,7 +674,7 @@ Sing Verses 1–4 to **"Ten Little Fingers"** (as in Phase 7), then switch to **
 
 | Book | Motion |
 |---|---|
-| **Hosea** | Big self-hug: "Love that won't quit!" |
+| **Hosea** | Stretch arms out wide, then pull them back in to your chest: "Come home! Love that won't quit!" |
 | **Joel** | Wiggle all ten fingers overhead like a locust swarm. |
 | **Amos** | Hold a fist high and drop a pretend plumb line straight down. |
 | **Obadiah** | Hold up ONE finger (one chapter!). |
@@ -683,9 +683,18 @@ Sing Verses 1–4 to **"Ten Little Fingers"** (as in Phase 7), then switch to **
 | **Nahum** | Stack fists high like a tower, then let them tumble down. |
 | **Habakkuk** | Hand over eyes like looking out from a watchtower. |
 | **Zephaniah** | Hands start at your heart and float outward like a song. |
-| **Haggai** | Pound fist on palm like a hammer. |
+| **Haggai** | Pound fist on palm twice like a hammer, then make a roof over your head with both hands (God's house). |
 | **Zechariah** | Hold pretend reins and bounce (donkey ride). |
 | **Malachi** | Cup a hand by your mouth and point far ahead: "He's coming!" |
+
+**Review motions for books learned earlier (1–27).** These match the motions used in earlier phases and the [Books of the Bible Memory System](../00-start-here/books-of-the-bible-memory-system.md):
+
+| Section | Book → motion |
+|---|---|
+| **Law** | Genesis: palms together like a book, open, sweep arms up (sunrise) · Exodus: walk two fingers across your palm and out the "door" · Leviticus: fold hands in prayer, then raise them high · Numbers: count 1-2-3-4 on fingers, then zig-zag your hand · Deuteronomy: two fingers up, tap your head, hand on heart |
+| **History** | Joshua: march with a fist-trumpet · Judges: pound a gavel on your palm, then draw a circle · Ruth: scoop grain, then hug yourself · 1 & 2 Samuel: hold up 1 or 2 fingers, then cup your ear (listening) · 1 & 2 Kings: 1 or 2 fingers, then crown on head · 1 & 2 Chronicles: 1 or 2 fingers, then unroll a scroll · Ezra: stack fists like bricks · Nehemiah: hammer + shield · Esther: crown, then "speak up" hands at mouth |
+| **Poetry / Wisdom** | Job: hands open up, then fold over heart · Psalms: strum a harp · Proverbs: tap your head with one finger · Ecclesiastes: blow a puff into your hand, then point up · Song of Songs: heart hands |
+| **Major Prophets** | Isaiah: two fingers to lips, then hand up ("Send me!") · Jeremiah: shape clay in a circle · Lamentations: tears down cheeks, then arms up like a sunrise · Ezekiel: go floppy, then stand tall · Daniel: lion jaws snap shut |
 
 ### 📣 Section Shout
 
