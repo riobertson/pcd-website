@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate</title>
+<style>
+@page { size: letter portrait; margin: 0.5in; }
+* { box-sizing: border-box; }
+body { font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif; color: #000; background: #fff; margin: 0; }
+.sheet { page-break-after: always; break-after: page; min-height: 9.5in; padding: 0.2in; position: relative; }
+.sheet:last-child { page-break-after: auto; break-after: auto; }
+h1 { font-size: 26pt; text-align: center; margin: 0 0 4px; }
+h2 { font-size: 16pt; text-align: center; margin: 0 0 12px; font-weight: normal; }
+.namebar { font-size: 13pt; margin-bottom: 14px; display: flex; justify-content: space-between; }
+.verse { text-align: center; font-size: 15pt; margin-top: 14px; border: 3px dashed #000; padding: 10px; border-radius: 12px; }
+.footer { position: absolute; bottom: 0.1in; left: 0; right: 0; text-align: center; font-size: 9pt; color: #555; }
+svg { display: block; margin: 0 auto; }
+.grid { border-collapse: collapse; margin: 0 auto; }
+.grid td { width: 0.42in; height: 0.42in; text-align: center; font-size: 15pt; font-family: "Courier New", monospace; font-weight: bold; border: 1px solid #bbb; }
+.grid td.hit { background: #ffeb3b; }
+.wordlist { columns: 3; font-size: 13pt; margin: 18px auto 0; max-width: 7in; }
+.wordlist div { padding: 2px 0; }
+.scramble { font-size: 15pt; line-height: 2.1; max-width: 7in; margin: 0 auto; }
+.scramble td { padding: 6px 8px; }
+.scramble .q { font-family: "Courier New", monospace; font-weight: bold; letter-spacing: 3px; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.card { border: 2px dashed #777; height: 2.1in; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+.card .band { position: absolute; top: 0; left: 0; right: 0; height: 0.35in; color: #fff; font-size: 10pt; display: flex; align-items: center; justify-content: center; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.card .name { font-size: 26pt; font-weight: bold; margin-top: 0.2in; text-align: center; }
+.card .syl { font-size: 14pt; color: #333; }
+.card .num { position: absolute; bottom: 6px; right: 10px; font-size: 10pt; color: #555; }
+.spell { width: 100%; border-collapse: collapse; font-size: 14pt; }
+.spell td { border-bottom: 2px solid #000; height: 0.62in; vertical-align: bottom; padding: 2px 6px; }
+.spell td.word { font-weight: bold; width: 2.3in; border-bottom: none; }
+.spell td.claps { width: 1.1in; border-bottom: none; font-size: 11pt; color: #444; }
+.key { font-size: 11pt; color: #444; text-align: center; margin-top: 6px; }
+.tip { font-size: 11pt; color: #333; text-align: center; margin: 4px 0 10px; }
+@media screen { body { background: #ddd; } .sheet { background: #fff; width: 8.5in; margin: 0.25in auto; padding: 0.5in; box-shadow: 0 2px 8px rgba(0,0,0,.3); min-height: 11in; } .noprint { text-align:center; padding: 10px; font-family: sans-serif; } }
+@media print { .noprint { display: none; } }
+</style></head>
+<body>
+<div class="noprint">🖨️ Print this page (Letter, portrait). Each worksheet prints on its own page. Turn on "Background graphics" for colored flashcard bands.</div>
+<section class="sheet" style="border:12px double #000;text-align:center;padding-top:1in">
+<h1 style="font-size:38pt">Certificate of Completion</h1>
+<h2>Through the Bible in 12 Months</h2>
+<p style="font-size:16pt;margin-top:.5in">This certifies that</p>
+<p style="font-size:28pt;border-bottom:2px solid #000;width:70%;margin:0 auto">&nbsp;</p>
+<p style="font-size:16pt;margin-top:.3in">has traveled through all <b>66 books of the Bible</b>,<br>from Genesis to Revelation,<br>and is hereby named a</p>
+<p style="font-size:26pt;font-weight:bold">☐ Bible Explorer &nbsp; ☐ 66 Books Champion &nbsp; ☐ Bible Ambassador</p>
+<p style="font-size:14pt">"Your word is a lamp for my feet, a light on my path." (Psalm 119:105)</p>
+<div style="display:flex;justify-content:space-around;margin-top:.8in;font-size:13pt">
+<div>______________________<br>Teacher</div><div>______________________<br>Pastor</div><div>______________________<br>Date</div></div>
+<p style="margin-top:.4in;font-size:12pt">Purpose Church Kids &amp; Youth Ministry</p>
+</section>
+</body></html>

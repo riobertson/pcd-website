@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bible Passport</title>
+<style>
+@page { size: letter portrait; margin: 0.5in; }
+* { box-sizing: border-box; }
+body { font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif; color: #000; background: #fff; margin: 0; }
+.sheet { page-break-after: always; break-after: page; min-height: 9.5in; padding: 0.2in; position: relative; }
+.sheet:last-child { page-break-after: auto; break-after: auto; }
+h1 { font-size: 26pt; text-align: center; margin: 0 0 4px; }
+h2 { font-size: 16pt; text-align: center; margin: 0 0 12px; font-weight: normal; }
+.namebar { font-size: 13pt; margin-bottom: 14px; display: flex; justify-content: space-between; }
+.verse { text-align: center; font-size: 15pt; margin-top: 14px; border: 3px dashed #000; padding: 10px; border-radius: 12px; }
+.footer { position: absolute; bottom: 0.1in; left: 0; right: 0; text-align: center; font-size: 9pt; color: #555; }
+svg { display: block; margin: 0 auto; }
+.grid { border-collapse: collapse; margin: 0 auto; }
+.grid td { width: 0.42in; height: 0.42in; text-align: center; font-size: 15pt; font-family: "Courier New", monospace; font-weight: bold; border: 1px solid #bbb; }
+.grid td.hit { background: #ffeb3b; }
+.wordlist { columns: 3; font-size: 13pt; margin: 18px auto 0; max-width: 7in; }
+.wordlist div { padding: 2px 0; }
+.scramble { font-size: 15pt; line-height: 2.1; max-width: 7in; margin: 0 auto; }
+.scramble td { padding: 6px 8px; }
+.scramble .q { font-family: "Courier New", monospace; font-weight: bold; letter-spacing: 3px; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.card { border: 2px dashed #777; height: 2.1in; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+.card .band { position: absolute; top: 0; left: 0; right: 0; height: 0.35in; color: #fff; font-size: 10pt; display: flex; align-items: center; justify-content: center; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.card .name { font-size: 26pt; font-weight: bold; margin-top: 0.2in; text-align: center; }
+.card .syl { font-size: 14pt; color: #333; }
+.card .num { position: absolute; bottom: 6px; right: 10px; font-size: 10pt; color: #555; }
+.spell { width: 100%; border-collapse: collapse; font-size: 14pt; }
+.spell td { border-bottom: 2px solid #000; height: 0.62in; vertical-align: bottom; padding: 2px 6px; }
+.spell td.word { font-weight: bold; width: 2.3in; border-bottom: none; }
+.spell td.claps { width: 1.1in; border-bottom: none; font-size: 11pt; color: #444; }
+.key { font-size: 11pt; color: #444; text-align: center; margin-top: 6px; }
+.tip { font-size: 11pt; color: #333; text-align: center; margin: 4px 0 10px; }
+@media screen { body { background: #ddd; } .sheet { background: #fff; width: 8.5in; margin: 0.25in auto; padding: 0.5in; box-shadow: 0 2px 8px rgba(0,0,0,.3); min-height: 11in; } .noprint { text-align:center; padding: 10px; font-family: sans-serif; } }
+@media print { .noprint { display: none; } }
+</style></head>
+<body>
+<div class="noprint">🖨️ Print this page (Letter, portrait). Each worksheet prints on its own page. Turn on "Background graphics" for colored flashcard bands.</div>
+<section class="sheet" style="text-align:center">
+<h1 style="font-size:40pt;margin-top:1in">🛂 MY BIBLE PASSPORT</h1>
+<h2>Through the Bible in 12 Months · Purpose Church Kids</h2>
+<svg width="45%" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect x="90" y="90" width="220" height="220" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+      <rect x="60" y="70" width="30" height="260" rx="15" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="310" y="70" width="30" height="260" rx="15" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+      <line x1="115" y1="130" x2="285" y2="130" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-width="2"/><line x1="115" y1="165" x2="285" y2="165" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-width="2"/><line x1="115" y1="200" x2="285" y2="200" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-width="2"/><line x1="115" y1="235" x2="285" y2="235" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-width="2"/><line x1="115" y1="270" x2="285" y2="270" fill="#fff" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-width="2"/></svg>
+<p style="font-size:16pt">Traveler's name: ______________________________</p>
+<p style="font-size:16pt">Age: ______ &nbsp; Group: 🐑 Little Lambs · 🧭 Explorers · 🥾 Trailblazers · 🕊️ Ambassadors</p>
+<p style="font-size:13pt">"Your word is a lamp for my feet, a light on my path." (Psalm 119:105)</p>
+</section>
+<section class="sheet"><h1>Passport Stamps</h1><h2>Earn a stamp when you finish each phase!</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px"><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 1</div><div style="font-size:11pt">In the Beginning</div><div style="font-size:9pt;color:#444">Genesis</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 2</div><div style="font-size:11pt">Freedom &amp; God&#x27;s Good Rules</div><div style="font-size:9pt;color:#444">Exodus – Deuteronomy</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 3</div><div style="font-size:11pt">Into the Promised Land</div><div style="font-size:9pt;color:#444">Joshua – Ruth</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 4</div><div style="font-size:11pt">Kings &amp; Kingdoms</div><div style="font-size:9pt;color:#444">1 Samuel – 2 Chronicles</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 5</div><div style="font-size:11pt">Coming Home &amp; Being Brave</div><div style="font-size:9pt;color:#444">Ezra – Esther</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 6</div><div style="font-size:11pt">Songs &amp; Wise Words</div><div style="font-size:9pt;color:#444">Job – Song of Songs</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 7</div><div style="font-size:11pt">God&#x27;s Big Messengers</div><div style="font-size:9pt;color:#444">Isaiah – Daniel</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 8</div><div style="font-size:11pt">Twelve Mighty Messengers</div><div style="font-size:9pt;color:#444">Hosea – Malachi</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 9</div><div style="font-size:11pt">Meet Jesus!</div><div style="font-size:9pt;color:#444">Matthew – John</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 10</div><div style="font-size:11pt">The Church Is Born</div><div style="font-size:9pt;color:#444">Acts</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 11</div><div style="font-size:11pt">Letters from Paul</div><div style="font-size:9pt;color:#444">Romans – Philemon</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div><div style="border:3px solid #000;border-radius:14px;height:2in;padding:8px;text-align:center;position:relative"><div style="font-weight:bold">Phase 12</div><div style="font-size:11pt">Faith, Hope &amp; Forever</div><div style="font-size:9pt;color:#444">Hebrews – Revelation</div><div style="position:absolute;bottom:6px;left:0;right:0;font-size:9pt;color:#666">stamp here · date ______</div></div></div>
+<p class="tip">When all 12 stamps are filled, you have traveled through all 66 books of the Bible! 🎉</p></section>
+</body></html>
