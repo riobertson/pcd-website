@@ -1,4 +1,6 @@
-// Builds a PDF next to every .md file in 00-start-here/ and phases/ (the .md files are kept).
+// Builds a PDF next to every .md file (README, 00-start-here/, phases/) and every printable
+// worksheet (printables/*.html), then combines them into two email-ready files in SHARE-PDF/.
+// The .md and .html source files are kept.
 // Usage (from the repo root):  node sunday-school-curriculum/tools/build_pdfs.js
 // Requires: pandoc, and Playwright with Chromium.
 const { execFileSync } = require('child_process');
@@ -7,7 +9,10 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const ROOT = path.resolve(__dirname, '..');
-const DIRS = ['00-start-here', 'phases'];
+const DIRS = ['.', '00-start-here', 'phases'];
+const START_HERE_ORDER = ['program-overview', 'teacher-training-guide', 'weekly-session-template',
+  'books-of-the-bible-memory-system', 'game-library', 'youtube-video-guide', 'supply-list', 'parent-welcome-letter'];
+const SHARE = path.join(ROOT, 'SHARE-PDF');
 
 const CSS = `
 @page { size: Letter; margin: 0.6in 0.6in 0.7in; }
@@ -37,7 +42,7 @@ hr { border: 0; border-top: 1px solid #ddd; }
     for (const f of fs.readdirSync(abs).filter(f => f.endsWith('.md')).sort()) {
       const md = path.join(abs, f);
       let body = execFileSync('pandoc', [md, '-f', 'gfm', '-t', 'html5'], { encoding: 'utf8' });
-      body = body.replace(/href="([^"#:]+)\.md(#[^"]*)?"/g, 'href="$1.pdf$2"'); // link to sibling PDFs
+      body = body.replace(/href="([^"#:]+)\.(md|html)(#[^"]*)?"/g, 'href="$1.pdf$3"'); // link to sibling PDFs
       const title = f.replace(/\.md$/, '');
       const html = `<!doctype html><html><head><meta charset="utf-8"><title>${title}</title><style>${CSS}</style></head><body>${body}</body></html>`;
       await page.setContent(html, { waitUntil: 'load' });
@@ -51,6 +56,25 @@ hr { border: 0; border-top: 1px solid #ddd; }
       console.log('wrote', path.join(dir, f.replace(/\.md$/, '.pdf')));
     }
   }
+
+  // Printable worksheets: use each sheet's own print CSS (Letter, one worksheet per page).
+  const pr = path.join(ROOT, 'printables');
+  for (const f of fs.readdirSync(pr).filter(f => f.endsWith('.html') && f !== 'index.html').sort()) {
+    await page.goto('file://' + path.join(pr, f), { waitUntil: 'load' });
+    await page.pdf({ path: path.join(pr, f.replace(/\.html$/, '.pdf')), format: 'Letter', printBackground: true, preferCSSPageSize: true });
+    count++;
+    console.log('wrote', path.join('printables', f.replace(/\.html$/, '.pdf')));
+  }
   await browser.close();
-  console.log(count, 'PDFs');
+
+  // Combined, email-ready files.
+  fs.mkdirSync(SHARE, { recursive: true });
+  const guide = [path.join(ROOT, 'README.pdf'),
+    ...START_HERE_ORDER.map(n => path.join(ROOT, '00-start-here', n + '.pdf')),
+    ...fs.readdirSync(path.join(ROOT, 'phases')).filter(f => f.endsWith('.pdf')).sort().map(f => path.join(ROOT, 'phases', f))];
+  const prints = [...fs.readdirSync(pr).filter(f => /^phase-\d+-printables\.pdf$/.test(f)).sort().map(f => path.join(pr, f)),
+    path.join(pr, 'bible-passport.pdf'), path.join(pr, 'certificate.pdf')];
+  execFileSync('pdfunite', [...guide, path.join(SHARE, '1 - Teacher Guide - Through the Bible in 12 Months.pdf')]);
+  execFileSync('pdfunite', [...prints, path.join(SHARE, '2 - Printables - Coloring, Puzzles, Flashcards, Passport.pdf')]);
+  console.log(count, 'PDFs + 2 combined files in SHARE-PDF/');
 })();
