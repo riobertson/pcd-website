@@ -226,11 +226,11 @@ Our class meets on the **2nd and 4th Sundays** of each month, so the four lesson
 | Sunday | 2027 date* | Teach | Big takeaway |
 |---|---|---|---|
 | **2nd Sunday** | Dec 12 | **Lesson 1: "Jesus Is Better & the Faith Hall of Fame"** (Hebrews 1:1–4; 4:14–16; 11; 12:1–2; 13:8) + **Lesson 2: "Faith That Works, Hope That Holds"** (James 1:19–22; 2:14–26; 3:3–12; 1 Peter 5:7; 2 Peter 3:8–9, 18) | Jesus is better than everything, so keep running your race of faith. Real faith shows in actions and words, and God cares for us when life is hard. |
-| **4th Sunday** | Dec 26 | **Lesson 3: "God Is Love, Walk in Truth"** (1 John 1:9; 3:1; 4:7–19; 2 John 6; 3 John 4, 11; Jude 24–25) + **Lesson 4: "Jesus Wins!"** (Revelation 1:9–18; 4–5; 21:1–5; 22:1–5, 20) + **Bible Bowl & Graduation** | God loves us like His own children, and He keeps us from falling. Jesus is King. One day He will make everything new. |
+| **4th Sunday** | Dec 19 (3rd Sunday) | **Lesson 3: "God Is Love, Walk in Truth"** (1 John 1:9; 3:1; 4:7–19; 2 John 6; 3 John 4, 11; Jude 24–25) + **Lesson 4: "Jesus Wins!"** (Revelation 1:9–18; 4–5; 21:1–5; 22:1–5, 20) + **Bible Bowl & Graduation** | God loves us like His own children, and He keeps us from falling. Jesus is King. One day He will make everything new. |
 
 *\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
 
-> ⚠️ **Dec 26, 2027 is the day after Christmas.** Many churches move this class to **Dec 19** (3rd Sunday) so the Bible Bowl and graduation get full attendance. Decide early and tell families.
+> 📅 **The December class moves to Dec 19 (the 3rd Sunday)** because Dec 26, 2027 is the day after Christmas. Tell families early so everyone can come to the Bible Bowl and graduation.
 
 ### 2nd Sunday: "Jesus Is Better & the Faith Hall of Fame" + "Faith That Works, Hope That Holds"
 
@@ -257,7 +257,7 @@ Our class meets on the **2nd and 4th Sundays** of each month, so the four lesson
 | 0:48–1:05 | 🏆 Bible Bowl (lightning round) | Play Rounds 1 and 2 of the Bible Bowl (20 questions) in mixed-age teams. Run the full 4-round Bible Bowl at your celebration event if you have one. |
 | 1:05–1:15 | 🎓 Passport, Badges & Prayer | Final check-offs, last Passport stamp, Forever Crown badge, certificates (or hand them out during the main service). Pray a blessing over the kids. |
 
-> 🎓 **Graduation:** Use the short 10–15 minute graduation program from *End-of-Phase Review & Celebration* in the main worship service on the 4th Sunday, or hold the full Bible Bowl & Graduation as a special event (for example, a Saturday afternoon or the 2nd Sunday of January as the next year's kickoff).
+> 🎓 **Graduation:** Use the short 10–15 minute graduation program from *End-of-Phase Review & Celebration* in the main worship service that Sunday (Dec 19), or hold the full Bible Bowl & Graduation as a special event (for example, a Saturday afternoon or the 2nd Sunday of January as the next year's kickoff).
 
 ### 🏠 Between Sundays (the 1st and 3rd weeks)
 

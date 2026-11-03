@@ -116,7 +116,7 @@ Each phase file has a ready-made **"2nd & 4th Sunday Plan"** with these run shee
 | 9 | September | Sep 12 | Sep 26 | Back-to-school: invite new families |
 | 10 | October | Oct 10 | Oct 24 | |
 | 11 | November | Nov 14 | Nov 28 | Nov 28 is Thanksgiving weekend |
-| 12 | December | Dec 12 | Dec 26 | ⚠️ **Dec 26 is the day after Christmas.** Consider moving to Dec 19 for the Bible Bowl & Graduation |
+| 12 | December | Dec 12 | **Dec 19** (moved from Dec 26) | 📅 Moved to the 3rd Sunday because Dec 26 is the day after Christmas. Bible Bowl & Graduation day! |
 
 That's **24 classes a year**. Starting in a different month or year? Keep the same order of phases and use the 2nd and 4th Sundays of each month.
 

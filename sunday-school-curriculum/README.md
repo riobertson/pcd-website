@@ -53,7 +53,7 @@ Every guide in `00-start-here/` and every phase in `phases/` also has a **PDF co
 | 9 | Sep | Sep 12 & 26 | [Meet Jesus!](phases/phase-09-meet-jesus.md) | Matthew, Mark, Luke, John | 43 | [🖨️](printables/phase-09-printables.html) |
 | 10 | Oct | Oct 10 & 24 | [The Church Is Born](phases/phase-10-the-church-is-born.md) | Acts | 44 | [🖨️](printables/phase-10-printables.html) |
 | 11 | Nov | Nov 14 & 28 | [Letters from Paul](phases/phase-11-letters-from-paul.md) | Romans – Philemon | 57 | [🖨️](printables/phase-11-printables.html) |
-| 12 | Dec | Dec 12 & 26 | [Faith, Hope & Forever](phases/phase-12-faith-hope-and-forever.md) | Hebrews – Revelation + Bible Bowl & Graduation | 66 | [🖨️](printables/phase-12-printables.html) |
+| 12 | Dec | Dec 12 & 19 | [Faith, Hope & Forever](phases/phase-12-faith-hope-and-forever.md) | Hebrews – Revelation + Bible Bowl & Graduation | 66 | [🖨️](printables/phase-12-printables.html) |
 
 *The program can start in any month. The dates above assume a January 2027 start, so the graduation lands at Christmas.*
 

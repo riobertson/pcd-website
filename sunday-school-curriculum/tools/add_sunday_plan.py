@@ -16,12 +16,12 @@ NOTE_START, NOTE_END = "<!-- sunday-plan-note:start -->", "<!-- sunday-plan-note
 # 2027 dates, for a January start (phase n = month n).
 DATES = [("Jan 10", "Jan 24"), ("Feb 14", "Feb 28"), ("Mar 14", "Mar 28"), ("Apr 11", "Apr 25"),
          ("May 9", "May 23"), ("Jun 13", "Jun 27"), ("Jul 11", "Jul 25"), ("Aug 8", "Aug 22"),
-         ("Sep 12", "Sep 26"), ("Oct 10", "Oct 24"), ("Nov 14", "Nov 28"), ("Dec 12", "Dec 26")]
+         ("Sep 12", "Sep 26"), ("Oct 10", "Oct 24"), ("Nov 14", "Nov 28"), ("Dec 12", "Dec 19 (3rd Sunday)")]
 CAL_NOTES = {
     3: "⚠️ **Mar 28, 2027 is Easter Sunday.** If your class has an Easter lesson that day (Phase 9's \"He Is Alive!\" lesson fits well), send Lessons 3 & 4 (Judges and Ruth) home as a family reading week and hold the Phase 3 check-offs on Apr 11.",
     5: "⚠️ **May 9, 2027 is Mother's Day.** Add a quick \"thank-you card for Mom or a special lady\" to the Activity slot (Ruth & Naomi or Esther themes fit well).",
     11: "⚠️ **Nov 28, 2027 is Thanksgiving weekend.** Expect lower attendance; keep the review check-offs open on the next 2nd Sunday for anyone who missed.",
-    12: "⚠️ **Dec 26, 2027 is the day after Christmas.** Many churches move this class to **Dec 19** (3rd Sunday) so the Bible Bowl and graduation get full attendance. Decide early and tell families.",
+    12: "📅 **The December class moves to Dec 19 (the 3rd Sunday)** because Dec 26, 2027 is the day after Christmas. Tell families early so everyone can come to the Bible Bowl and graduation.",
 }
 
 
@@ -108,7 +108,7 @@ def build(n, text):
     lines += run_sheet("2nd Sunday", 0, 1, False)
     lines += run_sheet("4th Sunday", 2, 3, True)
     if final:
-        lines += ["> 🎓 **Graduation:** Use the short 10–15 minute graduation program from *End-of-Phase Review & Celebration* in the main worship service on the 4th Sunday, "
+        lines += ["> 🎓 **Graduation:** Use the short 10–15 minute graduation program from *End-of-Phase Review & Celebration* in the main worship service that Sunday (Dec 19), "
                   "or hold the full Bible Bowl & Graduation as a special event (for example, a Saturday afternoon or the 2nd Sunday of January as the next year's kickoff).", ""]
 
     lines += ["### 🏠 Between Sundays (the 1st and 3rd weeks)", "",

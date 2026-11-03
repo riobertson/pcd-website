@@ -32,7 +32,7 @@ Welcome to **"Through the Bible in 12 Months,"** Purpose Church's new Sunday sch
 4. **Ask your child** to teach *you* what they learned.
 
 ### Bible Passport & Badges
-Every child gets a **Bible Passport**. They earn a stamp and a badge each month for learning that phase's books and verse, at their own age level. In December we'll celebrate with a **Bible Bowl** and **graduation ceremony**. Families are invited!
+Every child gets a **Bible Passport**. They earn a stamp and a badge each month for learning that phase's books and verse, at their own age level. On **Sunday, December 19** we'll celebrate with a **Bible Bowl** and **graduation ceremony**. Families are invited!
 
 ### Our Year at a Glance
 | Month | Phase | Books |
