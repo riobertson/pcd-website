@@ -136,7 +136,70 @@ Last month ended with the fall of Jerusalem to Babylon in 586 BC and a promise a
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | May 9 | **Lesson 1: "Going Home to Build God's House"** (Ezra 1; 3; 6:14–16; 7:10) + **Lesson 2: "Pray, Plan, Build!"** (Nehemiah 1–2; 4; 6:15; 8:1–12) | God keeps His promises and brings His people home. Pray first; God gives strength and joy to do His work. |
+| **4th Sunday** | May 23 | **Lesson 3: "For Such a Time as This"** (Esther 1–4) + **Lesson 4: "God's Hidden Hand"** (Esther 5–10) + **End-of-Phase Review** | God puts us in the right place to do the right thing. God is working even when we can't see Him. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+> ⚠️ **May 9, 2027 is Mother's Day.** Add a quick "thank-you card for Mom or a special lady" to the Activity slot (Ruth & Naomi or Esther themes fit well).
+
+### 2nd Sunday: "Going Home to Build God's House" + "Pray, Plan, Build!"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **Going Home to Build God's House** (Ezra 1; 3; 6:14–16; 7:10). Use the Lesson 1 hook and story script. Key point: *God keeps His promises and brings His people home.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "Ezra"; BibleJourneyTV "Return from exile"; BibleProject "Overview: Ezra-Nehemiah". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Pray, Plan, Build!** (Nehemiah 1–2; 4; 6:15; 8:1–12). Use the Lesson 2 script. Key point: *Pray first; God gives strength and joy to do His work.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Wall Builders Relay** (Lesson 1). Backup: Build and Guard. |
+| 0:58–1:10 | 🖍️ Activity | **Book Wall craft** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "For Such a Time as This" + "God's Hidden Hand"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **For Such a Time as This** (Esther 1–4). Use the Lesson 3 hook and story script. Key point: *God puts us in the right place to do the right thing.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "Esther"; BibleJourneyTV "Esther"; BibleProject "Overview: Esther". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **God's Hidden Hand** (Esther 5–10). Use the Lesson 4 script. Key point: *God is working even when we can't see Him.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **The King's Scepter** (Lesson 3). Backup: Purim Noise-Maker Bible Bowl. |
+| 0:56–1:04 | 🖍️ Activity | **Purim noisemaker (gragger)** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Ezra 1; 3; 6:14–16; 7:10 and Nehemiah 1–2; 4; 6:15; 8:1–12 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read Esther 5–10 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "The Wall Party! (Review & Fun Sunday)" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: Going Home to Build God's House
 

@@ -217,7 +217,71 @@ The **General Letters** (also called the "Catholic" Epistles, where *catholic* s
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Dec 12 | **Lesson 1: "Jesus Is Better & the Faith Hall of Fame"** (Hebrews 1:1–4; 4:14–16; 11; 12:1–2; 13:8) + **Lesson 2: "Faith That Works, Hope That Holds"** (James 1:19–22; 2:14–26; 3:3–12; 1 Peter 5:7; 2 Peter 3:8–9, 18) | Jesus is better than everything, so keep running your race of faith. Real faith shows in actions and words, and God cares for us when life is hard. |
+| **4th Sunday** | Dec 26 | **Lesson 3: "God Is Love, Walk in Truth"** (1 John 1:9; 3:1; 4:7–19; 2 John 6; 3 John 4, 11; Jude 24–25) + **Lesson 4: "Jesus Wins!"** (Revelation 1:9–18; 4–5; 21:1–5; 22:1–5, 20) + **Bible Bowl & Graduation** | God loves us like His own children, and He keeps us from falling. Jesus is King. One day He will make everything new. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+> ⚠️ **Dec 26, 2027 is the day after Christmas.** Many churches move this class to **Dec 19** (3rd Sunday) so the Bible Bowl and graduation get full attendance. Decide early and tell families.
+
+### 2nd Sunday: "Jesus Is Better & the Faith Hall of Fame" + "Faith That Works, Hope That Holds"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **Jesus Is Better & the Faith Hall of Fame** (Hebrews 1:1–4; 4:14–16; 11; 12:1–2; 13:8). Use the Lesson 1 hook and story script. Key point: *Jesus is better than everything, so keep running your race of faith.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: "Overview: Hebrews" (BibleProject); Sharefaith Kids "faith"; Bible Journey "heroes of faith". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Faith That Works, Hope That Holds** (James 1:19–22; 2:14–26; 3:3–12; 1 Peter 5:7; 2 Peter 3:8–9, 18). Use the Lesson 2 script. Key point: *Real faith shows in actions and words, and God cares for us when life is hard.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Faith Hall of Fame Relay** (Lesson 1). Backup: Tongue Twister Tag. |
+| 0:58–1:10 | 🖍️ Activity | **Ship & Rudder Craft** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "God Is Love, Walk in Truth" + "Jesus Wins!"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **God Is Love, Walk in Truth** (1 John 1:9; 3:1; 4:7–19; 2 John 6; 3 John 4, 11; Jude 24–25). Use the Lesson 3 hook and story script. Key point: *God loves us like His own children, and He keeps us from falling.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: "Overview: 1–3 John," "Overview: Jude". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Jesus Wins!** (Revelation 1:9–18; 4–5; 21:1–5; 22:1–5, 20). Use the Lesson 4 script. Key point: *Jesus is King. One day He will make everything new.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–1:05 | 🏆 Bible Bowl (lightning round) | Play Rounds 1 and 2 of the Bible Bowl (20 questions) in mixed-age teams. Run the full 4-round Bible Bowl at your celebration event if you have one. |
+| 1:05–1:15 | 🎓 Passport, Badges & Prayer | Final check-offs, last Passport stamp, Forever Crown badge, certificates (or hand them out during the main service). Pray a blessing over the kids. |
+
+> 🎓 **Graduation:** Use the short 10–15 minute graduation program from *End-of-Phase Review & Celebration* in the main worship service on the 4th Sunday, or hold the full Bible Bowl & Graduation as a special event (for example, a Saturday afternoon or the 2nd Sunday of January as the next year's kickoff).
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Hebrews 1:1–4; 4:14–16; 11; 12:1–2; 13:8 and James 1:19–22; 2:14–26; 3:3–12; 1 Peter 5:7; 2 Peter 3:8–9, 18 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read Revelation 1:9–18; 4–5; 21:1–5; 22:1–5, 20 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. Celebrate: your child now knows all 66 books!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Bible Bowl & Graduation Sunday" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: Jesus Is Better & the Faith Hall of Fame (Hebrews)
 

@@ -151,7 +151,68 @@ Genesis ends with Jacob's family (about 70 people, Genesis 46:27) living in Egyp
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Jan 10 | **Lesson 1: "God's Big Library"** (Psalm 119:105; 2 Timothy 3:16; Luke 24:27) + **Lesson 2: "God Made It Good"** (Genesis 1–3) | The Bible is 66 books, two testaments and one story about Jesus, and I can find my way around it. God made everything good and made people in His image. Sin broke it, but God promised a Rescuer. |
+| **4th Sunday** | Jan 24 | **Lesson 3: "God Keeps His Promises"** (Genesis 6–9; 12:1–3; 15:5–6; 21:1–7; 22:1–14) + **Lesson 4: "God Turns Bad into Good"** (Genesis 37; 39–45; 50:15–21) + **End-of-Phase Review** | God kept Noah safe and kept His promise to Abraham. God always keeps His word. Joseph was treated badly, but God was with him and used it to save many lives. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+### 2nd Sunday: "God's Big Library" + "God Made It Good"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **God's Big Library** (Psalm 119:105; 2 Timothy 3:16; Luke 24:27). Use the Lesson 1 hook and story script. Key point: *The Bible is 66 books, two testaments and one story about Jesus, and I can find my way around it.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "books of the Bible"; BibleJourneyTV "Bible"; BibleProject "What Is the Bible?". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **God Made It Good** (Genesis 1–3). Use the Lesson 2 script. Key point: *God made everything good and made people in His image. Sin broke it, but God promised a Rescuer.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Old or New? Run!** (Lesson 1). Backup: Creation Day Scramble. |
+| 0:58–1:10 | 🖍️ Activity | **Creation Wheel** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "God Keeps His Promises" + "God Turns Bad into Good"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **God Keeps His Promises** (Genesis 6–9; 12:1–3; 15:5–6; 21:1–7; 22:1–14). Use the Lesson 3 hook and story script. Key point: *God kept Noah safe and kept His promise to Abraham. God always keeps His word.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "Noah's ark" / "Abraham"; BibleJourneyTV "Noah"; BibleProject "The Covenants". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **God Turns Bad into Good** (Genesis 37; 39–45; 50:15–21). Use the Lesson 4 script. Key point: *Joseph was treated badly, but God was with him and used it to save many lives.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **Two by Two Animal Match** (Lesson 3). Backup: Joseph's Coat Color Relay. |
+| 0:56–1:04 | 🖍️ Activity | **Joseph's Coat Collage** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Psalm 119:105; 2 Timothy 3:16; Luke 24:27 and Genesis 1–3 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read Genesis 37; 39–45; 50:15–21 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Review & Fun Sunday" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: God's Big Library 📚
 

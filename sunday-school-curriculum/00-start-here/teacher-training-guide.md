@@ -21,11 +21,13 @@ You do not need to be a Bible scholar. Every phase file gives you background not
 3. **Preview every video.** Use the search links in the phase file and pick the version you'll show. Write down the exact title and copy the link into your notes. Check that it fits your time slot and your kids.
 4. **Make or print supplies.** Check the phase's games and crafts, and print the [printables](../printables/) for the phase.
 5. **Learn the song.** Practice the cumulative book song and motions until you can lead it without notes. Kids will copy your energy.
-6. **Send the Take-Home Family Page** (the last section of every phase file) to parents in Week 1.
+6. **Send the Take-Home Family Page** (the last section of every phase file) to parents after the 2nd Sunday.
+7. **Read the phase's "2nd & 4th Sunday Plan."** Class meets only on the 2nd and 4th Sundays, so each class teaches **two lessons**. The plan shows exactly which story, video, game and craft to use each Sunday, and what to trim.
 
-**Each week (Saturday night or before class):**
+**Before each class (the Saturday before the 2nd and 4th Sundays):**
 
-- Re-read that week's story script out loud once.
+- Re-read **both** story scripts for that Sunday out loud once.
+- Mid-week between classes, send parents a quick reminder text with the "Between Sundays" practice from the phase file.
 - Set up the room: chairs or carpet squares, video ready, game supplies, craft station.
 - Pray for each child by name.
 
@@ -82,7 +84,7 @@ Every child climbs this ladder for each new book:
 4. **SPELL IT:** Spell it aloud together, then alone (Explorers and up). Little Lambs name the first letter and its sound.
 5. **FIND IT:** Find the book in a real Bible using the Table of Contents, then without it. Timed "Sword Drills" for older kids.
 
-### Daily memory routine (5 minutes, every Sunday)
+### Memory routine (5 minutes, every class)
 
 1. **Sing** the cumulative song (all books learned so far).
 2. **Section Shout:** Teacher calls a section ("LAW!"), kids shout the books in it.
@@ -153,7 +155,7 @@ Each phase has 30+ trivia questions in three tiers.
 
 Use it at the end of each phase (Explorers and up) and in a big year-end bee.
 
-1. **Word list:** From the phase's "Spelling & Reading" section. Give it to kids in Week 1.
+1. **Word list:** From the phase's "Spelling & Reading" section. Give it to kids on the 2nd Sunday.
 2. **Format:** The speller stands and says the word, spells it, and says it again ("Genesis. G-E-N-E-S-I-S. Genesis.").
 3. **They may ask:** for the word to be repeated, used in a sentence, or for the section it's in.
 4. **Gentle rules for church:** A misspell earns a "second-chance ticket" once per bee, and spellers who are out join the "Judges' Panel" to help check spelling.
@@ -180,7 +182,7 @@ See the [YouTube Video Guide](youtube-video-guide.md). Key rules:
 - **Catch kids being good:** Praise out loud, with specifics.
 - **Movement every 10 minutes** for Little Lambs and Explorers (motions, stretch, "stand if…").
 - **Have a "next thing" ready** for early finishers (word search, coloring, flashcards).
-- **Know your kids:** Learn names in Week 1, and ask about their week.
+- **Know your kids:** Learn names on the first Sunday, and ask about their week.
 
 ---
 

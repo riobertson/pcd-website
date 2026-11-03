@@ -343,7 +343,68 @@ The Minor Prophets are **twelve** messengers with **short** books. "Minor" means
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Aug 8 | **Lesson 1: "Love That Won't Quit" (Hosea, Joel, Amos, Obadiah)"** (Hosea 3:1–5; 11:1–4; Joel 2:12–13, 28; Amos 5:24; 7:7–8; Obadiah 15) + **Lesson 2: "Jonah Runs, God Rescues" (Jonah, Micah, Nahum)"** (Jonah 1–4; Micah 5:2; 6:8; Nahum 1:7) | God loves us faithfully and wants us to be fair and humble. God gives second chances and loves everyone, even enemies. |
+| **4th Sunday** | Aug 22 | **Lesson 3: "Watch, Build & Trust" (Habakkuk, Zephaniah, Haggai, Zechariah)"** (Habakkuk 1:2; 2:1–4; 3:17–19; Zephaniah 3:17; Haggai 1:2–8, 12–14; Zechariah 4:6; 9:9) + **Lesson 4: "The Messenger Is Coming" (Malachi + 🌉 the 400 Silent Years)"** (Malachi 3:1, 6; 4:2, 5–6; Galatians 4:4; Luke 1:5–17) + **End-of-Phase Review** | Trust God when life is hard, put Him first, and look for the King. God was quiet but not gone; He got the world ready for Jesus right on time. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+### 2nd Sunday: "Love That Won't Quit" (Hosea, Joel, Amos, Obadiah)" + "Jonah Runs, God Rescues" (Jonah, Micah, Nahum)"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **Love That Won't Quit" (Hosea, Joel, Amos, Obadiah)** (Hosea 3:1–5; 11:1–4; Joel 2:12–13, 28; Amos 5:24; 7:7–8; Obadiah 15). Use the Lesson 1 hook and story script. Key point: *God loves us faithfully and wants us to be fair and humble.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: BibleProject "Overview: Hosea," "Joel," "Amos," "Obadiah"; Sharefaith Kids "Hosea"; Bible Journey "Amos". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Jonah Runs, God Rescues" (Jonah, Micah, Nahum)** (Jonah 1–4; Micah 5:2; 6:8; Nahum 1:7). Use the Lesson 2 script. Key point: *God gives second chances and loves everyone, even enemies.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Minor Prophet Line-Up Race** (Lesson 1). Backup: Jonah Overboard!. |
+| 0:58–1:10 | 🖍️ Activity | **Paper-Bag Big Fish** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "Watch, Build & Trust" (Habakkuk, Zephaniah, Haggai, Zechariah)" + "The Messenger Is Coming" (Malachi + 🌉 the 400 Silent Years)"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **Watch, Build & Trust" (Habakkuk, Zephaniah, Haggai, Zechariah)** (Habakkuk 1:2; 2:1–4; 3:17–19; Zephaniah 3:17; Haggai 1:2–8, 12–14; Zechariah 4:6; 9:9). Use the Lesson 3 hook and story script. Key point: *Trust God when life is hard, put Him first, and look for the King.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: BibleProject "Overview: Habakkuk," "Zephaniah," "Haggai," "Zechariah"; Sharefaith Kids "Haggai Rebuild"; Bible Journey "Zechariah". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **The Messenger Is Coming" (Malachi + 🌉 the 400 Silent Years)** (Malachi 3:1, 6; 4:2, 5–6; Galatians 4:4; Luke 1:5–17). Use the Lesson 4 script. Key point: *God was quiet but not gone; He got the world ready for Jesus right on time.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **Temple Builders Relay** (Lesson 3). Backup: Cross the Silent Bridge. |
+| 0:56–1:04 | 🖍️ Activity | **Bridge Timeline Walk** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Hosea 3:1–5; 11:1–4; Joel 2:12–13, 28; Amos 5:24; 7:7–8; Obadiah 15 and Jonah 1–4; Micah 5:2; 6:8; Nahum 1:7 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read Malachi 3:1, 6; 4:2, 5–6; Galatians 4:4; Luke 1:5–17 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Old Testament Graduation Sunday" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: "Love That Won't Quit" (Hosea, Joel, Amos, Obadiah)
 

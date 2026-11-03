@@ -8,7 +8,7 @@ Dear Parents and Families,
 
 Welcome to **"Through the Bible in 12 Months,"** Purpose Church's new Sunday school program for kids and teens ages 4–17!
 
-Over the next year, your child will travel through the **entire Bible, all 66 books, from Genesis to Revelation**, in 12 monthly "phases." Each month, they will:
+**We meet on the 2nd and 4th Sundays of every month.** Over the next year, your child will travel through the **entire Bible, all 66 books, from Genesis to Revelation**, in 12 monthly "phases." Each month, they will:
 
 - 📖 **Hear Bible stories** told in simple, clear words, always pointing to Jesus
 - 🎵 **Learn a song with hand motions** that helps them memorize the books of the Bible in order
@@ -25,7 +25,7 @@ Over the next year, your child will travel through the **entire Bible, all 66 bo
 | 🥾 Trailblazers | 11–13 |
 | 🕊️ Ambassadors | 14–17 |
 
-### How You Can Help at Home
+### How You Can Help at Home (especially on the weeks we don't meet!)
 1. **Read the Take-Home Family Page** we send each month. It has the memory verse, the song, dinner-table questions and the videos.
 2. **Sing the books song in the car!** Kids learn fastest with repetition.
 3. **Bring a Bible each Sunday** (Explorers and up). Ask us if you need one, because we have Bibles to give.

@@ -69,28 +69,60 @@ Every lesson is written for one shared Bible story, taught at four levels. With 
 
 ---
 
-## 4. The Weekly Session (75 minutes)
+## 4. The Sunday Session (75 minutes)
 
-Every Sunday follows the same rhythm, so kids know what to expect and volunteers can step in easily. A printable version is in [weekly-session-template.md](weekly-session-template.md).
+**Class meets on the 2nd and 4th Sundays of every month.** Each class covers **two lessons** from the phase, so there are two shorter stories instead of one long one. Every class follows the same rhythm, so kids know what to expect and volunteers can step in easily. A printable version is in [weekly-session-template.md](weekly-session-template.md).
 
 | Time | Segment | What happens |
 |---|---|---|
-| 0:00–0:10 | 🎵 **Welcome & Book Chant** | Greet kids by name, take attendance, sing the cumulative Books of the Bible song with motions |
-| 0:10–0:25 | 📖 **Bible Story / Lesson** | Object-lesson hook + story script (from the phase file) |
-| 0:25–0:35 | 📺 **Video** | One video from @SharefaithKids, @BibleJourneyTV or @bibleproject, chosen by age group |
-| 0:35–0:45 | 💬 **Small-Group Questions** | Age-specific discussion questions |
-| 0:45–0:55 | 🎮 **Game** | An active game that reinforces book names or the story |
-| 0:55–1:10 | 🖍️ **Activity / Coloring / Craft** | Coloring page, craft, word puzzle or trivia |
-| 1:10–1:15 | ✅ **Memory & Spelling Check + Prayer** | Quick check-offs, Bible Passport stickers, closing prayer |
+| 0:00–0:08 | 🎵 **Welcome & Book Chant** | Greet kids by name, take attendance, sing the cumulative Books of the Bible song with motions (4th Sunday: add a 2-minute recap of the 2nd Sunday) |
+| 0:08–0:20 | 📖 **Story 1** | Object-lesson hook + story script for the first lesson |
+| 0:20–0:28 | 📺 **Video** | One video from @SharefaithKids, @BibleJourneyTV or @bibleproject, chosen by age group |
+| 0:28–0:40 | 📖 **Story 2** | Story script for the second lesson |
+| 0:40–0:48 | 💬 **Small-Group Questions** | One question from each lesson for your age group, plus "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 **Game** | An active game that reinforces book names or the stories |
+| 0:58–1:10 | 🖍️ **Activity / Coloring / Craft** | Coloring page, craft, word puzzle or trivia |
+| 1:10–1:15 | ✅ **Memory & Spelling Check + Prayer** | Quick check-offs, stars, closing prayer (4th Sunday: this becomes the 11-minute End-of-Phase Review with Passport stamps and badges) |
 
-**Shorter service? (45-minute version):** Chant (5) → Story (10) → Video (8) → Questions (7) → Game *or* Craft (10) → Check + Prayer (5).
+Each phase file has a ready-made **"2nd & 4th Sunday Plan"** with these run sheets filled in for that month's lessons, games and crafts.
+
+**Shorter service? (45-minute version):** Chant (5) → Story 1 (8) → Story 2 (8) → Video (6) → Questions (5) → Game *or* Craft (8) → Check + Prayer (5).
 
 ---
 
-## 5. Monthly Rhythm (Inside Each Phase)
+## 5. Our Calendar: 2nd & 4th Sundays
 
-| Week | Focus |
+### Inside each phase (month)
+
+| When | What happens |
 |---|---|
+| **2nd Sunday** | Introduce the phase (Big Idea, new books, new song verse) + **Lessons 1 & 2**. Spelling list and Take-Home Family Page go home. |
+| 1st & 3rd weeks (home) | **Between Sundays:** families sing the song, practice spelling, read the passages and watch the video the class didn't see (listed in each phase file). |
+| **4th Sunday** | 2-minute recap + **Lessons 3 & 4** + **End-of-Phase Review**: check-offs, Bible Passport stamp, phase badge. |
+| 5th Sunday (if any) | No class. If your church wants an extra session, use the phase's optional "Review & Fun Sunday." |
+
+### The year at a glance (January 2027 start)
+
+| Phase | Month | 2nd Sunday (Lessons 1 & 2) | 4th Sunday (Lessons 3 & 4 + review) | Calendar notes |
+|---|---|---|---|---|
+| 1 | January | Jan 10 | Jan 24 | Kickoff: send the parent letter Jan 3 |
+| 2 | February | Feb 14 | Feb 28 | Feb 14 is Valentine's Day: "God's love" tie-in |
+| 3 | March | Mar 14 | Mar 28 | ⚠️ **Mar 28 is Easter Sunday** (see Phase 3 plan) |
+| 4 | April | Apr 11 | Apr 25 | |
+| 5 | May | May 9 | May 23 | May 9 is Mother's Day |
+| 6 | June | Jun 13 | Jun 27 | |
+| 7 | July | Jul 11 | Jul 25 | Summer: expect visitors, so welcome them with a "New Explorer" Passport |
+| 8 | August | Aug 8 | Aug 22 | Old Testament complete! |
+| 9 | September | Sep 12 | Sep 26 | Back-to-school: invite new families |
+| 10 | October | Oct 10 | Oct 24 | |
+| 11 | November | Nov 14 | Nov 28 | Nov 28 is Thanksgiving weekend |
+| 12 | December | Dec 12 | Dec 26 | ⚠️ **Dec 26 is the day after Christmas.** Consider moving to Dec 19 for the Bible Bowl & Graduation |
+
+That's **24 classes a year**. Starting in a different month or year? Keep the same order of phases and use the 2nd and 4th Sundays of each month.
+
+**Missed a Sunday?** Because classes are two weeks apart, a child who misses one class misses a month of content. Teachers should send the Take-Home Family Page and the videos to absent families, and let kids do their check-offs at the next class.
+
+---|---|
 | Week 1 | Introduce the phase: Big Idea, new books, new song verse, first story |
 | Week 2 | Story 2: add motions, spelling list goes home |
 | Week 3 | Story 3: trivia warm-up, spelling relay |

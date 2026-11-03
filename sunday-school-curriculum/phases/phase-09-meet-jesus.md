@@ -178,7 +178,68 @@ If a child wants to talk or pray, do so in a visible, open space (follow your ch
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Sep 12 | **Lesson 1: "Jesus Is the King!" (Matthew)"** (Matthew 2:1–12; 5:14–16; 7:24–27; 28:18–20) + **Lesson 2: "Jesus the Mighty Servant" (Mark)"** (Mark 2:1–12; 4:35–41; 10:45) | Jesus is the promised King, and He is with us always. Jesus has power over sickness, sin and storms, and He came to serve. |
+| **4th Sunday** | Sep 26 | **Lesson 3: "A Savior for Everyone!" (Luke)"** (Luke 2:8–20; 19:1–10) + **Lesson 4: "He Is Alive!" (John)"** (John 11:25; 19:16–30; 20:1–29; 20:31) + **End-of-Phase Review** | Jesus came to seek and save the lost, including me! Jesus is God's Son. He died for us and rose again, so believe! |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+### 2nd Sunday: "Jesus Is the King!" (Matthew)" + "Jesus the Mighty Servant" (Mark)"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **Jesus Is the King!" (Matthew)** (Matthew 2:1–12; 5:14–16; 7:24–27; 28:18–20). Use the Lesson 1 hook and story script. Key point: *Jesus is the promised King, and He is with us always.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: BibleProject "Overview: Matthew 1-13" & "Matthew 14-28"; Sharefaith Kids "Wise Men"; Bible Journey "Matthew". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Jesus the Mighty Servant" (Mark)** (Mark 2:1–12; 4:35–41; 10:45). Use the Lesson 2 script. Key point: *Jesus has power over sickness, sin and storms, and He came to serve.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Gospel Four Corners** (Lesson 1). Backup: Through the Roof Relay. |
+| 0:58–1:10 | 🖍️ Activity | **Through-the-Roof House** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "A Savior for Everyone!" (Luke)" + "He Is Alive!" (John)"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **A Savior for Everyone!" (Luke)** (Luke 2:8–20; 19:1–10). Use the Lesson 3 hook and story script. Key point: *Jesus came to seek and save the lost, including me!* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: BibleProject "Overview: Luke 1-9" & "Luke 10-24"; Sharefaith Kids "Zacchaeus"; Bible Journey "Luke". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **He Is Alive!" (John)** (John 11:25; 19:16–30; 20:1–29; 20:31). Use the Lesson 4 script. Key point: *Jesus is God's Son. He died for us and rose again, so believe!* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **Zacchaeus, Come Down!** (Lesson 3). Backup: Empty Tomb Treasure Hunt. |
+| 0:56–1:04 | 🖍️ Activity | **Rolling-Stone Tomb** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Matthew 2:1–12; 5:14–16; 7:24–27; 28:18–20 and Mark 2:1–12; 4:35–41; 10:45 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read John 11:25; 19:16–30; 20:1–29; 20:31 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Good News Party Sunday" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: "Jesus Is the King!" (Matthew)
 

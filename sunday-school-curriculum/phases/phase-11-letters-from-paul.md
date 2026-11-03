@@ -267,7 +267,70 @@ Use the same Mediterranean map from Phase 10. Place an envelope icon on each cit
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Nov 14 | **Lesson 1: "The Best Gift Ever"** (Romans 3:23; 5:8; 6:23; 10:9; Galatians 5:22–23) + **Lesson 2: "One Body, Big Love, Strong Armor"** (1 Corinthians 12–13; Ephesians 6:10–18) | Salvation is a free gift — grace! Every person matters; love is the greatest; God makes us strong. |
+| **4th Sunday** | Nov 28 | **Lesson 3: "Joy in Chains"** (Philippians 1; 4; Colossians 1:15–20; 1 Thessalonians 4:13–18) + **Lesson 4: "Letters to Friends"** (1 Timothy 4:12; 2 Timothy 3:14–4:8; Titus 3:4–7; Philemon) + **End-of-Phase Review** | Joy comes from Jesus, not from easy days — and He's coming back. God uses young people, and forgiveness makes enemies into family. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+> ⚠️ **Nov 28, 2027 is Thanksgiving weekend.** Expect lower attendance; keep the review check-offs open on the next 2nd Sunday for anyone who missed.
+
+### 2nd Sunday: "The Best Gift Ever" + "One Body, Big Love, Strong Armor"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **The Best Gift Ever** (Romans 3:23; 5:8; 6:23; 10:9; Galatians 5:22–23). Use the Lesson 1 hook and story script. Key point: *Salvation is a free gift — grace!* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: "Overview: Romans" (BibleProject); Sharefaith Kids "grace"; Bible Journey "Paul". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **One Body, Big Love, Strong Armor** (1 Corinthians 12–13; Ephesians 6:10–18). Use the Lesson 2 script. Key point: *Every person matters; love is the greatest; God makes us strong.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Romans Road Race** (Lesson 1). Backup: Body Parts Scramble. |
+| 0:58–1:10 | 🖍️ Activity | **Armor of God Paper Suit** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "Joy in Chains" + "Letters to Friends"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **Joy in Chains** (Philippians 1; 4; Colossians 1:15–20; 1 Thessalonians 4:13–18). Use the Lesson 3 hook and story script. Key point: *Joy comes from Jesus, not from easy days — and He's coming back.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: "Overview: Philippians," "Overview: Colossians," "Overview: 1 Thessalonians". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Letters to Friends** (1 Timothy 4:12; 2 Timothy 3:14–4:8; Titus 3:4–7; Philemon). Use the Lesson 4 script. Key point: *God uses young people, and forgiveness makes enemies into family.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **Joy Jump** (Lesson 3). Backup: Mail Carrier Dash. |
+| 0:56–1:04 | 🖍️ Activity | **Write-a-Letter Station** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to Romans 3:23; 5:8; 6:23; 10:9; Galatians 5:22–23 and 1 Corinthians 12–13; Ephesians 6:10–18 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read 1 Timothy 4:12; 2 Timothy 3:14–4:8; Titus 3:4–7; Philemon together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Review & Fun Sunday" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1 — The Best Gift Ever (Romans & Galatians)
 

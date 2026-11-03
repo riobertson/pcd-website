@@ -1,6 +1,6 @@
 # YouTube Video Guide
 
-Three YouTube channels are used throughout all 12 phases. Each phase file lists the videos for each week, with search terms and direct channel-search links.
+Three YouTube channels are used throughout all 12 phases. Each phase file lists the videos for each lesson, with search terms and direct channel-search links.
 
 | Channel | Link | What it offers | Best for |
 |---|---|---|---|
@@ -13,7 +13,7 @@ Three YouTube channels are used throughout all 12 phases. Each phase file lists 
 ## How Videos Fit Each Sunday
 
 - **Time slot:** 10 minutes (0:25–0:35 in the weekly schedule).
-- **Rotation:** Each week, each age group watches the channel that fits them best, as listed in the phase file. With combined rooms, show the younger-friendly video to everyone, and send the BibleProject video home for teens.
+- **Rotation:** Each class, each age group watches the channel that fits them best, as listed in the phase file. With combined rooms, show the younger-friendly video to everyone, and send the BibleProject video home for teens.
 - **BibleProject book overviews:** BibleProject has an **"Overview"** video for every book of the Bible (longer books like Genesis, Exodus, Isaiah, Matthew, Luke and Acts are split into two parts). These are the backbone for Trailblazers and Ambassadors: show the overview in the first week a book is introduced.
 
 ## How the Links Work

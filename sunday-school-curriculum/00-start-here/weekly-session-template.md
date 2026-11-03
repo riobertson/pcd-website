@@ -1,10 +1,12 @@
-# Weekly Session Plan (Printable Template)
+# Sunday Session Plan (Printable Template)
+
+Class meets on the **2nd and 4th Sundays**. Each class covers **two lessons**, so fill in both stories.
 
 Copy this page for each Sunday. Fill it in from the phase file.
 
 ---
 
-**Date:** ____________ **Phase #:** ____ **Week #:** ____ **Room / Age group:** ____________________
+**Date:** ____________ **Phase #:** ____ ☐ 2nd Sunday (Lessons 1 & 2) ☐ 4th Sunday (Lessons 3 & 4 + review) **Room / Age group:** ____________________
 
 **Lead teacher:** ____________________ **Helpers:** ______________________________
 
@@ -18,13 +20,14 @@ Copy this page for each Sunday. Fill it in from the phase file.
 
 | ⏱️ Time | Segment | My plan / notes | ✅ |
 |---|---|---|---|
-| 0:00–0:10 | 🎵 **Welcome & Book Chant**: attendance, sing the cumulative books song with motions, Section Shout | Song verses to sing: ________ | ☐ |
-| 0:10–0:25 | 📖 **Bible Story**: HOOK (object lesson) → BOOK (story script) → LOOK (what it means / Jesus) → TOOK (action step) | Object lesson supplies: ________ | ☐ |
-| 0:25–0:35 | 📺 **Video**: "Look For" question first, then play, then 2 follow-up questions | Channel: ________ Title: ________ Link: ________ | ☐ |
-| 0:35–0:45 | 💬 **Small-Group Questions** (from the phase file, for my age group) | Q1: ________ Q2: ________ Q3: ________ | ☐ |
-| 0:45–0:55 | 🎮 **Game** | Game: ________ Supplies: ________ | ☐ |
-| 0:55–1:10 | 🖍️ **Activity / Coloring / Craft / Puzzle** | Activity: ________ Early-finisher option: ________ | ☐ |
-| 1:10–1:15 | ✅ **Memory & Spelling Check + Prayer**: check-offs, stickers, prayer | Spelling words: ________ | ☐ |
+| 0:00–0:08 | 🎵 **Welcome & Book Chant**: attendance, sing the cumulative books song with motions, Section Shout (4th Sunday: 2-min recap) | Song verses to sing: ________ | ☐ |
+| 0:08–0:20 | 📖 **Story 1**: HOOK (object lesson) → BOOK (story script) → LOOK (what it means / Jesus) → TOOK (action step) | Lesson #: ____ Supplies: ________ | ☐ |
+| 0:20–0:28 | 📺 **Video**: "Look For" question first, then play, then 2 follow-up questions | Channel: ________ Title: ________ Link: ________ | ☐ |
+| 0:28–0:40 | 📖 **Story 2**: story script for the second lesson | Lesson #: ____ Supplies: ________ | ☐ |
+| 0:40–0:48 | 💬 **Small-Group Questions** (one from each lesson, for my age group) | Q1: ________ Q2: ________ Jesus Q: ________ | ☐ |
+| 0:48–0:58 | 🎮 **Game** | Game: ________ Supplies: ________ | ☐ |
+| 0:58–1:10 | 🖍️ **Activity / Coloring / Craft / Puzzle** | Activity: ________ Early-finisher option: ________ | ☐ |
+| 1:10–1:15 | ✅ **Memory & Spelling Check + Prayer**: check-offs, stickers, prayer (4th Sunday: End-of-Phase Review, Passport stamp & badge, starting ~1:04) | Spelling words: ________ | ☐ |
 
 ---
 

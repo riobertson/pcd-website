@@ -9,7 +9,7 @@ Every phase includes:
 |---|---|
 | 📖 **Bible in Easy Words** | Every book explained simply: what it's about, key people, key stories, and where Jesus shows up |
 | 👩‍🏫 **Teaching Instructions** | Teacher background, a 4-week plan, ready-to-read story scripts, and tips for each age group |
-| 📺 **YouTube Videos** | Weekly picks from **@SharefaithKids**, **@BibleJourneyTV** and **@bibleproject** |
+| 📺 **YouTube Videos** | Picks for every lesson from **@SharefaithKids**, **@BibleJourneyTV** and **@bibleproject** |
 | 🎵 **Book Memory Song** | A cumulative song with hand motions so kids memorize every book in order |
 | 🔤 **Spelling & Reading** | Age-leveled spelling lists, syllable clapping, spelling bee words, and read-aloud practice |
 | ❓ **Word Trivia** | 30+ questions per phase in Easy / Medium / Hard tiers, with answer keys |
@@ -33,27 +33,29 @@ Every guide in `00-start-here/` and every phase in `phases/` also has a **PDF co
 3. Learn the **[Books of the Bible Memory System](00-start-here/books-of-the-bible-memory-system.md)** (all 66 books with pronunciation, syllables, spelling and memory tricks).
 4. Set up your video playlists with the **[YouTube Video Guide](00-start-here/youtube-video-guide.md)**.
 5. Gather supplies with the **[Supply List](00-start-here/supply-list.md)**, and send home the **[Parent Welcome Letter](00-start-here/parent-welcome-letter.md)**.
-6. Each Sunday, plan with the **[Weekly Session Template](00-start-here/weekly-session-template.md)** and the month's phase guide.
+6. Before each class, plan with the phase's **2nd & 4th Sunday Plan** and the **[Sunday Session Template](00-start-here/weekly-session-template.md)**.
 7. Keep the **[Game Library](00-start-here/game-library.md)** handy (33 reusable games).
 
 ## 🗓️ The 12 Phases
 
-| Phase | Month | Title | Books | Total | Printables |
-|---|---|---|---|---|---|
-| 1 | Jan | [In the Beginning](phases/phase-01-in-the-beginning.md) | How the Bible works + Genesis | 1 | [🖨️](printables/phase-01-printables.html) |
-| 2 | Feb | [Freedom & God's Good Rules](phases/phase-02-freedom-and-gods-good-rules.md) | Exodus – Deuteronomy | 5 | [🖨️](printables/phase-02-printables.html) |
-| 3 | Mar | [Into the Promised Land](phases/phase-03-into-the-promised-land.md) | Joshua, Judges, Ruth | 8 | [🖨️](printables/phase-03-printables.html) |
-| 4 | Apr | [Kings & Kingdoms](phases/phase-04-kings-and-kingdoms.md) | 1 Samuel – 2 Chronicles | 14 | [🖨️](printables/phase-04-printables.html) |
-| 5 | May | [Coming Home & Being Brave](phases/phase-05-coming-home-and-being-brave.md) | Ezra, Nehemiah, Esther | 17 | [🖨️](printables/phase-05-printables.html) |
-| 6 | Jun | [Songs & Wise Words](phases/phase-06-songs-and-wise-words.md) | Job – Song of Songs | 22 | [🖨️](printables/phase-06-printables.html) |
-| 7 | Jul | [God's Big Messengers](phases/phase-07-gods-big-messengers.md) | Isaiah – Daniel | 27 | [🖨️](printables/phase-07-printables.html) |
-| 8 | Aug | [Twelve Mighty Messengers](phases/phase-08-twelve-mighty-messengers.md) | Hosea – Malachi | 39 | [🖨️](printables/phase-08-printables.html) |
-| 9 | Sep | [Meet Jesus!](phases/phase-09-meet-jesus.md) | Matthew, Mark, Luke, John | 43 | [🖨️](printables/phase-09-printables.html) |
-| 10 | Oct | [The Church Is Born](phases/phase-10-the-church-is-born.md) | Acts | 44 | [🖨️](printables/phase-10-printables.html) |
-| 11 | Nov | [Letters from Paul](phases/phase-11-letters-from-paul.md) | Romans – Philemon | 57 | [🖨️](printables/phase-11-printables.html) |
-| 12 | Dec | [Faith, Hope & Forever](phases/phase-12-faith-hope-and-forever.md) | Hebrews – Revelation + Bible Bowl & Graduation | 66 | [🖨️](printables/phase-12-printables.html) |
+**Class meets on the 2nd and 4th Sundays of every month (24 classes a year).** Each class teaches two of the phase's four lessons. The 4th Sunday ends with the review, Passport stamp and badge. The full calendar is in the [Program Overview](00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays).
 
-*The program can start in any month. The months above assume a January start, so the graduation lands at Christmas.*
+| Phase | Month | 2027 dates | Title | Books | Total | Printables |
+|---|---|---|---|---|---|---|
+| 1 | Jan | Jan 10 & 24 | [In the Beginning](phases/phase-01-in-the-beginning.md) | How the Bible works + Genesis | 1 | [🖨️](printables/phase-01-printables.html) |
+| 2 | Feb | Feb 14 & 28 | [Freedom & God's Good Rules](phases/phase-02-freedom-and-gods-good-rules.md) | Exodus – Deuteronomy | 5 | [🖨️](printables/phase-02-printables.html) |
+| 3 | Mar | Mar 14 & 28 | [Into the Promised Land](phases/phase-03-into-the-promised-land.md) | Joshua, Judges, Ruth | 8 | [🖨️](printables/phase-03-printables.html) |
+| 4 | Apr | Apr 11 & 25 | [Kings & Kingdoms](phases/phase-04-kings-and-kingdoms.md) | 1 Samuel – 2 Chronicles | 14 | [🖨️](printables/phase-04-printables.html) |
+| 5 | May | May 9 & 23 | [Coming Home & Being Brave](phases/phase-05-coming-home-and-being-brave.md) | Ezra, Nehemiah, Esther | 17 | [🖨️](printables/phase-05-printables.html) |
+| 6 | Jun | Jun 13 & 27 | [Songs & Wise Words](phases/phase-06-songs-and-wise-words.md) | Job – Song of Songs | 22 | [🖨️](printables/phase-06-printables.html) |
+| 7 | Jul | Jul 11 & 25 | [God's Big Messengers](phases/phase-07-gods-big-messengers.md) | Isaiah – Daniel | 27 | [🖨️](printables/phase-07-printables.html) |
+| 8 | Aug | Aug 8 & 22 | [Twelve Mighty Messengers](phases/phase-08-twelve-mighty-messengers.md) | Hosea – Malachi | 39 | [🖨️](printables/phase-08-printables.html) |
+| 9 | Sep | Sep 12 & 26 | [Meet Jesus!](phases/phase-09-meet-jesus.md) | Matthew, Mark, Luke, John | 43 | [🖨️](printables/phase-09-printables.html) |
+| 10 | Oct | Oct 10 & 24 | [The Church Is Born](phases/phase-10-the-church-is-born.md) | Acts | 44 | [🖨️](printables/phase-10-printables.html) |
+| 11 | Nov | Nov 14 & 28 | [Letters from Paul](phases/phase-11-letters-from-paul.md) | Romans – Philemon | 57 | [🖨️](printables/phase-11-printables.html) |
+| 12 | Dec | Dec 12 & 26 | [Faith, Hope & Forever](phases/phase-12-faith-hope-and-forever.md) | Hebrews – Revelation + Bible Bowl & Graduation | 66 | [🖨️](printables/phase-12-printables.html) |
+
+*The program can start in any month. The dates above assume a January 2027 start, so the graduation lands at Christmas.*
 
 ## 👧🧒👦 Age Groups
 

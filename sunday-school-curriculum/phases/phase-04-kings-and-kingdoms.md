@@ -157,7 +157,68 @@ These six books cover about 500 years, from roughly 1100 BC (the last judge, Sam
 
 ---
 
+<!-- sunday-plan:start -->
+
+## 📅 2nd & 4th Sunday Plan
+
+Our class meets on the **2nd and 4th Sundays** of each month, so the four lessons below are taught **two at a time**. Each Sunday is still 75 minutes, with two shorter stories. Use the full lesson write-ups in **Weekly Lessons** for scripts, questions and supplies.
+
+| Sunday | 2027 date* | Teach | Big takeaway |
+|---|---|---|---|
+| **2nd Sunday** | Apr 11 | **Lesson 1: "God Looks at the Heart"** (1 Samuel 3; 8–10; 16) + **Lesson 2: "Giant Faith & a Forever Promise"** (1 Samuel 17; 2 Samuel 5, 7, 9) | God calls Samuel and picks David because of his heart. God fights for us and keeps His forever promise. |
+| **4th Sunday** | Apr 25 | **Lesson 3: "Wise King, Split Kingdom, Fire from Heaven"** (1 Kings 3; 8; 12; 18) + **Lesson 4: "Prophets, Boy Kings & God's Replay Book"** (2 Kings 2; 5; 22–23; 2 Chronicles 7:14; 36:22–23) + **End-of-Phase Review** | Ask God for wisdom; the LORD is the only true God. God keeps working and keeps His promises, even when kings fail. |
+
+*\*Dates assume a January 2027 start. See the [Program Overview](../00-start-here/program-overview.md#5-our-calendar-2nd--4th-sundays) for the full calendar.*
+
+### 2nd Sunday: "God Looks at the Heart" + "Giant Faith & a Forever Promise"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. |
+| 0:08–0:20 | 📖 Story 1 | **God Looks at the Heart** (1 Samuel 3; 8–10; 16). Use the Lesson 1 hook and story script. Key point: *God calls Samuel and picks David because of his heart.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "Samuel"; BibleJourneyTV "Samuel"; BibleProject "Overview: 1 Samuel". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Giant Faith & a Forever Promise** (1 Samuel 17; 2 Samuel 5, 7, 9). Use the Lesson 2 script. Key point: *God fights for us and keeps His forever promise.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 1 and 1 from Lesson 2 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:58 | 🎮 Game | **Crown Grab** (Lesson 1). Backup: Giant Toss. |
+| 0:58–1:10 | 🖍️ Activity | **Five Smooth Stones verse stones** (Lesson 2). Early finishers: this phase's coloring page or word search. |
+| 1:10–1:15 | ✅ Memory, Spelling & Prayer | Say the memory verse, spell 1–2 new books together, give stars, and pray. Send home the Take-Home Family Page. |
+
+### 4th Sunday: "Wise King, Split Kingdom, Fire from Heaven" + "Prophets, Boy Kings & God's Replay Book"
+
+| Time | Segment | What to do |
+|---|---|---|
+| 0:00–0:08 | 🎵 Welcome & Book Chant | Attendance, then sing this phase's book song with motions. Then a 2-minute recap: "What do you remember from last time?" |
+| 0:08–0:20 | 📖 Story 1 | **Wise King, Split Kingdom, Fire from Heaven** (1 Kings 3; 8; 12; 18). Use the Lesson 3 hook and story script. Key point: *Ask God for wisdom; the LORD is the only true God.* |
+| 0:20–0:28 | 📺 Video | Show **one** video (Little Lambs & Explorers: Sharefaith Kids; Trailblazers & Ambassadors: BibleProject). Options: SharefaithKids "Elijah"; BibleJourneyTV "Elijah Mount Carmel"; BibleProject "Overview: 1-2 Kings". Send the others home on the family page. |
+| 0:28–0:40 | 📖 Story 2 | **Prophets, Boy Kings & God's Replay Book** (2 Kings 2; 5; 22–23; 2 Chronicles 7:14; 36:22–23). Use the Lesson 4 script. Key point: *God keeps working and keeps His promises, even when kings fail.* |
+| 0:40–0:48 | 💬 Small Groups | Ask 1 question from Lesson 3 and 1 from Lesson 4 for your age group, then: "Where did we see Jesus today?" |
+| 0:48–0:56 | 🎮 Game | **Kingdom Split Tag** (Lesson 3). Backup: Seven Dips Relay. |
+| 0:56–1:04 | 🖍️ Activity | **King Timeline Scroll** (Lesson 4). Early finishers: this phase's coloring page or word search. |
+| 1:04–1:15 | ✅ Review, Passport & Prayer | Run the **End-of-Phase** oral check-offs by age group, stamp Bible Passports, hand out the phase badge, and pray. Anyone not finished can check off on the next 2nd Sunday. |
+
+### 🏠 Between Sundays (the 1st and 3rd weeks)
+
+Kids go two weeks between classes, so the home weeks keep the memory work going. Put these on the family page or text them to parents:
+
+- **After the 2nd Sunday:** Sing the book song once a day, practice this phase's spelling words (5 minutes), read or listen to 1 Samuel 3; 8–10; 16 and 1 Samuel 17; 2 Samuel 5, 7, 9 with a picture Bible, and watch the video the class didn't see.
+- **After the 4th Sunday:** Read 2 Kings 2; 5; 22–23; 2 Chronicles 7:14; 36:22–23 together, talk through the 3 dinner-table questions, and keep singing the whole song so far. The next phase starts on the 2nd Sunday!
+- **Teachers:** A quick text or photo to parents mid-week ("This week, practice spelling ___!") makes a big difference.
+
+### ✂️ What to Trim When Time Is Short
+
+Two lessons in one Sunday means you **won't use everything** in the Weekly Lessons. Keep these, in this order: (1) both story scripts, (2) the memory verse and book song, (3) one game, (4) one activity. Extra games, crafts, trivia and puzzles become take-home pages, early-finisher options or fun for a 5th-Sunday or special event.
+
+> 💡 **Optional bonus:** "Royal Review Day" (the old Week 5 review) can be used for a special event, a 5th Sunday if your church holds class, or folded into the 4th Sunday's review time.
+
+---
+
+<!-- sunday-plan:end -->
+
 ## Weekly Lessons
+
+<!-- sunday-plan-note:start -->
+> 📅 **Twice a month:** The four lessons below are taught in pairs: **Lessons 1 & 2 on the 2nd Sunday**, **Lessons 3 & 4 on the 4th Sunday**. See the [2nd & 4th Sunday Plan](#-2nd--4th-sunday-plan) above for the 75-minute run sheets. "Week 1–4" below means Lesson 1–4.
+<!-- sunday-plan-note:end -->
 
 ### Week 1: God Looks at the Heart
 
