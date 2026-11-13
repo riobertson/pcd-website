@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kids Sunday School Donation Drive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --b:#6B1F3A; --bm:#8B2848; --g:#C9A84C; --gl:#E8D49A; --n:#0E1B2E; --c:#FAF7F2; }
+  @page { size: letter; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { font-variant-numeric: lining-nums; font-family: Jost, "Segoe UI", Arial, sans-serif; color: var(--n); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 8.5in; height: 11in; padding-bottom: 0; position: relative; overflow: hidden; background: var(--c); display: flex; flex-direction: column; }
+
+  .top { background: var(--n); color: #fff; padding: 0.3in 0.5in 0.26in; text-align: center; position: relative; }
+  .top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 10px; background: repeating-linear-gradient(90deg, var(--g) 0 22px, var(--b) 22px 44px); }
+  .church { font-size: 10.5pt; letter-spacing: .32em; text-transform: uppercase; color: var(--gl); font-weight: 600; }
+  .cross { font-family: "Cormorant Garamond", serif; color: var(--g); font-size: 18pt; line-height: 1; margin: 4px 0 2px; }
+  h1 { font-family: "Cormorant Garamond", serif; font-weight: 700; font-size: 40pt; line-height: 1.0; margin-top: 2px; }
+  h1 span { color: var(--g); }
+  .lede { font-size: 11.5pt; line-height: 1.45; color: #e9e4da; margin: 10px auto 0; max-width: 6.6in; }
+  .lede b { color: #fff; }
+
+  .stats { display: flex; justify-content: center; gap: 0.22in; margin: 0.24in 0.5in 0; }
+  .stat { background: #fff; border: 2px solid var(--gl); border-radius: 14px; padding: 4px 14px; text-align: center; min-width: 1.45in; }
+  .stat b { display: block; font-family: "Cormorant Garamond", serif; font-size: 21pt; color: var(--b); line-height: 1; }
+  .stat span { font-size: 8.5pt; letter-spacing: .12em; text-transform: uppercase; color: #555; font-weight: 600; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25in; margin: 0.2in 0.5in 0; }
+  .box { background: #fff; border-radius: 16px; padding: 0.14in 0.22in 0.16in; border-top: 8px solid var(--b); box-shadow: 0 2px 0 rgba(0,0,0,.06); }
+  .box.money { border-top-color: var(--g); }
+  .box h2 { font-family: "Cormorant Garamond", serif; font-size: 22pt; color: var(--b); line-height: 1.05; }
+  .box .sub { font-size: 9.5pt; color: #666; margin: 2px 0 8px; }
+  ul.check { list-style: none; }
+  ul.check li { font-size: 10.2pt; line-height: 1.28; padding: 2px 0 2px 22px; position: relative; border-bottom: 1px dashed #e6dfd2; }
+  ul.check li:last-child { border-bottom: 0; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border: 2px solid var(--b); border-radius: 3px; }
+
+  .levels { display: grid; gap: 4px; }
+  .lvl { display: flex; align-items: center; gap: 10px; background: var(--c); border-radius: 10px; padding: 3px 9px; }
+  .amt { font-family: "Cormorant Garamond", serif; font-weight: 700; font-size: 19pt; color: #fff; background: var(--b); border-radius: 8px; min-width: 0.72in; text-align: center; line-height: 1.25; }
+  .lvl p { font-size: 9.8pt; line-height: 1.25; }
+  .how { display: flex; gap: 12px; align-items: center; margin-top: 7px; border-top: 2px solid var(--gl); padding-top: 7px; }
+  .how img { width: 0.95in; height: 0.95in; background: #fff; }
+  .how ol { font-size: 9.6pt; line-height: 1.35; padding-left: 16px; }
+  .how b { color: var(--b); }
+
+  .verse { margin: 0.14in 0.5in 0.14in; text-align: center; font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 14.5pt; color: var(--b); line-height: 1.3; }
+  .verse small { display: block; font-style: normal; font-family: Jost, sans-serif; font-size: 8.5pt; letter-spacing: .2em; text-transform: uppercase; color: #8a7a55; margin-top: 2px; }
+
+  .foot { margin-top: auto; background: var(--b); color: #fff; padding: 0.16in 0.5in 0.2in; display: grid; grid-template-columns: 1.15fr 1fr; gap: 0.25in; align-items: center; }
+  .foot h3 { font-size: 9pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gl); margin-bottom: 3px; }
+  .foot p { font-size: 10pt; line-height: 1.4; }
+  .deadline { text-align: center; border: 2px solid var(--g); border-radius: 12px; padding: 7px 8px; }
+  .deadline b { display: block; font-family: "Cormorant Garamond", serif; font-size: 19pt; color: #fff; line-height: 1.1; }
+  .deadline span { font-size: 9pt; color: var(--gl); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="church">Purpose Church of Denton · Kids &amp; Youth Ministry</div>
+    <div class="cross">✝</div>
+    <h1>Help Our Kids <span>Grow</span><br>in God's Word!</h1>
+    <p class="lede">We're launching <b>"Through the Bible in 12 Months,"</b> a brand-new Sunday school where kids ages <b>4–17</b> learn all 66 books of the Bible through stories, games, coloring, songs and crafts. Classes start <b>January 2027</b> on the <b>2nd &amp; 4th Sundays</b>. You can help!</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>66</b><span>Books</span></div>
+    <div class="stat"><b>12</b><span>Months</span></div>
+    <div class="stat"><b>4</b><span>Age Groups</span></div>
+    <div class="stat"><b>24</b><span>Sundays</span></div>
+  </div>
+
+  <div class="cols">
+    <section class="box">
+      <h2>🎁 Donate Supplies</h2>
+      <p class="sub">New items only, please. Every little bit helps!</p>
+      <ul class="check">
+        <li>Kids' Bibles (picture Bibles &amp; NIrV)</li>
+        <li>Crayons, washable markers &amp; colored pencils</li>
+        <li>Glue sticks, kid scissors &amp; tape</li>
+        <li>Construction paper &amp; bright cardstock</li>
+        <li>Paper plates, craft sticks, pipe cleaners, pom-poms &amp; googly eyes</li>
+        <li>Stickers &amp; star stickers</li>
+        <li>Small whiteboards &amp; dry-erase markers</li>
+        <li>Soft foam balls &amp; bean bags</li>
+        <li>Laminating pouches &amp; printer paper</li>
+        <li>Store-bought, nut-free snacks for celebration Sundays</li>
+      </ul>
+    </section>
+
+    <section class="box money">
+      <h2>💵 Give a Gift</h2>
+      <p class="sub">Sponsor a part of the program:</p>
+      <div class="levels">
+        <div class="lvl"><div class="amt">$10</div><p>A Bible Passport, stickers &amp; 12 badges for one child</p></div>
+        <div class="lvl"><div class="amt">$15</div><p>A new Bible for a child</p></div>
+        <div class="lvl"><div class="amt">$25</div><p>Craft supplies for one month</p></div>
+        <div class="lvl"><div class="amt">$50</div><p>Sponsor a whole month of lessons</p></div>
+        <div class="lvl"><div class="amt">$100</div><p>Games &amp; classroom equipment</p></div>
+      </div>
+      <div class="how">
+        <img src="give-qr.svg" alt="QR code to give online">
+        <ol>
+          <li><b>Scan</b> to give online</li>
+          <li><b>Text PCD to 73256</b></li>
+          <li><b>Offering</b> on Sunday</li>
+        </ol>
+      </div>
+      <p class="sub" style="margin:6px 0 0">Please note <b style="color:var(--b)">"Kids Sunday School"</b> with your gift.</p>
+    </section>
+  </div>
+
+  <p class="verse">"Train up a child in the way he should go: and when he is old, he will not depart from it."<small>Proverbs 22:6</small></p>
+
+  <footer class="foot">
+    <div>
+      <h3>Drop off supplies</h3>
+      <p>Bring donations any Sunday to the <b>Kids Ministry table</b><br>Purpose Church of Denton · 3401 E University Dr, Suite #101, Denton, TX 76208<br>Questions? Ask any Kids Ministry leader.<br>purposechurchofdenton.com</p>
+    </div>
+    <div class="deadline"><span>Please give by</span><b>Sunday, January 3, 2027</b><span>Thank you for investing in our kids! ♥</span></div>
+  </footer>
+</div>
+</body>
+</html>
